@@ -64,14 +64,14 @@ firebase.auth().onAuthStateChanged(async function (user) {
     <div class="admin__content__text">
         請選擇您想管理之項目：
     </div>
-    <div class="admin__content__chooseItem" onclick="showOrderItem()">
-        查看／修改訂單
+    <div class="admin__content__chooseItem" onclick="showReadOrderItem()">
+        查看訂單
     </div>
     <div class="admin__content__chooseItem" onclick="showAddOrderForm()">
         加入新訂單
     </div>
-    <div class="admin__content__chooseItem" onclick="readDatabase('order')">
-        查看訂單資料庫
+    <div class="admin__content__chooseItem" onclick="showOrderItem()">
+        修改訂單
     </div>
     `;
       //autoLogout();

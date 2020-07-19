@@ -56,12 +56,142 @@ async function readDatabase(pagechoose) {
     }
   );
 }
-
+function showReadOrderItem() {
+  $("#admin__monitor").empty();
+  var DataRef = firebase.database().ref("order");
+  var titleString = `
+  <div class="admin__monitor__title">請選擇想查看之訂單：</div>
+  `;
+  $("#admin__monitor").append(titleString);
+  DataRef.once("value").then(
+    (res) => {
+      res.forEach((orderSh, orderIndex) => {
+        var orderInfo = orderSh.val();
+        var orderTitleString = `
+        <div class="admin__monitor__chooseItem" onclick="showReadOrderInfo(${orderSh.getKey()})">${orderSh.getKey()}</div>
+        `;
+        $("#admin__monitor").append(orderTitleString);
+      });
+    },
+    (rej) => {
+      console.log(rej);
+    }
+  );
+}
+async function showReadOrderInfo(orderID) {
+  $("#admin__monitor").empty();
+  var DataRef = firebase.database().ref("order/" + orderID);
+  var titleString = `
+  <div class="admin__monitor__block">
+  <div class="admin__monitor__title">在訂單${orderID}內的客戶資料</div>
+  `;
+  await DataRef.once("value").then(
+    (res) => {
+      console.log(res.val());
+      orderInfo = res.val();
+      titleString += `
+      <div class="admin__monitor__item">
+      訂單編號：${res.getKey()}
+      </div>
+        <div class="admin__monitor__item">
+        訂單日期：${orderInfo.orderTime}
+        </div>
+        <div class="admin__monitor__item">
+        訂單人名稱：${orderInfo.customerName}
+        </div>
+        <div class="admin__monitor__item">
+        訂單人電話：${orderInfo.phoneNumber}
+        </div>
+        <div class="admin__monitor__item">
+        訂單人收貨地址：${orderInfo.address}
+        </div>
+        <div class="admin__monitor__title">以下為訂單編號為${res.getKey()}的運送資料</div>
+        <div class="admin__monitor__item">
+        訂單是否已出貨：${orderInfo.isShip}
+        </div>
+        <div class="admin__monitor__item">
+        順豐單號：${orderInfo.shipNumber}
+        </div>
+        <div class="admin__monitor__item">
+        訂單是否已完成：${orderInfo.isFinish}
+        </div>
+        </div>`;
+      $("#admin__monitor").append(titleString);
+      return true;
+    },
+    (rej) => {
+      console.log(rej);
+      return true;
+    }
+  );
+  var DataRef = firebase.database().ref("/order/" + orderID + "/goods");
+  var lastGoodsID = 0;
+  var titleString = `
+  <div class="admin__monitor__block" style="background-color: #f3c6c686;">
+    <div class="admin__monitor__title">訂單編號${orderID}的全單總價格：</div>
+      <div class="admin__monitor__item" id="orderTotalPriceNTD">入貨總價格(NTD)：
+      </div>
+      <div class="admin__monitor__item" id="orderTotalPriceHKD">定價總價格(HKD)：
+      </div>
+  </div>
+`;
+  $("#admin__monitor").append(titleString);
+  var goodsValueString = `
+<div class="admin__monitor__title">以下為訂單編號${orderID}的貨品清單</div>
+<table class="admin__monitor__goodsTable">
+  <tr class="admin__monitor__goodsTable__titleTR">
+    <th class="admin__monitor__goodsTable__titleTH">ID</th>
+    <th class="admin__monitor__goodsTable__titleTH">貨品名稱</th>
+    <th class="admin__monitor__goodsTable__titleTH">入貨單價(NTD)</th>
+    <th class="admin__monitor__goodsTable__titleTH">數量</th>
+    <th class="admin__monitor__goodsTable__titleTH">總值(NTD)</th>
+    <th class="admin__monitor__goodsTable__titleTH">定價(HKD)</th>
+  </tr>
+`;
+  await DataRef.once("value").then(
+    (res) => {
+      res.forEach((orderSh, orderIndex) => {
+        goodsValueString += `<div class="admin__monitor__goods">`;
+        var goodsValue = orderSh.val();
+        console.log(goodsValue);
+        goodsValueString += `
+        <form name="form" id="form${orderSh.getKey()}">
+        <tr class="admin__monitor__goodsTable__itemTR">
+          <th class="admin__monitor__goodsTable__itemTH">${orderSh.getKey()}</th>
+          <th class="admin__monitor__goodsTable__itemTH">
+            <a href="${goodsValue.website}" target="_blank">
+              ${goodsValue.goodsName}
+            </a>
+          </th>
+          <th class="admin__monitor__goodsTable__itemTH">${
+            goodsValue.price
+          }</th>
+          <th class="admin__monitor__goodsTable__itemTH">${
+            goodsValue.count
+          }</th>
+          <th class="admin__monitor__goodsTable__itemTH">${
+            goodsValue.price * goodsValue.count
+          }</th>
+          <th class="admin__monitor__goodsTable__itemTH">${
+            goodsValue.priceHKD
+          }</th>
+        </tr>
+        `;
+      });
+      countAllTotalPrice(orderID);
+      goodsValueString += `</table>`;
+      $("#admin__monitor").append(goodsValueString);
+    },
+    (rej) => {
+      console.log(rej);
+    }
+  );
+}
 function showOrderItem() {
   $("#admin__monitor").empty();
   var DataRef = firebase.database().ref("order");
   var titleString = `
-  <div class="admin__monitor__title">請選擇以下已加入資料庫之訂單：</div>
+  <div class="admin__monitor__title">請選擇想修改之訂單：</div>
   `;
   $("#admin__monitor").append(titleString);
   DataRef.once("value").then(

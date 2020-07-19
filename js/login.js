@@ -39,6 +39,7 @@ firebase.auth().onAuthStateChanged(async function (user) {
   $("#admin__monitor").empty();
   var userIsAdmin = "";
   var userName = "";
+  var leastOnlineTime = "";
   if (user) {
     var UserRef = firebase.database().ref("/user/" + user.uid);
     await UserRef.once("value").then(
@@ -46,6 +47,7 @@ firebase.auth().onAuthStateChanged(async function (user) {
         var dataInfo = res.val();
         userIsAdmin = dataInfo.admin;
         userName = dataInfo.name;
+        leastOnlineTime = dataInfo.leastOnlineTime;
         return true;
       },
       (rej) => {
@@ -54,10 +56,29 @@ firebase.auth().onAuthStateChanged(async function (user) {
       }
     );
     if (userIsAdmin === true) {
+      var currentdate = new Date();
+      var datetime =
+        currentdate.getFullYear() +
+        "/" +
+        (currentdate.getMonth() + 1 < 10 ? "0" : "") +
+        (currentdate.getMonth() + 1) +
+        "/" +
+        (currentdate.getDate() < 10 ? "0" : "") +
+        currentdate.getDate() +
+        " " +
+        (currentdate.getHours() < 10 ? "0" : "") +
+        currentdate.getHours() +
+        ":" +
+        (currentdate.getMinutes() < 10 ? "0" : "") +
+        currentdate.getMinutes() +
+        ":" +
+        (currentdate.getSeconds() < 10 ? "0" : "") +
+        currentdate.getSeconds();
       alert("歡迎管理員" + userName + "大大");
       console.log("Login success");
       var divContent = `
     <div class="admin__content__title">歡迎管理員 ${userName}大大</div>
+    <div class="admin__content__title" style="font-weight: 300; font-size: 16px;">上次上線於 ${leastOnlineTime}</div>
     <div class="admin__content__logout" onclick="logout()">
         <div class="admin__content__logout__btn">登出系統</div>
     </div>
@@ -74,6 +95,18 @@ firebase.auth().onAuthStateChanged(async function (user) {
         修改訂單
     </div>
     `;
+      await firebase
+        .database()
+        .ref("/user/" + user.uid)
+        .update({
+          leastOnlineTime: datetime,
+        })
+        .then(function () {
+          return true;
+        })
+        .catch(function () {
+          return false;
+        });
       //autoLogout();
     } else {
       alert("很抱歉，您不是管理員，請您找管理員尋求協助");
@@ -109,3 +142,7 @@ document.onmousedown = ReCalculate;
 document.onmousemove = ReCalculate;
 document.onkeydown = ReCalculate;
 ReCalculate();
+
+function getUserName() {
+  return user;
+}

@@ -60,7 +60,7 @@ function showReadOrderItem() {
   $("#admin__monitor").empty();
   var DataRef = firebase.database().ref("order");
   var titleString = `
-  <div class="admin__monitor__title">請選擇想查看之訂單：</div>
+  <div class="admin__monitor__title">請選擇訂單：</div>
   `;
   $("#admin__monitor").append(titleString);
   DataRef.once("value").then(
@@ -69,16 +69,27 @@ function showReadOrderItem() {
         var orderInfo = orderSh.val();
         var orderTitleString = `
         <div class="admin__monitor__chooseItem ${
-          orderInfo.isShip === "true"
-            ? orderInfo.isFinish === "true"
-              ? "admin__monitor__chooseItem-green"
+          orderInfo.isCancel === "true"
+            ? "admin__monitor__chooseItem-gray"
+            : orderInfo.isPaid === "true"
+            ? orderInfo.isShip === "true"
+              ? orderInfo.isFinish === "true"
+                ? "admin__monitor__chooseItem-green"
+                : "admin__monitor__chooseItem-yellow"
               : "admin__monitor__chooseItem-orange"
             : "admin__monitor__chooseItem-red"
-        }" onclick="showReadOrderInfo(${orderSh.getKey()})">${orderSh.getKey()}　訂單人：${
-          orderInfo.customerName
-        }　${orderInfo.isShip === "true" ? "已" : "未"}出貨　${
-          orderInfo.isFinish === "true" ? "已" : "未"
-        }結單</div></div>
+        }" onclick="showReadOrderInfo(${orderSh.getKey()})">
+        ${orderSh.getKey()}　收件人：${orderInfo.customerName}　${
+          orderInfo.isCancel === "true"
+            ? "已取消"
+            : orderInfo.isPaid === "true"
+            ? orderInfo.isShip === "true"
+              ? orderInfo.isFinish === "true"
+                ? "搞掂曬"
+                : "出咗貨"
+              : "備緊貨"
+            : "要收數"
+        }</div></div>
         `;
         $("#admin__monitor").append(orderTitleString);
       });
@@ -94,7 +105,7 @@ async function showReadOrderInfo(orderID) {
   var orderInfo = "";
   var titleString = `
   <div class="admin__monitor__block">
-  <div class="admin__monitor__title">在訂單${orderID}內之客戶資料</div>
+  <div class="admin__monitor__title">客戶資料</div>
   `;
   await DataRef.once("value").then(
     (res) => {
@@ -107,23 +118,35 @@ async function showReadOrderInfo(orderID) {
         訂單日期：${orderInfo.orderTime}
         </div>
         <div class="admin__monitor__item">
-        訂單人名稱：${orderInfo.customerName}
+        收件人名稱：${orderInfo.customerName}
         </div>
         <div class="admin__monitor__item">
-        訂單人電話：${orderInfo.phoneNumber}
+        收件人電話：${orderInfo.phoneNumber}
         </div>
         <div class="admin__monitor__item">
-        訂單人收貨地址：${orderInfo.address}
+        收件人地址：${orderInfo.address}
         </div>
-        <div class="admin__monitor__title">以下為訂單編號為${res.getKey()}之運送資料</div>
         <div class="admin__monitor__item">
-        訂單是否已出貨：${orderInfo.isShip}
+        其他聯絡方法：${orderInfo.otherContacts}
+        </div>
+        <div class="admin__monitor__item">
+        聯絡方法之用戶名：${orderInfo.contactsName}
+        </div>
+        <div class="admin__monitor__title">運送資料</div>
+        <div class="admin__monitor__item">
+        訂單是否已收款：${orderInfo.isPaid === "true" ? "已收款" : "未收款"}
+        </div>
+        <div class="admin__monitor__item">
+        訂單是否已出貨：${orderInfo.isShip === "true" ? "已出貨" : "未出貨"}
         </div>
         <div class="admin__monitor__item">
         順豐單號：${orderInfo.shipNumber}
         </div>
         <div class="admin__monitor__item">
-        訂單是否已完成：${orderInfo.isFinish}
+        訂單是否已完成：${orderInfo.isFinish === "true" ? "已完成" : "未完成"}
+        </div>
+        <div class="admin__monitor__item">
+        訂單是否已取消：${orderInfo.isCancel === "true" ? "是" : "否"}
         </div>
         </div>`;
       $("#admin__monitor").append(titleString);
@@ -137,7 +160,7 @@ async function showReadOrderInfo(orderID) {
   var DataRef = firebase.database().ref("/order/" + orderID + "/goods");
   var titleString = `
   <div class="admin__monitor__block" style="background-color: #f3c6c686;">
-    <div class="admin__monitor__title">訂單編號${orderID}之全單總價格：</div>
+    <div class="admin__monitor__title">全單總價格：</div>
       <div class="admin__monitor__item" id="orderTotalPriceNTD">入貨總價格(NTD)：
       </div>
       <div class="admin__monitor__item" id="orderTotalPriceHKD">定價總價格(HKD)：
@@ -146,7 +169,7 @@ async function showReadOrderInfo(orderID) {
 `;
   $("#admin__monitor").append(titleString);
   var goodsValueString = `
-<div class="admin__monitor__title">以下為訂單編號${orderID}之貨品清單</div>
+<div class="admin__monitor__title">貨品清單</div>
 <table class="admin__monitor__goodsTable">
   <tr class="admin__monitor__goodsTable__titleTR">
     <th class="admin__monitor__goodsTable__titleTH">ID</th>
@@ -218,16 +241,28 @@ function showOrderItem() {
         console.log(orderInfo);
         var orderTitleString = `
         <div class="admin__monitor__chooseItem ${
-          orderInfo.isShip === "true"
-            ? orderInfo.isFinish === "true"
-              ? "admin__monitor__chooseItem-green"
+          orderInfo.isCancel === "true"
+            ? "admin__monitor__chooseItem-gray"
+            : orderInfo.isPaid === "true"
+            ? orderInfo.isShip === "true"
+              ? orderInfo.isFinish === "true"
+                ? "admin__monitor__chooseItem-green"
+                : "admin__monitor__chooseItem-yellow"
               : "admin__monitor__chooseItem-orange"
             : "admin__monitor__chooseItem-red"
-        }" onclick="showEditOrderForm(${orderSh.getKey()})">${orderSh.getKey()}　訂單人：${
+        }" onclick="showEditOrderForm(${orderSh.getKey()})">${orderSh.getKey()}　收件人：${
           orderInfo.customerName
-        }　${orderInfo.isShip === "true" ? "已" : "未"}出貨　${
-          orderInfo.isFinish === "true" ? "已" : "未"
-        }結單</div></div>
+        }　${
+          orderInfo.isCancel === "true"
+            ? "已取消"
+            : orderInfo.isPaid === "true"
+            ? orderInfo.isShip === "true"
+              ? orderInfo.isFinish === "true"
+                ? "搞掂曬"
+                : "出咗貨"
+              : "備緊貨"
+            : "要收數"
+        }</div></div>
         `;
         $("#admin__monitor").append(orderTitleString);
       });
@@ -242,7 +277,7 @@ function showEditOrderForm(orderID) {
   var DataRef = firebase.database().ref("/order/" + orderID);
   var orderTitleString = `
   <div class="admin__monitor__block">
-  <div class="admin__monitor__title">以下為訂單編號${orderID}之客戶資料</div>
+  <div class="admin__monitor__title">客戶資料</div>
   `;
   DataRef.once("value").then(
     (res) => {
@@ -262,7 +297,7 @@ function showEditOrderForm(orderID) {
           />
         </div>
         <div class="admin__monitor__item">
-        訂單人名稱：
+        收件人名稱：
           <input
             type="text"
             name="customerName"
@@ -271,7 +306,7 @@ function showEditOrderForm(orderID) {
           />
         </div>
         <div class="admin__monitor__item">
-        訂單人電話：
+        收件人電話：
           <input
             type="text"
             name="phoneNumber"
@@ -280,7 +315,7 @@ function showEditOrderForm(orderID) {
           />
         </div>
         <div class="admin__monitor__item">
-        訂單人收貨地址：
+        收件人地址：
           <input
             type="text"
             name="address"
@@ -288,17 +323,42 @@ function showEditOrderForm(orderID) {
             value="${orderInfo.address}" required
           />
         </div>
-        <div class="admin__monitor__title">以下為訂單編號為${res.getKey()}之運送資料</div>
         <div class="admin__monitor__item">
-        訂單是否已出貨：
-        <select name="isShip" id="isShip${res.getKey()}" class="selection">
-        　<option value="true" ${
-          orderInfo.isShip === "true" ? "SELECTED" : ""
-        }>true</option>
-        　<option value="false" ${
-          orderInfo.isShip === "false" ? "SELECTED" : ""
-        }>false</option>
-        </select>
+          其他聯絡方法：
+          <select name="otherContacts" id="otherContacts" class="selection">
+          　<option value="none" ${
+            orderInfo.otherContacts === "none" ? "SELECTED" : ""
+          }>無</option>
+          　<option value="Whatsapp" ${
+            orderInfo.otherContacts === "Whatsapp" ? "SELECTED" : ""
+          }>Whatsapp</option>
+          <option value="IG" ${
+            orderInfo.otherContacts === "IG" ? "SELECTED" : ""
+          }>IG</option>
+          <option value="Facebook" ${
+            orderInfo.otherContacts === "Facebook" ? "SELECTED" : ""
+          }>Facebook</option>
+          </select>
+        </div>
+        <div class="admin__monitor__item">
+          聯絡方法之用戶名：
+          <input type="text" name="contactsName" id="contactsName" value="${
+            orderInfo.contactsName
+          }"
+          />
+        </div>
+        <div class="admin__monitor__title">處理流程</div>
+        <div class="admin__monitor__item">
+          是否已收款：
+          <input type="checkbox" id="isPaid" name="isPaid" ${
+            orderInfo.isPaid === "true" ? "checked" : ""
+          }>
+        </div>
+        <div class="admin__monitor__item">
+        是否已出貨：
+        <input type="checkbox" id="isShip" name="isShip" ${
+          orderInfo.isShip === "true" ? "checked" : ""
+        }>
         </div>
         <div class="admin__monitor__item">
         順豐單號：
@@ -310,14 +370,20 @@ function showEditOrderForm(orderID) {
           />
         </div>
         <div class="admin__monitor__item">
-        訂單是否已完成：
-        <select name="isFinish" id="isFinish${res.getKey()}" class="selection">
+        是否已完成：
+        <input type="checkbox" id="isFinish" name="isFinish" ${
+          orderInfo.isFinish === "true" ? "checked" : ""
+        }>
+        </div>
+        <div class="admin__monitor__item">
+        是否已取消訂單：
+        <select name="isCancel" id="isCancel${res.getKey()}" class="selection">
         　<option value="true" ${
-          orderInfo.isFinish === "true" ? "SELECTED" : ""
-        }>true</option>
+          orderInfo.isCancel === "true" ? "SELECTED" : ""
+        }>是</option>
         　<option value="false" ${
-          orderInfo.isFinish === "false" ? "SELECTED" : ""
-        }>false</option>
+          orderInfo.isCancel === "false" ? "SELECTED" : ""
+        }>否</option>
         </select>
         </div>
           <input
@@ -349,7 +415,7 @@ async function showEditGoodsForm(orderID) {
   var lastGoodsID = 0;
   var titleString = `
   <div class="admin__monitor__block" style="background-color: #f3c6c686;">
-    <div class="admin__monitor__title">訂單編號${orderID}之全單總價格：</div>
+    <div class="admin__monitor__title">全單總價格：</div>
       <div class="admin__monitor__item" id="orderTotalPriceNTD">入貨總價格(NTD)：
       </div>
       <div class="admin__monitor__item" id="orderTotalPriceHKD">定價總價格(HKD)：
@@ -358,7 +424,7 @@ async function showEditGoodsForm(orderID) {
 `;
   $("#admin__monitor").append(titleString);
   var titleString = `
-<div class="admin__monitor__title">以下為訂單編號${orderID}之貨品清單</div>
+<div class="admin__monitor__title">貨品清單</div>
 `;
   $("#admin__monitor").append(titleString);
   await DataRef.once("value").then(
@@ -656,36 +722,37 @@ async function updateItemGoodsInfo(orderID, goodsID, mode) {
 }
 
 async function updateItemOrderInfo(orderID) {
-  var DataRef = firebase.database().ref("order");
-  var totalChild = 0;
-  await DataRef.once("value").then(
-    (res) => {
-      res.forEach((Item, index) => {
-        totalChild += 1;
-      });
-      return true;
-    },
-    (rej) => {
-      console.log(rej);
-      return true;
-    }
-  );
   const form = document.forms["form"];
   var orderTime = form.elements.orderTime.value;
   var customerName = form.elements.customerName.value;
   var phoneNumber = form.elements.phoneNumber.value;
   var address = form.elements.address.value;
   var shipNumber = form.elements.shipNumber.value;
-  var isShip = form.elements.isShip.value;
-  var isFinish = form.elements.isFinish.value;
+  var isShip = form.elements.isShip.checked.toString();
+  var isFinish = form.elements.isFinish.checked.toString();
+  var isPaid = form.elements.isPaid.checked.toString();
+  var isCancel = form.elements.isCancel.value;
+  var otherContacts = form.elements.isPaid.value;
+  if (isPaid === "false" && isShip === "false" && isFinish === "true") {
+    //F F T
+    if (confirm("邏輯錯誤！！還沒收款或寄貨就完成訂單？") == false) {
+      return 0;
+    }
+  } else if (isPaid === "false") {
+    if (isShip === "true") {
+      //F T F
+      if (confirm("邏輯錯誤！！還沒收款就寄貨？") == false) {
+        return 0;
+      }
+    }
+  }
   if (
     orderTime != "" &&
     customerName != "" &&
     phoneNumber != "" &&
     address != "" &&
-    isShip != "" &&
     shipNumber != "" &&
-    isFinish != ""
+    otherContacts != ""
   ) {
     firebase
       .database()
@@ -695,9 +762,16 @@ async function updateItemOrderInfo(orderID) {
         customerName: form.elements.customerName.value,
         phoneNumber: form.elements.phoneNumber.value,
         address: form.elements.address.value,
-        isShip: form.elements.isShip.value,
+        isShip: form.elements.isShip.checked.toString(),
         shipNumber: form.elements.shipNumber.value,
-        isFinish: form.elements.isFinish.value,
+        isFinish: form.elements.isFinish.checked.toString(),
+        isPaid: form.elements.isPaid.checked.toString(),
+        otherContacts: form.elements.otherContacts.value,
+        contactsName:
+          form.elements.contactsName.value != ""
+            ? form.elements.contactsName.value
+            : "none",
+        isCancel: form.elements.isCancel.value,
       })
       .then(function () {
         alert("更新訂單成功");
@@ -781,7 +855,7 @@ async function showAddOrderForm() {
           />
         </div>
         <div class="admin__monitor__item">
-        訂單人名稱：
+        收件人名稱：
           <input
             type="text"
             name="customerName"
@@ -790,7 +864,7 @@ async function showAddOrderForm() {
           />
         </div>
         <div class="admin__monitor__item">
-        訂單人電話：
+        收件人電話：
           <input
             type="text"
             name="phoneNumber"
@@ -799,12 +873,26 @@ async function showAddOrderForm() {
           />
         </div>
         <div class="admin__monitor__item">
-        訂單人收貨地址：
+        收件人收貨地址：
           <input
             type="text"
             name="address"
             id="address"
             required
+          />
+        </div>
+        <div class="admin__monitor__item">
+          其他聯絡方法：
+          <select name="otherContacts" id="otherContacts" class="selection">
+          　<option value="none" SELECTED>無</option>
+          　<option value="Whatsapp">Whatsapp</option>
+          <option value="IG">IG</option>
+          <option value="Facebook">Facebook</option>
+          </select>
+        </div>
+        <div class="admin__monitor__item">
+          聯絡方法之用戶名：
+          <input type="text" name="contactsName" id="contactsName"
           />
         </div>
           <input
@@ -827,14 +915,13 @@ async function setItemOrderInfo(orderID) {
   this.isShip = "false";
   this.shipNumber = "NaN";
   this.isFinish = "false";
+  this.isPaid = "false";
+  this.isCancel = "false";
   if (
     orderTime != "" &&
     customerName != "" &&
     phoneNumber != "" &&
-    address != "" &&
-    this.isShip != "" &&
-    this.shipNumber != "" &&
-    this.isFinish != ""
+    address != ""
   ) {
     firebase
       .database()
@@ -847,6 +934,8 @@ async function setItemOrderInfo(orderID) {
         isShip: this.isShip,
         shipNumber: this.shipNumber,
         isFinish: this.isFinish,
+        isPaid: this.isPaid,
+        isCancel: this.isCancel,
       })
       .then(function () {
         alert("新增訂單成功");

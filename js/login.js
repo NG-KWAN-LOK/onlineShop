@@ -21,7 +21,7 @@ async function logout(eventCode = 0) {
         if (eventCode === 0) {
           alert("登出成功");
         } else if (eventCode === 1) {
-          alert("您已閒置超過3分鐘，系統自動登出");
+          alert("您已閒置超過7分鐘，系統自動登出");
         } else {
           console.log("Login Inited");
         }
@@ -135,7 +135,7 @@ function ReCalculate() {
   if (user != "") {
     oTimerId = setTimeout(function () {
       Timeout(1);
-    }, 3 * 60 * 1000);
+    }, 7 * 60 * 1000);
   }
 }
 document.onmousedown = ReCalculate;

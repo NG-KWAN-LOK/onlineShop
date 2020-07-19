@@ -515,7 +515,15 @@ body {
 }
 
 .main__content .admin__monitor .admin__monitor__chooseItem-orange {
-  background-color: #fad88fa4;
+  background-color: #fab68fa4;
+}
+
+.main__content .admin__monitor .admin__monitor__chooseItem-yellow {
+  background-color: #effa8fa4;
+}
+
+.main__content .admin__monitor .admin__monitor__chooseItem-gray {
+  background-color: #c2c2c2a4;
 }
 
 .main__content .admin__monitor .admin__monitor__chooseItem:hover {

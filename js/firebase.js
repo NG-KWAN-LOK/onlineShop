@@ -82,15 +82,15 @@ function showOrderItem() {
 function showEditOrderForm(orderID) {
   $("#admin__monitor").empty();
   var DataRef = firebase.database().ref("/order/" + orderID);
-  var titleString = `
-  <div class="admin__monitor__title">以下為訂單編號${orderID}的資料</div>
+  var orderTitleString = `
+  <div class="admin__monitor__block">
+  <div class="admin__monitor__title">以下為訂單編號${orderID}的客戶資料</div>
   `;
-  $("#admin__monitor").append(titleString);
   DataRef.once("value").then(
     (res) => {
       console.log(res.val());
       orderInfo = res.val();
-      var orderTitleString = `
+      orderTitleString += `
       <div class="admin__monitor__item">
       訂單編號：${res.getKey()}
       </div>
@@ -131,6 +131,7 @@ function showEditOrderForm(orderID) {
             value="${orderInfo.address}" required
           />
         </div>
+        <div class="admin__monitor__title">以下為訂單編號為${res.getKey()}的運送資料</div>
         <div class="admin__monitor__item">
         訂單是否已出貨：
           <input
@@ -171,6 +172,7 @@ function showEditOrderForm(orderID) {
         onclick="removeItemOrderInfo(${orderID});"
             />
       </form>
+      </div>
         `;
       $("#admin__monitor").append(orderTitleString);
       showEditGoodsForm(orderID);
@@ -184,7 +186,15 @@ async function showEditGoodsForm(orderID) {
   var DataRef = firebase.database().ref("/order/" + orderID + "/goods");
   var lastGoodsID = 0;
   var titleString = `
-<div class="admin__monitor__title">貨品</div>
+  <div class="admin__monitor__block" style="background-color: #f3c6c686;">
+    <div class="admin__monitor__title">訂單編號${orderID}的全單總價格：</div>
+      <div class="admin__monitor__item" id="orderTotalPrice">總價格(NTD)：
+      </div>
+  </div>
+`;
+  $("#admin__monitor").append(titleString);
+  var titleString = `
+<div class="admin__monitor__title">以下為訂單編號${orderID}的貨品清單</div>
 `;
   $("#admin__monitor").append(titleString);
   await DataRef.once("value").then(
@@ -239,9 +249,15 @@ async function showEditGoodsForm(orderID) {
         <div class="admin__monitor__item" id="totalPrice${orderSh.getKey()}">總值(NTD)：${
           goodsValue.price * goodsValue.count
         }
-        <br>總值(HKD)3.7:1：${Math.ceil(
-          (goodsValue.price * goodsValue.count) / 3.7
-        )}
+        </div>
+        <div class="admin__monitor__item">定價(HKD)：
+        <input
+          type="number"
+          name="priceHKD"
+          id="priceHKD"
+          class="priceHKD"
+          value="${goodsValue.priceHKD}" required
+          />
         </div>
         </form>
         <input
@@ -307,6 +323,15 @@ async function showEditGoodsForm(orderID) {
     </div>
     <div class="admin__monitor__item" id="totalPrice${lastGoodsID}">總值(NTD)：0
     </div>
+    <div class="admin__monitor__item">定價(HKD)：
+        <input
+          type="number"
+          name="count"
+          id="priceHKD"
+          class="priceHKD${lastGoodsID}"
+          required
+          />
+        </div>
     </form>
     <input
     type="button"
@@ -317,7 +342,29 @@ async function showEditGoodsForm(orderID) {
     `;
   goodsValueString += `</div>`;
   $("#admin__monitor").append(goodsValueString);
+  countAllTotalPrice(orderID);
 }
+async function countAllTotalPrice(orderID) {
+  var DataRef = firebase.database().ref("order/" + orderID + "/goods");
+  var orderTotalPrice = 0;
+  await DataRef.once("value").then(
+    (res) => {
+      res.forEach((orderSh, orderIndex) => {
+        var orderInfo = orderSh.val();
+        //console.log(orderInfo.goodsTotalPrice);
+        orderTotalPrice += orderInfo.goodsTotalPrice;
+      });
+    },
+    (rej) => {
+      console.log(rej);
+    }
+  );
+  console.log(orderTotalPrice);
+  document.getElementById("orderTotalPrice").innerHTML =
+    "總價格(NTD)：" + orderTotalPrice;
+  return orderTotalPrice;
+}
+
 async function removeItemGoodsInfo(orderID, goodsID) {
   await firebase
     .database()
@@ -353,16 +400,10 @@ function updateTotalPrice(goodsID) {
   console.log(goodsID);
   console.log(document.getElementsByClassName("price" + goodsID)[0].value);
   document.getElementById("totalPrice" + goodsID).innerHTML =
-    "總值：(NTD)" +
+    "總值(NTD)：" +
     document.getElementsByClassName("price" + goodsID)[0].value *
-      document.getElementsByClassName("count" + goodsID)[0].value +
-    "<br>總值(HKD)3.7:1：" +
-    Math.ceil(
-      (document.getElementsByClassName("price" + goodsID)[0].value *
-        document.getElementsByClassName("count" + goodsID)[0].value) /
-        3.7,
-      1
-    );
+      document.getElementsByClassName("count" + goodsID)[0].value;
+  countAllTotalPrice(orderID);
 }
 
 async function updateItemGoodsInfo(orderID, goodsID, mode) {
@@ -371,7 +412,14 @@ async function updateItemGoodsInfo(orderID, goodsID, mode) {
   var price = form.elements.price.value;
   var count = form.elements.count.value;
   var website = form.elements.website.value;
-  if (goodsName != "" && price != "" && count != "" && website != "") {
+  var priceHKD = form.elements.priceHKD.value;
+  if (
+    goodsName != "" &&
+    price != "" &&
+    count != "" &&
+    website != "" &&
+    priceHKD != ""
+  ) {
     await firebase
       .database()
       .ref("order/" + orderID + "/goods/" + goodsID)
@@ -380,6 +428,8 @@ async function updateItemGoodsInfo(orderID, goodsID, mode) {
         price: form.elements.price.value,
         count: form.elements.count.value,
         website: form.elements.website.value,
+        goodsTotalPrice: form.elements.price.value * form.elements.count.value,
+        priceHKD: form.elements.priceHKD.value,
       })
       .then(function () {
         alert("更新資料成功");
@@ -407,6 +457,7 @@ async function updateItemGoodsInfo(orderID, goodsID, mode) {
   } else {
     alert("建立失敗！！！未有填寫全部資料");
   }
+  countAllTotalPrice(orderID);
   if (mode === 1) {
     showEditOrderForm(orderID);
   }

@@ -479,6 +479,11 @@ body {
   margin: 5px 0;
 }
 
+.main__content .admin__monitor .admin__monitor__block {
+  background-color: #e2d79786;
+  margin: 5px 0;
+}
+
 input {
   font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
   text-align: left;

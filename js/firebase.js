@@ -206,12 +206,20 @@ async function showEditGoodsForm(orderID) {
           value="${goodsValue.goodsName}" required
           />
         </div>
-        <div class="admin__monitor__item">單價：
+        <div class="admin__monitor__item">貨品購買網址：
+          <input
+          type="text"
+          name="website"
+          id="website"
+          value="${goodsValue.website}" required
+          />
+        </div>
+        <div class="admin__monitor__item">單價(NTD)：
           <input
           type="number"
           name="price"
           id="price"
-          class="price"
+          class="price${orderSh.getKey()}"
           value="${
             goodsValue.price
           }" oninput="updateTotalPrice(${orderSh.getKey()})" required
@@ -222,15 +230,18 @@ async function showEditGoodsForm(orderID) {
           type="number"
           name="count"
           id="count"
-          class="count"
+          class="count${orderSh.getKey()}"
           value="${
             goodsValue.count
           }" oninput="updateTotalPrice(${orderSh.getKey()})" required
           />
         </div>
-        <div class="admin__monitor__item" id="totalPrice${orderSh.getKey()}">總值：${
+        <div class="admin__monitor__item" id="totalPrice${orderSh.getKey()}">總值(NTD)：${
           goodsValue.price * goodsValue.count
         }
+        <br>總值(HKD)3.7:1：${Math.ceil(
+          (goodsValue.price * goodsValue.count) / 3.7
+        )}
         </div>
         </form>
         <input
@@ -268,7 +279,15 @@ async function showEditGoodsForm(orderID) {
       required
       />
     </div>
-    <div class="admin__monitor__item">單價：
+    <div class="admin__monitor__item">貨品購買網址：
+          <input
+          type="text"
+          name="website"
+          id="website"
+          required
+          />
+        </div>
+    <div class="admin__monitor__item">單價(NTD)：
       <input
       type="number"
       name="price"
@@ -286,7 +305,7 @@ async function showEditGoodsForm(orderID) {
       oninput="updateTotalPrice(${lastGoodsID})" required
       />
     </div>
-    <div class="admin__monitor__item" id="totalPrice${lastGoodsID}">總值：0
+    <div class="admin__monitor__item" id="totalPrice${lastGoodsID}">總值(NTD)：0
     </div>
     </form>
     <input
@@ -334,9 +353,16 @@ function updateTotalPrice(goodsID) {
   console.log(goodsID);
   console.log(document.getElementsByClassName("price" + goodsID)[0].value);
   document.getElementById("totalPrice" + goodsID).innerHTML =
-    "總值：" +
+    "總值：(NTD)" +
     document.getElementsByClassName("price" + goodsID)[0].value *
-      document.getElementsByClassName("count" + goodsID)[0].value;
+      document.getElementsByClassName("count" + goodsID)[0].value +
+    "<br>總值(HKD)3.7:1：" +
+    Math.ceil(
+      (document.getElementsByClassName("price" + goodsID)[0].value *
+        document.getElementsByClassName("count" + goodsID)[0].value) /
+        3.7,
+      1
+    );
 }
 
 async function updateItemGoodsInfo(orderID, goodsID, mode) {
@@ -344,7 +370,8 @@ async function updateItemGoodsInfo(orderID, goodsID, mode) {
   var goodsName = form.elements.goodsName.value;
   var price = form.elements.price.value;
   var count = form.elements.count.value;
-  if (goodsName != "" && price != "" && count != "") {
+  var website = form.elements.website.value;
+  if (goodsName != "" && price != "" && count != "" && website != "") {
     await firebase
       .database()
       .ref("order/" + orderID + "/goods/" + goodsID)
@@ -352,6 +379,7 @@ async function updateItemGoodsInfo(orderID, goodsID, mode) {
         goodsName: form.elements.goodsName.value,
         price: form.elements.price.value,
         count: form.elements.count.value,
+        website: form.elements.website.value,
       })
       .then(function () {
         alert("更新資料成功");

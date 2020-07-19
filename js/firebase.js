@@ -1025,7 +1025,7 @@ async function updateUpdateDateTime(orderID) {
     .ref("order/" + orderID)
     .update({
       leastUpdateTime: datetime,
-      updateUser: user.displayName,
+      updateUser: tempUser.displayName,
     })
     .then(function () {
       return true;

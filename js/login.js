@@ -1,6 +1,7 @@
 var provider = new firebase.auth.GoogleAuthProvider();
 var token = "";
 var user = "";
+var tempUser = "";
 console.log(user);
 function googleLoginRedirect() {
   firebase
@@ -40,22 +41,29 @@ firebase.auth().onAuthStateChanged(async function (user) {
   var userIsAdmin = "";
   var userName = "";
   var leastOnlineTime = "";
+  tempUser = user;
   if (user) {
+    console.log(user);
     var UserRef = firebase.database().ref("/user/" + user.uid);
     await UserRef.once("value").then(
       (res) => {
         var dataInfo = res.val();
+        if (dataInfo === null) {
+          return false;
+        }
         userIsAdmin = dataInfo.admin;
         userName = dataInfo.name;
         leastOnlineTime = dataInfo.leastOnlineTime;
         return true;
       },
       (rej) => {
+        console.log("login failed");
         console.log(rej);
         return true;
       }
     );
     if (userIsAdmin === true) {
+      console.log("logging");
       var currentdate = new Date();
       var datetime =
         currentdate.getFullYear() +
@@ -77,24 +85,24 @@ firebase.auth().onAuthStateChanged(async function (user) {
       alert("歡迎管理員" + userName + "大大");
       console.log("Login success");
       var divContent = `
-    <div class="admin__content__title">歡迎管理員 ${userName}大大</div>
-    <div class="admin__content__title" style="font-weight: 300; font-size: 16px;">上次上線於 ${leastOnlineTime}</div>
-    <div class="admin__content__logout" onclick="logout()">
-        <div class="admin__content__logout__btn">登出系統</div>
-    </div>
-    <div class="admin__content__text">
-        請選擇您想管理之項目：
-    </div>
-    <div class="admin__content__chooseItem" onclick="showReadOrderItem()">
-        查看訂單
-    </div>
-    <div class="admin__content__chooseItem" onclick="showAddOrderForm()">
-        加入新訂單
-    </div>
-    <div class="admin__content__chooseItem" onclick="showOrderItem()">
-        修改訂單
-    </div>
-    `;
+      <div class="admin__content__title">歡迎管理員 ${userName}大大</div>
+      <div class="admin__content__title" style="font-weight: 300; font-size: 16px;">上次上線於 ${leastOnlineTime}</div>
+      <div class="admin__content__logout" onclick="logout()">
+          <div class="admin__content__logout__btn">登出系統</div>
+      </div>
+      <div class="admin__content__text">
+          請選擇您想管理之項目：
+      </div>
+      <div class="admin__content__chooseItem" onclick="showReadOrderItem()">
+          查看訂單
+      </div>
+      <div class="admin__content__chooseItem" onclick="showAddOrderForm()">
+          加入新訂單
+      </div>
+      <div class="admin__content__chooseItem" onclick="showOrderItem()">
+          修改訂單
+      </div>
+      `;
       await firebase
         .database()
         .ref("/user/" + user.uid)
@@ -120,10 +128,10 @@ firebase.auth().onAuthStateChanged(async function (user) {
             使用google帳號登入
         </div>
     </div>`;
+    logout(999);
   }
   $("#admin__content").append(divContent);
 });
-logout(999);
 console.log(user);
 var oTimerId;
 function Timeout() {

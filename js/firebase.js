@@ -161,175 +161,473 @@ function showEditOrderForm(orderID) {
           <input
         type="button"
         name="submit"
-        value="送出"
-        onclick="newItemOrder(${orderID});"
+        value="更新客戶資料"
+        onclick="updateItemOrderInfo(${orderID});"
+            />
+            <input
+        type="button"
+        name="submit"
+        value="刪除此客戶"
+        onclick="removeItemOrderInfo(${orderID});"
             />
       </form>
         `;
       $("#admin__monitor").append(orderTitleString);
-      // res.forEach((orderSh, orderIndex) => {
-      //   var orderInfo = orderSh.val();
-      //   console.log(orderInfo);
-      //   var orderTitleString = `
-      //   <div class="admin__monitor__item">${orderInfo}</div>
-      //   `;
-      //   $("#admin__monitor").append(orderTitleString);
-      // });
+      showEditGoodsForm(orderID);
     },
     (rej) => {
       console.log(rej);
     }
   );
-  var divContent = `<div class="admin__monitor__title">
-  你可查看及修改以下訂單資料：
-</div>
-<div class="admin__monitor__subtitle">
-  請填寫以下表格（全部值必須填寫）
-</div>
-<form name="form" id="form">
-  <div class="admin__monitor__item">
-    住址（中文）：
-    <input
+}
+async function showEditGoodsForm(orderID) {
+  var DataRef = firebase.database().ref("/order/" + orderID + "/goods");
+  var lastGoodsID = 0;
+  var titleString = `
+<div class="admin__monitor__title">貨品</div>
+`;
+  $("#admin__monitor").append(titleString);
+  await DataRef.once("value").then(
+    (res) => {
+      res.forEach((orderSh, orderIndex) => {
+        var goodsValueString = `<div class="admin__monitor__goods">`;
+        var goodsValue = orderSh.val();
+        console.log(goodsValue);
+        goodsValueString += `
+        <form name="form" id="form${orderSh.getKey()}">
+        <div class="admin__monitor__item">編號：
+        ${orderSh.getKey()}
+        </div>
+        <div class="admin__monitor__item">貨品名稱：
+          <input
+          type="text"
+          name="goodsName"
+          id="goodsName"
+          value="${goodsValue.goodsName}" required
+          />
+        </div>
+        <div class="admin__monitor__item">單價：
+          <input
+          type="number"
+          name="price"
+          id="price"
+          class="price"
+          value="${
+            goodsValue.price
+          }" oninput="updateTotalPrice(${orderSh.getKey()})" required
+          />
+        </div>
+        <div class="admin__monitor__item">數量：
+          <input
+          type="number"
+          name="count"
+          id="count"
+          class="count"
+          value="${
+            goodsValue.count
+          }" oninput="updateTotalPrice(${orderSh.getKey()})" required
+          />
+        </div>
+        <div class="admin__monitor__item" id="totalPrice${orderSh.getKey()}">總值：${
+          goodsValue.price * goodsValue.count
+        }
+        </div>
+        </form>
+        <input
+        type="button"
+        name="submit"
+        value="更新貨品資料"
+        onclick="updateItemGoodsInfo(${orderID}, ${orderSh.getKey()}, 0);"
+            />
+            <input
+        type="button"
+        name="submit"
+        value="刪除貨品"
+        onclick="removeItemGoodsInfo(${orderID}, ${orderSh.getKey()});"
+            />
+        `;
+        goodsValueString += `</div>`;
+        $("#admin__monitor").append(goodsValueString);
+        lastGoodsID = Number(orderSh.getKey()) + 1;
+        console.log(lastGoodsID);
+      });
+    },
+    (rej) => {
+      console.log(rej);
+    }
+  );
+  var goodsValueString = `<div class="admin__monitor__goods" style = "background-color: #e2de9786;">`;
+  goodsValueString += `
+    <form name="form" id="form${lastGoodsID}">
+    <div class="admin__monitor__item">增新貨物：${lastGoodsID}</div>
+    <div class="admin__monitor__item">貨品名稱：
+      <input
       type="text"
-      name="adress_chi"
-      id="adress_chi"
-      value="${district_chi}Buddy路1號" required
-    />
-  </div>
-  <div class="admin__monitor__item">
-    住址（英文）：
-    <input type="text" name="adress_eng" id="adress_eng" value="1-Buddy Road, ${district_eng}" required />
-  </div>
-  <div class="admin__monitor__item">
-    住址（日文）：
+      name="goodsName"
+      id="goodsName"
+      required
+      />
+    </div>
+    <div class="admin__monitor__item">單價：
+      <input
+      type="number"
+      name="price"
+      id="price"
+      class="price${lastGoodsID}"
+      oninput="updateTotalPrice(${lastGoodsID})" required
+      />
+    </div>
+    <div class="admin__monitor__item">數量：
+      <input
+      type="number"
+      name="count"
+      id="count"
+      class="count${lastGoodsID}"
+      oninput="updateTotalPrice(${lastGoodsID})" required
+      />
+    </div>
+    <div class="admin__monitor__item" id="totalPrice${lastGoodsID}">總值：0
+    </div>
+    </form>
     <input
-      type="text"
-      name="adress_jp"
-      id="adress_jp"
-      value="${district_jp}Buddy路-1" required
-    />
-  </div>
-  <div class="admin__monitor__item">
-    住址所在之地區（中文）：
-    <input
-      type="text"
-      name="district_chi"
-      id="district_chi"
-      value="${district_chi}" required
-    />
-  </div>
-  <div class="admin__monitor__item">
-    住址所在之地區（英文）：
-    <input
-      type="text"
-      name="district_eng"
-      id="district_eng"
-      value="${district_eng}" required
-    />
-  </div>
-  <div class="admin__monitor__item">
-    住址所在之地區（日文）：
-    <input type="text" name="district_jp" id="district_jp" value="${district_jp}" required />
-  </div>
-  <div class="admin__monitor__item">
-    建築物名稱（中文）：
-    <input
-      type="text"
-      name="name_chi"
-      id="name_chi"
-      value="新建築" required
-    />
-  </div>
-  <div class="admin__monitor__item">
-    建築物名稱（英文）：
-    <input
-      type="text"
-      name="name_eng"
-      id="name_eng"
-      value="New Building" required
-    />
-  </div>
-  <div class="admin__monitor__item">
-    建築物名稱（日文）：
-    <input
-      type="text"
-      name="name_jp"
-      id="name_jp"
-      value="新しビール" required
-    />
-  </div>
-  <div class="admin__monitor__item">
-    所在地圖之X座標：
-    <input type="text" name="x" id="x" value="365" required />
-  </div>
-  <div class="admin__monitor__item">
-    所在地圖之Y座標：
-    <input type="text" name="y" id="y" value="453" required />
-  </div>
-  <div class="admin__monitor__item">
-    所在地圖之Z座標：
-    <input type="text" name="z" id="z" value="70" required />
-  </div>
-  <div class="admin__monitor__item">
-    內裝（中文）：
-    <input
-      type="text"
-      name="內裝"
-      id="內裝"
-      value="有" required
-    />
-  </div>
-  <div class="admin__monitor__item">
-    內裝 （英文）：
-    <input
-      type="text"
-      name="inside"
-      id="inside"
-      value="Yes" required
-    />
-  </div>
-  <div class="admin__monitor__item">
-    內裝（日文）：
-    <input
-      type="text"
-      name="インテリア"
-      id="インテリア"
-      value="あり" required
-    />
-  </div>
-  <div class="admin__monitor__item">
-    用途（中文）：
-    <input
-      type="text"
-      name="用途"
-      id="用途"
-      value="古蹟" required
-    />
-  </div>
-  <div class="admin__monitor__item">
-    用途（英文）：
-    <input
-      type="text"
-      name="Utilization"
-      id="Utilization"
-      value="Monument" required
-    />
-  </div>
-  <div class="admin__monitor__item">
-    用途（日文）
-    <input
-      type="text"
-      name="用途_jp"
-      id="用途_jp"
-      value="遺跡" required
-    />
-  </div>
-  <input
     type="button"
     name="submit"
-    value="送出"
-    onclick="newItemBuilding('${districtId}');"
-  />
-</form>`;
-  $("#admin__monitor").append(divContent);
+    value="增新貨品"
+    onclick="updateItemGoodsInfo(${orderID}, ${lastGoodsID}, 1);"
+        />
+    `;
+  goodsValueString += `</div>`;
+  $("#admin__monitor").append(goodsValueString);
+}
+async function removeItemGoodsInfo(orderID, goodsID) {
+  await firebase
+    .database()
+    .ref("order/" + orderID + "/goods/" + goodsID)
+    .remove()
+    .then(function () {
+      alert("刪除資料成功");
+      showEditOrderForm(orderID);
+    })
+    .catch(function () {
+      alert(
+        "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
+      );
+      if (user === "") {
+        logout(999);
+        $("#admin__content").empty();
+        $("#admin__choosePage").empty();
+        $("#admin__monitor").empty();
+        var divContent = `
+    <div class="admin__login">
+        <div class="admin__login__title">請先登入</div>
+        <div id="singUpRedirect" onclick="googleLoginRedirect()">
+            使用google帳號登入
+        </div>
+    </div>`;
+        $("#admin__content").append(divContent);
+      }
+      $("#admin__monitor").empty();
+    });
+}
+
+function updateTotalPrice(goodsID) {
+  console.log(goodsID);
+  console.log(document.getElementsByClassName("price" + goodsID)[0].value);
+  document.getElementById("totalPrice" + goodsID).innerHTML =
+    "總值：" +
+    document.getElementsByClassName("price" + goodsID)[0].value *
+      document.getElementsByClassName("count" + goodsID)[0].value;
+}
+
+async function updateItemGoodsInfo(orderID, goodsID, mode) {
+  const form = document.forms["form" + goodsID];
+  var goodsName = form.elements.goodsName.value;
+  var price = form.elements.price.value;
+  var count = form.elements.count.value;
+  if (goodsName != "" && price != "" && count != "") {
+    await firebase
+      .database()
+      .ref("order/" + orderID + "/goods/" + goodsID)
+      .update({
+        goodsName: form.elements.goodsName.value,
+        price: form.elements.price.value,
+        count: form.elements.count.value,
+      })
+      .then(function () {
+        alert("更新資料成功");
+      })
+      .catch(function () {
+        alert(
+          "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
+        );
+        if (user === "") {
+          logout(999);
+          $("#admin__content").empty();
+          $("#admin__choosePage").empty();
+          $("#admin__monitor").empty();
+          var divContent = `
+    <div class="admin__login">
+        <div class="admin__login__title">請先登入</div>
+        <div id="singUpRedirect" onclick="googleLoginRedirect()">
+            使用google帳號登入
+        </div>
+    </div>`;
+          $("#admin__content").append(divContent);
+        }
+        $("#admin__monitor").empty();
+      });
+  } else {
+    alert("建立失敗！！！未有填寫全部資料");
+  }
+  if (mode === 1) {
+    showEditOrderForm(orderID);
+  }
+}
+
+async function updateItemOrderInfo(orderID) {
+  var DataRef = firebase.database().ref("order");
+  var totalChild = 0;
+  await DataRef.once("value").then(
+    (res) => {
+      res.forEach((Item, index) => {
+        totalChild += 1;
+      });
+      return true;
+    },
+    (rej) => {
+      console.log(rej);
+      return true;
+    }
+  );
+  console.log(totalChild);
+  const form = document.forms["form"];
+  var orderTime = form.elements.orderTime.value;
+  var customerName = form.elements.customerName.value;
+  var phoneNumber = form.elements.phoneNumber.value;
+  var address = form.elements.address.value;
+  var isShip = form.elements.isShip.value;
+  var shipNumber = form.elements.shipNumber.value;
+  var isFinish = form.elements.isFinish.value;
+  if (
+    orderTime != "" &&
+    customerName != "" &&
+    phoneNumber != "" &&
+    address != "" &&
+    isShip != "" &&
+    shipNumber != "" &&
+    isFinish != ""
+  ) {
+    firebase
+      .database()
+      .ref("order/" + orderID)
+      .update({
+        orderTime: form.elements.orderTime.value,
+        customerName: form.elements.customerName.value,
+        phoneNumber: form.elements.phoneNumber.value,
+        address: form.elements.address.value,
+        isShip: form.elements.isShip.value,
+        shipNumber: form.elements.shipNumber.value,
+        isFinish: form.elements.isFinish.value,
+      })
+      .then(function () {
+        alert("更新資料成功");
+      })
+      .catch(function () {
+        alert(
+          "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
+        );
+        if (user === "") {
+          logout(999);
+          $("#admin__content").empty();
+          $("#admin__choosePage").empty();
+          var divContent = `
+    <div class="admin__login">
+        <div class="admin__login__title">請先登入</div>
+        <div id="singUpRedirect" onclick="googleLoginRedirect()">
+            使用google帳號登入
+        </div>
+    </div>`;
+          $("#admin__content").append(divContent);
+        }
+        $("#admin__monitor").empty();
+      });
+  } else {
+    alert("建立失敗！！！未有填寫全部資料");
+  }
+}
+
+async function showAddOrderForm() {
+  $("#admin__monitor").empty();
+  var DataRef = firebase.database().ref("/order/");
+  var lastOrderID = 0;
+  var currentdate = new Date();
+  var datetime =
+    currentdate.getFullYear() +
+    (currentdate.getMonth() + 1 < 10 ? "0" : "") +
+    (currentdate.getMonth() + 1) +
+    (currentdate.getDate() < 10 ? "0" : "") +
+    currentdate.getDate() +
+    (currentdate.getHours() < 10 ? "0" : "") +
+    currentdate.getHours() +
+    (currentdate.getMinutes() < 10 ? "0" : "") +
+    currentdate.getMinutes() +
+    (currentdate.getSeconds() < 10 ? "0" : "") +
+    currentdate.getSeconds();
+  console.log(datetime);
+  await DataRef.once("value").then(
+    (res) => {
+      res.forEach((Item, index) => {
+        lastOrderID = Number(Item.getKey()) + 1;
+      });
+      return true;
+    },
+    (rej) => {
+      console.log(rej);
+      return true;
+    }
+  );
+  console.log(lastOrderID);
+  var titleString = `
+  <div class="admin__monitor__title">增新訂單編號為${lastOrderID}的客戶資料</div>
+  `;
+  $("#admin__monitor").append(titleString);
+  var orderTitleString = `
+      <div class="admin__monitor__item">
+      訂單編號：${lastOrderID}
+      </div>
+      <form name="form" id="form">
+        <div class="admin__monitor__item">
+        訂單日期：
+          <input
+            type="text"
+            name="orderTime"
+            id="orderTime"
+            value = "${datetime}"
+            required
+          />
+        </div>
+        <div class="admin__monitor__item">
+        訂單人名稱：
+          <input
+            type="text"
+            name="customerName"
+            id="customerName"
+            required
+          />
+        </div>
+        <div class="admin__monitor__item">
+        訂單人電話：
+          <input
+            type="text"
+            name="phoneNumber"
+            id="phoneNumber"
+            required
+          />
+        </div>
+        <div class="admin__monitor__item">
+        訂單人收貨地址：
+          <input
+            type="text"
+            name="address"
+            id="address"
+            required
+          />
+        </div>
+          <input
+        type="button"
+        name="submit"
+        value="新增訂單客戶資料"
+        onclick="setItemOrderInfo(${lastOrderID});"
+            />
+      </form>
+        `;
+  $("#admin__monitor").append(orderTitleString);
+}
+
+async function setItemOrderInfo(orderID) {
+  const form = document.forms["form"];
+  var orderTime = form.elements.orderTime.value;
+  var customerName = form.elements.customerName.value;
+  var phoneNumber = form.elements.phoneNumber.value;
+  var address = form.elements.address.value;
+  this.isShip = "false";
+  this.shipNumber = "NaN";
+  this.isFinish = "false";
+  if (
+    orderTime != "" &&
+    customerName != "" &&
+    phoneNumber != "" &&
+    address != "" &&
+    this.isShip != "" &&
+    this.shipNumber != "" &&
+    this.isFinish != ""
+  ) {
+    firebase
+      .database()
+      .ref("order/" + orderID)
+      .update({
+        orderTime: form.elements.orderTime.value,
+        customerName: form.elements.customerName.value,
+        phoneNumber: form.elements.phoneNumber.value,
+        address: form.elements.address.value,
+        isShip: this.isShip,
+        shipNumber: this.shipNumber,
+        isFinish: this.isFinish,
+      })
+      .then(function () {
+        alert("新增資料成功");
+      })
+      .catch(function () {
+        alert(
+          "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
+        );
+        if (user === "") {
+          logout(999);
+          $("#admin__content").empty();
+          $("#admin__choosePage").empty();
+          var divContent = `
+    <div class="admin__login">
+        <div class="admin__login__title">請先登入</div>
+        <div id="singUpRedirect" onclick="googleLoginRedirect()">
+            使用google帳號登入
+        </div>
+    </div>`;
+          $("#admin__content").append(divContent);
+        }
+        $("#admin__monitor").empty();
+      });
+  } else {
+    alert("新增失敗！！！未有填寫全部資料");
+  }
+}
+
+async function removeItemOrderInfo(orderID) {
+  await firebase
+    .database()
+    .ref("order/" + orderID)
+    .remove()
+    .then(function () {
+      alert("刪除訂單成功");
+      $("#admin__monitor").empty();
+    })
+    .catch(function () {
+      alert(
+        "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
+      );
+      if (user === "") {
+        logout(999);
+        $("#admin__content").empty();
+        $("#admin__choosePage").empty();
+        $("#admin__monitor").empty();
+        var divContent = `
+    <div class="admin__login">
+        <div class="admin__login__title">請先登入</div>
+        <div id="singUpRedirect" onclick="googleLoginRedirect()">
+            使用google帳號登入
+        </div>
+    </div>`;
+        $("#admin__content").append(divContent);
+      }
+      $("#admin__monitor").empty();
+    });
 }

@@ -21,7 +21,7 @@ async function logout(eventCode = 0) {
         if (eventCode === 0) {
           alert("登出成功");
         } else if (eventCode === 1) {
-          alert("您已閒置超過1分鐘，系統自動登出");
+          alert("您已閒置超過3分鐘，系統自動登出");
         } else {
           console.log("Login Inited");
         }
@@ -67,7 +67,7 @@ firebase.auth().onAuthStateChanged(async function (user) {
     <div class="admin__content__chooseItem" onclick="showOrderItem()">
         查看／修改訂單
     </div>
-    <div class="admin__content__chooseItem" onclick="choosePage(2)">
+    <div class="admin__content__chooseItem" onclick="showAddOrderForm()">
         加入新訂單
     </div>
     <div class="admin__content__chooseItem" onclick="readDatabase('order')">
@@ -102,7 +102,7 @@ function ReCalculate() {
   if (user != "") {
     oTimerId = setTimeout(function () {
       Timeout(1);
-    }, 1 * 60 * 1000);
+    }, 3 * 60 * 1000);
   }
 }
 document.onmousedown = ReCalculate;

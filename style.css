@@ -474,6 +474,11 @@ body {
   transition: 0.5s;
 }
 
+.main__content .admin__monitor .admin__monitor__goods {
+  background-color: #97c9e286;
+  margin: 5px 0;
+}
+
 input {
   font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
   text-align: left;

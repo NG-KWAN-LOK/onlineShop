@@ -1,4 +1,4 @@
-@import "../color/color";
+@import "color/color";
 * {
   margin: 0;
   padding: 0;
@@ -349,6 +349,10 @@ body {
         background-color: var(--second-bottom-hover-color);
         transition: 0.5s;
       }
+    }
+    .admin__monitor__goods {
+      background-color: #97c9e286;
+      margin: 5px 0;
     }
   }
 }

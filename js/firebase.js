@@ -542,35 +542,39 @@ async function countAllTotalPrice(orderID) {
 }
 
 async function removeItemGoodsInfo(orderID, goodsID) {
-  await firebase
-    .database()
-    .ref("order/" + orderID + "/goods/" + goodsID)
-    .remove()
-    .then(function () {
-      alert("刪除貨品成功");
-      updateUpdateDateTime(orderID);
-      showEditOrderForm(orderID);
-    })
-    .catch(function () {
-      alert(
-        "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
-      );
-      if (user === "") {
-        logout(999);
-        $("#admin__content").empty();
-        $("#admin__choosePage").empty();
-        $("#admin__monitor").empty();
-        var divContent = `
+  if (
+    confirm("請再次確定是不真的要刪除此貨品？ 一旦確定將無法取消。") == true
+  ) {
+    await firebase
+      .database()
+      .ref("order/" + orderID + "/goods/" + goodsID)
+      .remove()
+      .then(function () {
+        alert("刪除貨品成功");
+        updateUpdateDateTime(orderID);
+        showEditOrderForm(orderID);
+      })
+      .catch(function () {
+        alert(
+          "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
+        );
+        if (user === "") {
+          logout(999);
+          $("#admin__content").empty();
+          $("#admin__choosePage").empty();
+          $("#admin__monitor").empty();
+          var divContent = `
     <div class="admin__login">
         <div class="admin__login__title">請先登入</div>
         <div id="singUpRedirect" onclick="googleLoginRedirect()">
             使用google帳號登入
         </div>
     </div>`;
-        $("#admin__content").append(divContent);
-      }
-      $("#admin__monitor").empty();
-    });
+          $("#admin__content").append(divContent);
+        }
+        $("#admin__monitor").empty();
+      });
+  }
 }
 
 function updateTotalPrice(orderID, goodsID) {
@@ -874,34 +878,38 @@ async function setItemOrderInfo(orderID) {
 }
 
 async function removeItemOrderInfo(orderID) {
-  await firebase
-    .database()
-    .ref("order/" + orderID)
-    .remove()
-    .then(function () {
-      alert("刪除訂單成功");
-      $("#admin__monitor").empty();
-    })
-    .catch(function () {
-      alert(
-        "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
-      );
-      if (user === "") {
-        logout(999);
-        $("#admin__content").empty();
-        $("#admin__choosePage").empty();
+  if (
+    confirm("請再次確定是不真的要刪除此訂單？ 一旦確定將無法取消。") == true
+  ) {
+    await firebase
+      .database()
+      .ref("order/" + orderID)
+      .remove()
+      .then(function () {
+        alert("刪除訂單成功");
         $("#admin__monitor").empty();
-        var divContent = `
+      })
+      .catch(function () {
+        alert(
+          "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
+        );
+        if (user === "") {
+          logout(999);
+          $("#admin__content").empty();
+          $("#admin__choosePage").empty();
+          $("#admin__monitor").empty();
+          var divContent = `
     <div class="admin__login">
         <div class="admin__login__title">請先登入</div>
         <div id="singUpRedirect" onclick="googleLoginRedirect()">
             使用google帳號登入
         </div>
     </div>`;
-        $("#admin__content").append(divContent);
-      }
-      $("#admin__monitor").empty();
-    });
+          $("#admin__content").append(divContent);
+        }
+        $("#admin__monitor").empty();
+      });
+  }
 }
 
 async function updateUpdateDateTime(orderID) {

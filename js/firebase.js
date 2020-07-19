@@ -188,7 +188,9 @@ async function showEditGoodsForm(orderID) {
   var titleString = `
   <div class="admin__monitor__block" style="background-color: #f3c6c686;">
     <div class="admin__monitor__title">訂單編號${orderID}的全單總價格：</div>
-      <div class="admin__monitor__item" id="orderTotalPrice">總價格(NTD)：
+      <div class="admin__monitor__item" id="orderTotalPriceNTD">入貨總價格(NTD)：
+      </div>
+      <div class="admin__monitor__item" id="orderTotalPriceHKD">定價總價格(HKD)：
       </div>
   </div>
 `;
@@ -224,7 +226,7 @@ async function showEditGoodsForm(orderID) {
           value="${goodsValue.website}" required
           />
         </div>
-        <div class="admin__monitor__item">單價(NTD)：
+        <div class="admin__monitor__item">入貨單價(NTD)：
           <input
           type="number"
           name="price"
@@ -303,7 +305,7 @@ async function showEditGoodsForm(orderID) {
           required
           />
         </div>
-    <div class="admin__monitor__item">單價(NTD)：
+    <div class="admin__monitor__item">入貨單價(NTD)：
       <input
       type="number"
       name="price"
@@ -321,7 +323,7 @@ async function showEditGoodsForm(orderID) {
       oninput="updateTotalPrice(${lastGoodsID})" required
       />
     </div>
-    <div class="admin__monitor__item" id="totalPrice${lastGoodsID}">總值(NTD)：0
+    <div class="admin__monitor__item" id="totalPrice${lastGoodsID}">入貨總值(NTD)：0
     </div>
     <div class="admin__monitor__item">定價(HKD)：
         <input
@@ -347,21 +349,25 @@ async function showEditGoodsForm(orderID) {
 async function countAllTotalPrice(orderID) {
   var DataRef = firebase.database().ref("order/" + orderID + "/goods");
   var orderTotalPrice = 0;
+  var orderTotalPriceHKD = 0;
   await DataRef.once("value").then(
     (res) => {
       res.forEach((orderSh, orderIndex) => {
         var orderInfo = orderSh.val();
-        //console.log(orderInfo.goodsTotalPrice);
+        console.log(orderInfo.priceHKD);
         orderTotalPrice += orderInfo.goodsTotalPrice;
+        orderTotalPriceHKD += Number(orderInfo.priceHKD);
       });
     },
     (rej) => {
       console.log(rej);
     }
   );
-  console.log(orderTotalPrice);
-  document.getElementById("orderTotalPrice").innerHTML =
-    "總價格(NTD)：" + orderTotalPrice;
+  console.log(orderTotalPriceHKD);
+  document.getElementById("orderTotalPriceNTD").innerHTML =
+    "入貨總價格(NTD)：" + orderTotalPrice;
+  document.getElementById("orderTotalPriceHKD").innerHTML =
+    "定價總價格(HKD)：" + orderTotalPriceHKD;
   return orderTotalPrice;
 }
 

@@ -68,7 +68,13 @@ function showReadOrderItem() {
       res.forEach((orderSh, orderIndex) => {
         var orderInfo = orderSh.val();
         var orderTitleString = `
-        <div class="admin__monitor__chooseItem" onclick="showReadOrderInfo(${orderSh.getKey()})">${orderSh.getKey()}　訂單人：${
+        <div class="admin__monitor__chooseItem ${
+          orderInfo.isShip === "true"
+            ? orderInfo.isFinish === "true"
+              ? "admin__monitor__chooseItem-green"
+              : "admin__monitor__chooseItem-orange"
+            : "admin__monitor__chooseItem-red"
+        }" onclick="showReadOrderInfo(${orderSh.getKey()})">${orderSh.getKey()}　訂單人：${
           orderInfo.customerName
         }　${orderInfo.isShip === "true" ? "已" : "未"}出貨　${
           orderInfo.isFinish === "true" ? "已" : "未"
@@ -145,10 +151,11 @@ async function showReadOrderInfo(orderID) {
   <tr class="admin__monitor__goodsTable__titleTR">
     <th class="admin__monitor__goodsTable__titleTH">ID</th>
     <th class="admin__monitor__goodsTable__titleTH">貨品名稱</th>
-    <th class="admin__monitor__goodsTable__titleTH">入貨單價(NTD)</th>
+    <th class="admin__monitor__goodsTable__titleTH">入貨單價</th>
+    <th class="admin__monitor__goodsTable__titleTH">售價單價(HKD)</th>
     <th class="admin__monitor__goodsTable__titleTH">數量</th>
-    <th class="admin__monitor__goodsTable__titleTH">總值(NTD)</th>
-    <th class="admin__monitor__goodsTable__titleTH">定價(HKD)</th>
+    <th class="admin__monitor__goodsTable__titleTH admin__monitor__goodsTable__titleTH-important">入貨總價(NTD)</th>
+    <th class="admin__monitor__goodsTable__titleTH admin__monitor__goodsTable__titleTH-important">售價總價(HKD)</th>
   </tr>
 `;
   await DataRef.once("value").then(
@@ -165,17 +172,22 @@ async function showReadOrderInfo(orderID) {
               ${goodsValue.goodsName}
             </a>
           </th>
-          <th class="admin__monitor__goodsTable__itemTH">${
-            goodsValue.price
-          }</th>
+          <th class="admin__monitor__goodsTable__itemTH">
+            ${goodsValue.price}(NTD)
+            <br>
+            ${Math.ceil(goodsValue.price / twdToHKD)}(HKD)
+          </th>
+          <th class="admin__monitor__goodsTable__itemTH">
+            ${goodsValue.priceHKD}
+          </th>
           <th class="admin__monitor__goodsTable__itemTH">${
             goodsValue.count
           }</th>
-          <th class="admin__monitor__goodsTable__itemTH">${
+          <th class="admin__monitor__goodsTable__itemTH admin__monitor__goodsTable__itemTH-important">${
             goodsValue.price * goodsValue.count
           }</th>
-          <th class="admin__monitor__goodsTable__itemTH">${
-            goodsValue.priceHKD
+          <th class="admin__monitor__goodsTable__itemTH admin__monitor__goodsTable__itemTH-important">${
+            goodsValue.goodsTotalPriceHKD
           }</th>
         </tr>
         `;
@@ -205,11 +217,17 @@ function showOrderItem() {
         var orderInfo = orderSh.val();
         console.log(orderInfo);
         var orderTitleString = `
-        <div class="admin__monitor__chooseItem" onclick="showEditOrderForm(${orderSh.getKey()})">${orderSh.getKey()}　訂單人：${
+        <div class="admin__monitor__chooseItem ${
+          orderInfo.isShip === "true"
+            ? orderInfo.isFinish === "true"
+              ? "admin__monitor__chooseItem-green"
+              : "admin__monitor__chooseItem-orange"
+            : "admin__monitor__chooseItem-red"
+        }" onclick="showEditOrderForm(${orderSh.getKey()})">${orderSh.getKey()}　訂單人：${
           orderInfo.customerName
         }　${orderInfo.isShip === "true" ? "已" : "未"}出貨　${
           orderInfo.isFinish === "true" ? "已" : "未"
-        }結單</div>
+        }結單</div></div>
         `;
         $("#admin__monitor").append(orderTitleString);
       });
@@ -273,12 +291,14 @@ function showEditOrderForm(orderID) {
         <div class="admin__monitor__title">以下為訂單編號為${res.getKey()}之運送資料</div>
         <div class="admin__monitor__item">
         訂單是否已出貨：
-          <input
-            type="text"
-            name="isShip"
-            id="isShip"
-            value="${orderInfo.isShip}" required
-          />
+        <select name="isShip" id="isShip${res.getKey()}" class="selection">
+        　<option value="true" ${
+          orderInfo.isShip === "true" ? "SELECTED" : ""
+        }>true</option>
+        　<option value="false" ${
+          orderInfo.isShip === "false" ? "SELECTED" : ""
+        }>false</option>
+        </select>
         </div>
         <div class="admin__monitor__item">
         順豐單號：
@@ -291,12 +311,14 @@ function showEditOrderForm(orderID) {
         </div>
         <div class="admin__monitor__item">
         訂單是否已完成：
-          <input
-            type="text"
-            name="isFinish"
-            id="isFinish"
-            value="${orderInfo.isFinish}" required
-          />
+        <select name="isFinish" id="isFinish${res.getKey()}" class="selection">
+        　<option value="true" ${
+          orderInfo.isFinish === "true" ? "SELECTED" : ""
+        }>true</option>
+        　<option value="false" ${
+          orderInfo.isFinish === "false" ? "SELECTED" : ""
+        }>false</option>
+        </select>
         </div>
           <input
         type="button"
@@ -649,8 +671,8 @@ async function updateItemOrderInfo(orderID) {
   var customerName = form.elements.customerName.value;
   var phoneNumber = form.elements.phoneNumber.value;
   var address = form.elements.address.value;
-  var isShip = form.elements.isShip.value;
   var shipNumber = form.elements.shipNumber.value;
+  var isShip = form.elements.isShip.value;
   var isFinish = form.elements.isFinish.value;
   if (
     orderTime != "" &&

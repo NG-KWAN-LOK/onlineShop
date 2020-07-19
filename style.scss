@@ -305,7 +305,10 @@ body {
           color: var(--title-color);
           text-decoration: none;
           font-variant: normal;
-          font-size: 20px;
+          font-size: 18px;
+          &-important {
+            background-color: #faf88fa4;
+          }
         }
       }
       .admin__monitor__goodsTable__itemTR {
@@ -321,6 +324,9 @@ body {
           font-variant: normal;
           font-size: 16px;
           border-bottom: 1px solid var(--main-between-line-color);
+          &-important {
+            background-color: #faf88fa4;
+          }
         }
       }
     }
@@ -376,6 +382,15 @@ body {
       font-variant: normal;
       font-size: 16px;
       border-bottom: 1px solid var(--main-between-line-color);
+      &-red {
+        background-color: #fa8f8fa4;
+      }
+      &-green {
+        background-color: #8ffa8fa4;
+      }
+      &-orange {
+        background-color: #fad88fa4;
+      }
       &:hover {
         color: var(--subject-blue);
         background-color: var(--second-bottom-hover-color);
@@ -410,5 +425,17 @@ input:invalid {
   border: 1px solid red;
   border-radius: 3px;
   color: var(--title-color);
+  font-size: 16px;
+}
+
+.selection {
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  text-align: left;
+  line-height: 35px;
+  font-style: normal;
+  font-weight: 300;
+  color: var(--title-color);
+  text-decoration: none;
+  font-variant: normal;
   font-size: 16px;
 }

@@ -331,6 +331,7 @@ body {
       text-decoration: none;
       font-variant: normal;
       font-size: 16px;
+      border-bottom: 1px solid var(--main-between-line-color);
     }
     .admin__monitor__chooseItem {
       cursor: pointer;
@@ -344,6 +345,7 @@ body {
       text-decoration: none;
       font-variant: normal;
       font-size: 16px;
+      border-bottom: 1px solid var(--main-between-line-color);
       &:hover {
         color: var(--subject-blue);
         background-color: var(--second-bottom-hover-color);

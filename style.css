@@ -449,6 +449,7 @@ body {
   text-decoration: none;
   font-variant: normal;
   font-size: 16px;
+  border-bottom: 1px solid var(--main-between-line-color);
 }
 
 .main__content .admin__monitor .admin__monitor__chooseItem {
@@ -465,6 +466,7 @@ body {
   text-decoration: none;
   font-variant: normal;
   font-size: 16px;
+  border-bottom: 1px solid var(--main-between-line-color);
 }
 
 .main__content .admin__monitor .admin__monitor__chooseItem:hover {

@@ -13,6 +13,7 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 //Get Data
+var twdToHKD = 3.7;
 async function readDatabase(pagechoose) {
   $("#admin__monitor").empty();
   var DataRef = firebase.database().ref(pagechoose);
@@ -54,6 +55,7 @@ async function readDatabase(pagechoose) {
     }
   );
 }
+//readOrder
 function showReadOrderItem() {
   $("#admin__monitor").empty();
   var DataRef = firebase.database().ref("order");
@@ -189,6 +191,7 @@ async function showReadOrderInfo(orderID) {
     }
   );
 }
+//editOrder
 function showOrderItem() {
   $("#admin__monitor").empty();
   var DataRef = firebase.database().ref("order");
@@ -318,6 +321,7 @@ function showEditOrderForm(orderID) {
     }
   );
 }
+
 async function showEditGoodsForm(orderID) {
   var DataRef = firebase.database().ref("/order/" + orderID + "/goods");
   var lastGoodsID = 0;
@@ -369,7 +373,22 @@ async function showEditGoodsForm(orderID) {
           class="price${orderSh.getKey()}"
           value="${
             goodsValue.price
-          }" oninput="updateTotalPrice(${orderSh.getKey()})" required
+          }" oninput="updateTotalPrice(${orderID},${orderSh.getKey()})" required
+          />
+        </div>
+        <div class="admin__monitor__item" id="priceHKD${orderSh.getKey()}">入貨單價(HKD)：${Math.ceil(
+          goodsValue.price / twdToHKD
+        )}
+        </div>
+        <div class="admin__monitor__item">售價單價(HKD)：
+        <input
+          type="number"
+          name="priceHKD"
+          id="priceHKD"
+          class="priceHKD${orderSh.getKey()}"
+          value="${
+            goodsValue.priceHKD
+          }" oninput="updateTotalPrice(${orderID},${orderSh.getKey()})" required
           />
         </div>
         <div class="admin__monitor__item">數量：
@@ -380,34 +399,29 @@ async function showEditGoodsForm(orderID) {
           class="count${orderSh.getKey()}"
           value="${
             goodsValue.count
-          }" oninput="updateTotalPrice(${orderSh.getKey()})" required
+          }" oninput="updateTotalPrice(${orderID},${orderSh.getKey()})" required
           />
         </div>
-        <div class="admin__monitor__item" id="totalPrice${orderSh.getKey()}">總值(NTD)：${
+        <div class="admin__monitor__item" id="totalPrice${orderSh.getKey()}">入貨總值(NTD)：${
           goodsValue.price * goodsValue.count
         }
         </div>
-        <div class="admin__monitor__item">定價(HKD)：
-        <input
-          type="number"
-          name="priceHKD"
-          id="priceHKD"
-          class="priceHKD"
-          value="${goodsValue.priceHKD}" required
-          />
+        <div class="admin__monitor__item" id="totalPriceHKD${orderSh.getKey()}">售價總值(HKD)：${
+          goodsValue.priceHKD * goodsValue.count
+        }
         </div>
         </form>
         <input
         type="button"
         name="submit"
         value="更新貨品資料"
-        onclick="updateItemGoodsInfo(${orderID}, ${orderSh.getKey()}, 0);"
+        onclick="updateItemGoodsInfo(${orderID},${orderSh.getKey()}, 0);"
             />
             <input
         type="button"
         name="submit"
         value="刪除貨品"
-        onclick="removeItemGoodsInfo(${orderID}, ${orderSh.getKey()});"
+        onclick="removeItemGoodsInfo(${orderID},${orderSh.getKey()});"
             />
         `;
         goodsValueString += `</div>`;
@@ -445,7 +459,17 @@ async function showEditGoodsForm(orderID) {
       name="price"
       id="price"
       class="price${lastGoodsID}"
-      oninput="updateTotalPrice(${lastGoodsID})" required
+      oninput="updateTotalPrice(${orderID},${lastGoodsID})" required
+      />
+    </div>
+    <div class="admin__monitor__item" id="priceHKD${lastGoodsID}">入貨單價(HKD)：0
+    </div>
+    <div class="admin__monitor__item">售價單價(HKD)：
+    <input
+      type="number"
+      name="priceHKD"
+      id="priceHKD"
+      class="priceHKD${lastGoodsID}" oninput="updateTotalPrice(${orderID},${lastGoodsID})" required
       />
     </div>
     <div class="admin__monitor__item">數量：
@@ -453,21 +477,13 @@ async function showEditGoodsForm(orderID) {
       type="number"
       name="count"
       id="count"
-      class="count${lastGoodsID}"
-      oninput="updateTotalPrice(${lastGoodsID})" required
+      class="count${lastGoodsID}" oninput="updateTotalPrice(${orderID},${lastGoodsID})" required
       />
     </div>
     <div class="admin__monitor__item" id="totalPrice${lastGoodsID}">入貨總值(NTD)：0
     </div>
-    <div class="admin__monitor__item">定價(HKD)：
-        <input
-          type="number"
-          name="priceHKD"
-          id="priceHKD"
-          class="priceHKD${lastGoodsID}"
-          required
-          />
-        </div>
+    <div class="admin__monitor__item" id="totalPriceHKD${lastGoodsID}">售價總值(HKD)：0
+    </div>
     </form>
     <input
     type="button"
@@ -489,7 +505,7 @@ async function countAllTotalPrice(orderID) {
       res.forEach((orderSh, orderIndex) => {
         var orderInfo = orderSh.val();
         orderTotalPrice += orderInfo.goodsTotalPrice;
-        orderTotalPriceHKD += Number(orderInfo.priceHKD);
+        orderTotalPriceHKD += orderInfo.goodsTotalPriceHKD;
       });
     },
     (rej) => {
@@ -535,10 +551,20 @@ async function removeItemGoodsInfo(orderID, goodsID) {
     });
 }
 
-function updateTotalPrice(goodsID) {
+function updateTotalPrice(orderID, goodsID) {
   document.getElementById("totalPrice" + goodsID).innerHTML =
-    "總值(NTD)：" +
+    "入貨總值(NTD)：" +
     document.getElementsByClassName("price" + goodsID)[0].value *
+      document.getElementsByClassName("count" + goodsID)[0].value;
+
+  document.getElementById("priceHKD" + goodsID).innerHTML =
+    "入貨單價(HKD)：" +
+    Math.ceil(
+      document.getElementsByClassName("price" + goodsID)[0].value / twdToHKD
+    );
+  document.getElementById("totalPriceHKD" + goodsID).innerHTML =
+    "售價總值(HKD)：" +
+    document.getElementsByClassName("priceHKD" + goodsID)[0].value *
       document.getElementsByClassName("count" + goodsID)[0].value;
   countAllTotalPrice(orderID);
 }
@@ -567,6 +593,8 @@ async function updateItemGoodsInfo(orderID, goodsID, mode) {
         website: form.elements.website.value,
         goodsTotalPrice: form.elements.price.value * form.elements.count.value,
         priceHKD: form.elements.priceHKD.value,
+        goodsTotalPriceHKD:
+          form.elements.priceHKD.value * form.elements.count.value,
       })
       .then(function () {
         alert("更新貨品資料成功");

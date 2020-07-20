@@ -1,4 +1,16 @@
-var provider = new firebase.auth.GoogleAuthProvider();
+var provider = "";
+firebase
+  .auth()
+  .setPersistence(firebase.auth.Auth.Persistence.NONE)
+  .then(function () {
+    provider = new firebase.auth.GoogleAuthProvider();
+    //return firebase.auth().signInWithRedirect(provider);
+  })
+  .catch(function (error) {
+    // Handle Errors here.
+    var errorCode = error.code;
+    var errorMessage = error.message;
+  });
 var token = "";
 var user = "";
 var tempUser = "";

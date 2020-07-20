@@ -413,6 +413,86 @@ body {
     }
   }
 }
+
+.footer {
+  background-color: var(--footer-bg-color);
+  width: 100%;
+  justify-content: space-around;
+  transition: 0.5s;
+  &__content {
+    display: flex;
+    padding: 40px;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-wrap: wrap;
+    &__links {
+      display: flex;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+    &__weblogo {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 40px;
+      &__image {
+        max-width: 100%;
+        width: 387px;
+        right: 0px;
+      }
+      .footer__content__weblogo__underText {
+        display: flex;
+        justify-content: center;
+        font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+        line-height: 25px;
+        font-style: normal;
+        font-weight: 300;
+        color: var(--third-button-title-color);
+        font-size: 15px;
+      }
+    }
+    &__box {
+      flex-flow: wrap;
+      font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+      line-height: 25px;
+      font-style: normal;
+      font-weight: 300;
+      color: var(--third-button-title-color);
+      font-size: 15px;
+      margin-left: 20px;
+      &__btn {
+        &__text {
+          display: inline;
+          margin-right: 30px;
+          color: var(--third-button-title-color);
+          transition: 0.5s;
+          &:hover {
+            background-color: var(--second-button-hover-bg-color);
+            color: var(--second-button-hover-color);
+            border-radius: 5px;
+            transition: 0.5s;
+          }
+        }
+      }
+    }
+  }
+  @media only screen and (max-width: 411px) {
+    .footer__content {
+      padding: 20px;
+    }
+    .footer__content__text__adress,
+    .footer__content__links {
+      font-size: 14px;
+    }
+    .footer__content__box__copyright {
+      font-size: 10px;
+      text-align: center;
+    }
+  }
+}
+.footer__content__text__adress {
+  margin-bottom: 10px;
+}
+
 input {
   font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
   text-align: left;

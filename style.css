@@ -543,6 +543,112 @@ body {
   margin: 5px 0;
 }
 
+.footer {
+  background-color: var(--footer-bg-color);
+  width: 100%;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.footer__content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 40px;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.footer__content__links {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+
+.footer__content__weblogo {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 40px;
+}
+
+.footer__content__weblogo__image {
+  max-width: 100%;
+  width: 387px;
+  right: 0px;
+}
+
+.footer__content__weblogo .footer__content__weblogo__underText {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  line-height: 25px;
+  font-style: normal;
+  font-weight: 300;
+  color: var(--third-button-title-color);
+  font-size: 15px;
+}
+
+.footer__content__box {
+  -ms-flex-flow: wrap;
+      flex-flow: wrap;
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  line-height: 25px;
+  font-style: normal;
+  font-weight: 300;
+  color: var(--third-button-title-color);
+  font-size: 15px;
+  margin-left: 20px;
+}
+
+.footer__content__box__btn__text {
+  display: inline;
+  margin-right: 30px;
+  color: var(--third-button-title-color);
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+.footer__content__box__btn__text:hover {
+  background-color: var(--second-button-hover-bg-color);
+  color: var(--second-button-hover-color);
+  border-radius: 5px;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+}
+
+@media only screen and (max-width: 411px) {
+  .footer .footer__content {
+    padding: 20px;
+  }
+  .footer .footer__content__text__adress,
+  .footer .footer__content__links {
+    font-size: 14px;
+  }
+  .footer .footer__content__box__copyright {
+    font-size: 10px;
+    text-align: center;
+  }
+}
+
+.footer__content__text__adress {
+  margin-bottom: 10px;
+}
+
 input {
   font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
   text-align: left;

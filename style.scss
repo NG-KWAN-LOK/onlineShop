@@ -18,7 +18,12 @@ body {
 a {
   text-decoration: none;
 }
-
+.PaddingTop {
+  line-height: 90px;
+  @media only screen and (max-width: 1024px) {
+    line-height: 60px;
+  }
+}
 #toTop {
   display: none;
   text-decoration: none;
@@ -55,18 +60,468 @@ a {
 #toTop:focus {
   outline: none;
 }
+.PhoneTop {
+  display: flex;
+  position: fixed;
+  flex-wrap: wrap;
+  z-index: 2;
+  width: 100%;
+  border-bottom: 3px solid var(--phone-top-bottom-color);
+  background-color: var(--primary-bg-color);
+  transition: 0.5s;
+  @media only screen and (min-width: 768px) {
+    display: flex;
+  }
+  @media only screen and (min-width: 1024px) {
+    display: none;
+  }
+  .PhoneTop__mainnav {
+    display: flex;
+    position: absolute;
+    flex-wrap: wrap;
+    align-items: center;
+    right: 0;
+    width: 69px;
+    height: 60px;
+    .PhoneTop__mainnav__icon {
+      display: block;
+      cursor: pointer;
+      margin: 10px 15px;
+    }
+    .bar1,
+    .bar2,
+    .bar3 {
+      width: 35px;
+      height: 5px;
+      background-color: var(--primary-burger-icon-bg-color);
+      margin: 6px 0;
+      transition: 0.4s;
+    }
+
+    .change .bar1 {
+      -webkit-transform: rotate(-45deg) translate(-9px, 6px);
+      transform: rotate(-45deg) translate(-9px, 6px);
+    }
+
+    .change .bar2 {
+      opacity: 0;
+    }
+
+    .change .bar3 {
+      -webkit-transform: rotate(45deg) translate(-8px, -8px);
+      transform: rotate(45deg) translate(-8px, -8px);
+    }
+    .break {
+      flex-basis: 100%;
+      height: 0;
+    }
+  }
+  .PhoneTop__mainnav__container,
+  #PhoneTop__mainnav__container {
+    z-index: 2;
+    display: flex;
+    position: fixed;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    transform: translateX(-1000px);
+    transition: 0.5s;
+    .PhoneTop__mainnav__container__left {
+      display: block;
+      width: 80%;
+      height: 100%;
+      max-width: 100%;
+      background-color: var(--phone-top-nav-bg-color);
+      transition: 0.5s;
+      padding: 14px;
+      overflow-y: auto;
+      .PhoneTop__mainnav__container__col {
+        width: 100%;
+        margin-bottom: 20px;
+        .PhoneTop__mainnav__container__col__title,
+        .admin__content__text,
+        .admin__content__title {
+          font-size: 17px;
+          font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+          color: var(--phone-top-nav-col-title-color);
+          text-align: left;
+          padding: 25px 0;
+        }
+        .PhoneTop__mainnav__container__col__a {
+          display: block;
+          text-decoration-line: none;
+          width: 100%;
+          transition: background-color 0.5s ease, color 0.5s ease;
+          box-sizing: border-box;
+          .PhoneTop__mainnav__container__col__a__language {
+            cursor: pointer;
+            font-size: 14px;
+            padding: 12px;
+            font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體",
+              sans-serif;
+            color: var(--phone-top-nav-col-text-color);
+            text-align: left;
+          }
+          &:hover {
+            transition: 0.5s;
+            color: var(--subject-blue);
+          }
+        }
+        .PhoneTop__mainnav__container__col__a__menu {
+          font-size: 14px;
+          padding: 12px;
+          font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+          color: var(--phone-top-nav-col-text-color);
+          text-align: left;
+        }
+        .admin__content__chooseItem {
+          @extend .PhoneTop__mainnav__container__col__a__menu;
+          cursor: pointer;
+          display: list-item;
+          list-style-position: inside;
+        }
+      }
+      .PhoneTop__mainnav__container__col__line {
+        width: 1px;
+        height: 80%;
+        margin: 0 20px;
+        background-color: var(--phone-top-nav-col-line-color);
+        transition: 0.5s;
+      }
+    }
+    .PhoneTop__mainnav__container__shadow {
+      display: flex;
+      height: 100%;
+      width: 20%;
+      //background-color: rgba(68, 68, 68, 0.281);
+      background: linear-gradient(
+        to left,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.05) 35%,
+        rgba(0, 0, 0, 0.24) 100%
+      );
+      z-index: 0;
+    }
+  }
+  .PhoneTop__logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 100%;
+    height: 60px;
+    .PhoneTop__logo__image {
+      max-width: 320px;
+      max-height: 60px;
+      padding: 0 80px;
+      height: auto;
+      justify-content: center;
+      overflow: hidden;
+      object-fit: contain;
+    }
+  }
+}
+.Top {
+  display: flex;
+  position: fixed;
+  z-index: 2;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  width: 100%;
+  height: 90px;
+  background-color: var(--top-bg-color);
+  transition: 0.5s;
+  .Top__container {
+    max-width: 1280px;
+    width: 90%;
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: 0 auto;
+  }
+  @media only screen and (min-width: 0px) {
+    .Top__logo img {
+      display: none;
+    }
+    .Top {
+      display: none;
+    }
+    display: none;
+  }
+  @media only screen and (min-width: 1024px) {
+    .Top__logo img {
+      display: flex;
+    }
+    .Top__nav {
+      display: flex;
+    }
+    display: flex;
+  }
+}
+.Top__logo {
+  margin: 0 auto;
+}
+
+.Top__logo img {
+  display: none;
+  max-width: 100%;
+  max-height: 90px;
+  height: auto;
+  justify-content: center;
+  width: auto;
+}
+.Top__nav_container__menu {
+  min-width: 283px;
+  .Top__nav {
+    display: none;
+    position: relative;
+    z-index: 1;
+    font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: #5d5d5d;
+    height: 38px;
+    border-radius: 7px;
+    .Top__nav__list {
+      height: 24px;
+      line-height: 24px;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .Top__nav_col__left {
+      display: block;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      text-align: center;
+      width: 140px;
+      list-style: none;
+      background-color: var(--button-bg-color);
+      border-bottom-left-radius: 7px;
+      border-top-left-radius: 7px;
+      height: 38px;
+      transition: 0.5s;
+      .Top__nav__left_subtitle__text,
+      a {
+        cursor: pointer;
+        color: var(--third-button-title-color);
+      }
+      &:hover {
+        background-color: var(--subject-blue);
+        transition: 0.3s;
+        .Top__nav__left_title_under {
+          display: block;
+          .Top__nav__left_subtitle {
+            transition: 0.5s;
+            &:hover {
+              color: var(--subject-blue);
+              background-color: var(--primary-button-hover-bg-color);
+              transition: 0.5s;
+              .ion-android-arrow-dropdown:before {
+                transform: rotate(-90deg);
+                transition: 0.5s;
+              }
+            }
+            .ion-android-arrow-dropdown:before {
+              transition: 0.5s;
+            }
+          }
+        }
+      }
+    }
+    .Top__nav_col__burger__icon {
+      display: inline-block;
+      margin-top: -2.6px;
+      padding-right: 0.5px;
+      transition: 0.5s;
+      .bar1,
+      .bar2,
+      .bar3 {
+        width: 14px;
+        height: 2px;
+        background-color: var(--second-burger-icon-bg-color);
+        margin-top: 2.6px;
+        border-radius: 2px;
+      }
+    }
+
+    .Top__nav__left_title_under {
+      display: none;
+      padding-top: 15px;
+      ::after {
+        display: block;
+        content: " ";
+        position: absolute;
+        top: 0;
+        width: 0;
+        height: 0;
+        border-left: 7px solid transparent;
+        border-right: 7px solid transparent;
+        border-bottom: 7px solid var(--border-bottom-color);
+        transform: translateY(680%);
+      }
+    }
+    .Top__nav__left_title {
+      height: 100%;
+      box-sizing: content-box;
+      font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 40px;
+      color: var(--primary-button-title-color);
+      text-align: center;
+      cursor: pointer;
+      transition: 0.5s;
+    }
+    .Top__nav__left_subtitle {
+      width: 270px;
+      font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 45px;
+      padding-left: 20px;
+      color: var(--primary-button-title-color);
+      border: 1px solid var(--main-between-line-color);
+      background-color: var(--top-nav-bg-color);
+      text-align: left;
+      box-sizing: border-box;
+      transition: 0.5s;
+      .ion-android-arrow-dropdown {
+        line-height: inherit;
+        padding-right: 5px;
+        ::before {
+          content: "\f35f";
+        }
+      }
+    }
+
+    .Top__nav_col__right {
+      display: block;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      text-align: center;
+      width: 70px;
+      list-style: none;
+      height: 34px;
+      border-top: 2px solid var(--button-bg-color);
+      border-right: 2px solid var(--button-bg-color);
+      border-bottom: 2px solid var(--button-bg-color);
+      border-bottom-right-radius: 7px;
+      border-top-right-radius: 7px;
+      transition: 0.5s;
+      .Top__nav__right_subtitle {
+        display: flex;
+        align-items: center;
+        width: 250px;
+        font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+        font-size: 16px;
+        font-weight: 300;
+        line-height: 45px;
+        padding-left: 20px;
+        color: var(--third-button-title-color);
+        border: 1px solid var(--main-between-line-color);
+        background-color: var(--top-nav-bg-color);
+        text-align: left;
+        box-sizing: border-box;
+      }
+      &:hover {
+        border-top: 2px solid var(--primary-button-hover-bg-color);
+        border-right: 2px solid var(--primary-button-hover-bg-color);
+        border-bottom: 2px solid var(--primary-button-hover-bg-color);
+        transition: 0.3s;
+        .Top__nav__right_title_under {
+          display: block;
+          .Top__nav__right_subtitle {
+            transition: 0.5s;
+          }
+        }
+      }
+    }
+    .Top__nav_col__right__burger__icon {
+      display: inline-block;
+      margin-top: -2.6px;
+      padding-right: 0.5px;
+      transition: 0.5s;
+      .bar1,
+      .bar2,
+      .bar3 {
+        width: 14px;
+        height: 2px;
+        background-color: var(--primary-burger-icon-bg-color);
+        margin-top: 2.6px;
+        border-radius: 2px;
+      }
+    }
+
+    .Top__nav__right_title_under {
+      display: none;
+      position: absolute;
+      padding-top: 17px;
+      right: 0px;
+    }
+    .Top__nav__right_title {
+      height: 100%;
+      box-sizing: content-box;
+      font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 37px;
+      color: var(--second-button-title-color);
+      text-align: center;
+      cursor: pointer;
+      transition: 0.5s;
+    }
+  }
+}
+.Top__nav_container__language {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  min-width: 283px;
+}
+.Top__nav_container__language__title {
+  display: flex;
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  text-align: center;
+  line-height: 35px;
+  font-style: normal;
+  font-weight: 400;
+  color: var(--title-color);
+  text-decoration: none;
+  font-variant: normal;
+  font-size: 20px;
+}
+.Top__nav_container__language__topLogOutbtn__logout {
+  display: flex;
+  max-height: 45px;
+  margin-left: 20px;
+  .Top__nav_container__language__topLogOutbtn__logout__btn {
+    cursor: pointer;
+    display: flex;
+    border: 3px solid var(--main-between-line-color);
+    font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+    line-height: 35px;
+    font-style: normal;
+    font-weight: 300;
+    color: var(--title-color);
+    text-decoration: none;
+    font-variant: normal;
+    font-size: 16px;
+    padding: 0px 10px;
+    &:hover {
+      background-color: var(--primary-button-hover-bg-color);
+    }
+  }
+}
 
 body {
   overflow-x: hidden;
   background-color: var(--second-bg-color);
 }
-.main__banner {
-  background-image: url("image/001.jpg");
-  background-size: 100vw;
-  width: 100%;
-  height: calc(100vw / 3.49);
-  background-position: center;
-}
+
 .main {
   width: 100%;
   max-width: 1000px;
@@ -154,110 +609,6 @@ body {
       }
     }
   }
-  .admin__content {
-    .admin__content__title {
-      display: block;
-      font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
-      text-align: center;
-      line-height: 35px;
-      font-style: normal;
-      font-weight: 400;
-      color: var(--title-color);
-      text-decoration: none;
-      font-variant: normal;
-      font-size: 20px;
-      padding-bottom: 20px;
-    }
-    .admin__content__logout {
-      display: flex;
-      justify-content: center;
-      .admin__content__logout__btn {
-        cursor: pointer;
-        display: flex;
-        border: 3px solid var(--main-between-line-color);
-        font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
-        line-height: 35px;
-        font-style: normal;
-        font-weight: 300;
-        color: var(--title-color);
-        text-decoration: none;
-        font-variant: normal;
-        font-size: 16px;
-        padding: 0 10px;
-        &:hover {
-          background-color: var(--primary-button-hover-bg-color);
-        }
-      }
-    }
-    .admin__login {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      .admin__login__title {
-        display: block;
-        width: 100%;
-        font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
-        text-align: center;
-        line-height: 35px;
-        font-style: normal;
-        font-weight: 400;
-        color: var(--title-color);
-        text-decoration: none;
-        font-variant: normal;
-        font-size: 20px;
-        padding-bottom: 36px;
-      }
-      #singUpRedirect {
-        cursor: pointer;
-        display: block;
-        border: 3px solid var(--main-between-line-color);
-        font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
-        text-align: center;
-        line-height: 35px;
-        font-style: normal;
-        font-weight: 300;
-        color: var(--title-color);
-        text-decoration: none;
-        font-variant: normal;
-        font-size: 16px;
-        padding: 0 10px;
-        &:hover {
-          background-color: var(--primary-button-hover-bg-color);
-        }
-      }
-    }
-    .admin__content__text {
-      display: block;
-      font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
-      text-align: left;
-      line-height: 35px;
-      font-style: normal;
-      font-weight: 400;
-      color: var(--title-color);
-      text-decoration: none;
-      font-variant: normal;
-      font-size: 20px;
-      padding-top: 36px;
-    }
-    .admin__content__chooseItem {
-      cursor: pointer;
-      display: flex;
-      font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
-      text-align: left;
-      line-height: 35px;
-      font-style: normal;
-      font-weight: 300;
-      color: var(--title-color);
-      text-decoration: none;
-      font-variant: normal;
-      font-size: 16px;
-      &:hover {
-        color: var(--subject-blue);
-        background-color: var(--second-bottom-hover-color);
-        transition: 0.5s;
-      }
-    }
-  }
   .admin__choosePage {
     .admin__choosePage__editDatabase {
       .admin__choosePage__editDatabase__title {
@@ -342,6 +693,8 @@ body {
       font-variant: normal;
       font-size: 20px;
       padding-top: 36px;
+      border-bottom: 1px solid var(--main-between-line-color);
+      margin-bottom: 15px;
     }
     .admin__monitor__subtitle {
       display: block;
@@ -413,7 +766,94 @@ body {
     }
   }
 }
-
+.admin__content,
+.admin__loginblock {
+  .admin__content__title {
+    display: block;
+    font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+    text-align: center;
+    line-height: 35px;
+    font-style: normal;
+    font-weight: 400;
+    color: var(--title-color);
+    text-decoration: none;
+    font-variant: normal;
+    font-size: 20px;
+    padding-bottom: 20px;
+  }
+  .admin__login {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    .admin__login__title {
+      display: block;
+      width: 100%;
+      font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+      text-align: center;
+      line-height: 35px;
+      font-style: normal;
+      font-weight: 400;
+      color: var(--title-color);
+      text-decoration: none;
+      font-variant: normal;
+      font-size: 20px;
+      padding-bottom: 36px;
+    }
+    #singUpRedirect {
+      cursor: pointer;
+      display: block;
+      border: 3px solid var(--main-between-line-color);
+      font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+      text-align: center;
+      line-height: 35px;
+      font-style: normal;
+      font-weight: 300;
+      color: var(--title-color);
+      text-decoration: none;
+      font-variant: normal;
+      font-size: 16px;
+      padding: 0 10px;
+      &:hover {
+        background-color: var(--primary-button-hover-bg-color);
+      }
+    }
+  }
+  .admin__content__text {
+    display: block;
+    font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+    text-align: left;
+    line-height: 35px;
+    font-style: normal;
+    font-weight: 400;
+    color: var(--title-color);
+    text-decoration: none;
+    font-variant: normal;
+    font-size: 20px;
+    padding-top: 36px;
+    border-bottom: 1px solid var(--main-between-line-color);
+  }
+  .admin__content__chooseItem {
+    cursor: pointer;
+    display: flex;
+    font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+    text-align: left;
+    line-height: 35px;
+    font-style: normal;
+    font-weight: 300;
+    color: var(--title-color);
+    text-decoration: none;
+    font-variant: normal;
+    font-size: 16px;
+    &:hover {
+      color: var(--subject-blue);
+      background-color: var(--second-bottom-hover-color);
+      transition: 0.5s;
+    }
+  }
+  @media only screen and (max-width: 1024px) {
+    display: none;
+  }
+}
 .footer {
   background-color: var(--footer-bg-color);
   width: 100%;
@@ -454,6 +894,7 @@ body {
       flex-flow: wrap;
       font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
       line-height: 25px;
+      text-align: center;
       font-style: normal;
       font-weight: 300;
       color: var(--third-button-title-color);

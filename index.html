@@ -13,16 +13,6 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="../top&footer_css/top&fotter_style.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="../top&footer_css/ionicons.min.css"
-    />
     <title>
       管理員頁面丨OnlineShop
     </title>
@@ -31,6 +21,63 @@
   </head>
   <body data-theme="">
     <!--main-->
+    <!--ウェブのトップ web top-->
+    <!-- prettier-ignore-->
+    <div class="PaddingTop">　</div>
+    <div class="PhoneTop">
+      <div class="PhoneTop__mainnav">
+        <div class="PhoneTop__mainnav__icon" onclick="menu_burger(this)">
+          <div class="bar1"></div>
+          <div class="bar2"></div>
+          <div class="bar3"></div>
+        </div>
+      </div>
+      <div class="PhoneTop__logo">
+        <img
+          class="PhoneTop__logo__image"
+          id="logoImg__Top"
+          src="image/logo.jpg"
+        />
+      </div>
+      <div
+        class="PhoneTop__mainnav__container"
+        id="PhoneTop__mainnav__container"
+      >
+        <div class="PhoneTop__mainnav__container__left">
+          <div
+            class="PhoneTop__mainnav__container__col"
+            id="phoneTopOrderMenu"
+            onclick="menu_burger(this)"
+          ></div>
+          <!-- <div class="PhoneTop__mainnav__container__col__line"></div> -->
+          <div
+            class="PhoneTop__mainnav__container__col"
+            id="phoneTopUserStauts"
+          ></div>
+          <div
+            class="PhoneTop__mainnav__container__col"
+            id="topLogOutbtn"
+            onclick="menu_burger(this)"
+          ></div>
+        </div>
+        <div
+          class="PhoneTop__mainnav__container__shadow"
+          onclick="menu_burger(this)"
+        ></div>
+      </div>
+    </div>
+    <div class="Top">
+      <div class="Top__container">
+        <!--ウェブのトップ左メニューボタン web top left menu button-->
+        <div class="Top__nav_container__menu"></div>
+        <!--ウェブのトップローゴー web top logo-->
+        <div class="Top__logo">
+          <img id="logoImg__phoneTop" src="image/logo.jpg" />
+        </div>
+        <!--ウェブのトップ右言語ボタン web top right language botton-->
+        <div class="Top__nav_container__language" id="topLogOutbtn"></div>
+      </div>
+    </div>
     <div class="main">
       <!-- main_content -->
       <div class="main__content">
@@ -44,6 +91,7 @@
             </div>
           </div>
         </div>
+        <div class="admin__loginblock" id="admin__login"></div>
         <div class="admin__content" id="admin__content"></div>
         <div class="admin__choosePage" id="admin__choosePage"></div>
         <div class="admin__monitor" id="admin__monitor"></div>
@@ -62,7 +110,7 @@
             class="footer__content__box__copyright"
             id="topFooterLang_fotterCopyright"
           >
-            V0.15 2020-7-20 15:05
+            V0.16 2020-7-20 15:05
           </div>
         </div>
       </div>
@@ -80,6 +128,7 @@
   <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-analytics.js"></script>
+  <script type="text/javascript" src="js/menu_burger.js"></script>
   <script type="text/javascript" src="js/firebase.js"></script>
   <script type="text/javascript" src="js/login.js"></script>
 </html>

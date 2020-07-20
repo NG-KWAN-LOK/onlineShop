@@ -60,7 +60,7 @@ function showReadOrderItem() {
   $("#admin__monitor").empty();
   var DataRef = firebase.database().ref("order");
   var titleString = `
-  <div class="admin__monitor__title">請選擇訂單：</div>
+  <div class="admin__monitor__title">查看訂單</div>
   `;
   $("#admin__monitor").append(titleString);
   DataRef.once("value").then(
@@ -231,7 +231,7 @@ function showOrderItem() {
   $("#admin__monitor").empty();
   var DataRef = firebase.database().ref("order");
   var titleString = `
-  <div class="admin__monitor__title">請選擇想修改之訂單：</div>
+  <div class="admin__monitor__title">修改訂單：</div>
   `;
   $("#admin__monitor").append(titleString);
   DataRef.once("value").then(

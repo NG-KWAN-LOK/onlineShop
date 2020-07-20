@@ -24,8 +24,10 @@ async function logout(eventCode = 0) {
           clearInterval(oCountdownID);
         } else if (eventCode === 1) {
           alert("您已閒置超過7分鐘，系統自動登出");
+          clearInterval(oCountdownID);
         } else {
           console.log("Login Inited");
+          clearInterval(oCountdownID);
         }
         user = "";
         token = "";
@@ -39,6 +41,10 @@ firebase.auth().onAuthStateChanged(async function (user) {
   $("#admin__content").empty();
   $("#admin__choosePage").empty();
   $("#admin__monitor").empty();
+  $('[id="topLogOutbtn"]').empty();
+  $("#phoneTopUserStauts").empty();
+  $("#phoneTopOrderMenu").empty();
+  $("#admin__login").empty();
   var userIsAdmin = "";
   var userName = "";
   var leastOnlineTime = "";
@@ -89,12 +95,18 @@ firebase.auth().onAuthStateChanged(async function (user) {
       var divContent = `
       <div class="admin__content__title">歡迎管理員 ${userName}大大</div>
       <div class="admin__content__title" style="font-weight: 300; font-size: 16px;">上次上線於 ${leastOnlineTime}</div>
-      <div class="admin__content__title" id="autoLogoutCountDown" style="font-weight: 300; font-size: 16px;">系列於 後自動登出</div>
-      <div class="admin__content__logout" onclick="logout()">
-          <div class="admin__content__logout__btn">登出系統</div>
-      </div>
+      `;
+      $("#admin__content").append(divContent);
+      $("#phoneTopUserStauts").append(divContent);
+      var logOutContent = `
+      <div class="Top__nav_container__language__title" id="autoLogoutCountDown" style="font-weight: 300; font-size: 16px;">系列於 後自動登出</div>
+      <div class="Top__nav_container__language__topLogOutbtn__logout">
+          <div class="Top__nav_container__language__topLogOutbtn__logout__btn" onclick="logout()">登出系統</div>
+      </div>`;
+      $('[id="topLogOutbtn"]').append(logOutContent);
+      divContent = `
       <div class="admin__content__text">
-          請選擇您想管理之項目：
+          訂單管理
       </div>
       <div class="admin__content__chooseItem" onclick="showReadOrderItem()">
           查看訂單
@@ -106,6 +118,8 @@ firebase.auth().onAuthStateChanged(async function (user) {
           修改訂單
       </div>
       `;
+      $("#phoneTopOrderMenu").append(divContent);
+      $("#admin__content").append(divContent);
       await firebase
         .database()
         .ref("/user/" + user.uid)
@@ -132,8 +146,8 @@ firebase.auth().onAuthStateChanged(async function (user) {
         </div>
     </div>`;
     logout(999);
+    $("#admin__login").append(divContent);
   }
-  $("#admin__content").append(divContent);
 });
 console.log(user);
 console.log(tempUser);
@@ -146,8 +160,11 @@ function Timeout() {
 function ReCalculate() {
   var timer = 7 * 60;
   clearInterval(oCountdownID);
-  if (user != "" || tempUser != "") {
-    console.log("start count");
+  if (
+    user != "" ||
+    (tempUser != "" && tempUser != null && tempUser != undefined)
+  ) {
+    //console.log("start count");
     oCountdownID = setInterval(function () {
       minutes = parseInt(timer / 60, 10);
       seconds = parseInt(timer % 60, 10);
@@ -157,16 +174,17 @@ function ReCalculate() {
         Timeout(1);
         clearInterval(oCountdownID);
       }
-      document.getElementById("autoLogoutCountDown").innerHTML =
-        "系統於 " + minutes + ":" + seconds + " 後自動登出";
+      $('[id="autoLogoutCountDown"]').text(
+        "系統於 " + minutes + ":" + seconds + " 後自動登出"
+      );
       //console.log(minutes + ":" + seconds);
     }, 1000);
+    document.onmousedown = ReCalculate;
+    document.onmousemove = ReCalculate;
+    document.onkeydown = ReCalculate;
   }
 }
 console.log(countdownClock);
-document.onmousedown = ReCalculate;
-document.onmousemove = ReCalculate;
-document.onkeydown = ReCalculate;
 //ReCalculate();
 
 function getUserName() {

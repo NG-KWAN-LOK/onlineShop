@@ -1150,8 +1150,8 @@ body {
 }
 
 @media only screen and (max-width: 1024px) {
-  .admin__content,
-  .admin__loginblock {
+  .admin__content .admin__content,
+  .admin__loginblock .admin__content {
     display: none;
   }
 }

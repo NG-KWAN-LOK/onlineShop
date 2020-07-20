@@ -851,7 +851,9 @@ body {
     }
   }
   @media only screen and (max-width: 1024px) {
-    display: none;
+    .admin__content {
+      display: none;
+    }
   }
 }
 .footer {

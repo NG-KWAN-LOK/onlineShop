@@ -120,13 +120,13 @@ firebase.auth().onAuthStateChanged(async function (user) {
       <div class="admin__content__text">
           訂單管理
       </div>
-      <div class="admin__content__chooseItem" onclick="showReadOrderItem()">
+      <div class="admin__content__chooseItem" onclick="showOrderItem(0)">
           查看訂單
       </div>
       <div class="admin__content__chooseItem" onclick="showAddOrderForm()">
           加入新訂單
       </div>
-      <div class="admin__content__chooseItem" onclick="showOrderItem()">
+      <div class="admin__content__chooseItem" onclick="showOrderItem(1)">
           修改訂單
       </div>
       `;

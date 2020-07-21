@@ -15,12 +15,13 @@ firebase.analytics();
 var db = firebase.firestore();
 var twdToHKD = 3.7;
 
-//readOrder
-function showReadOrderItem() {
+//show order item list
+function showOrderItem(mode) {
+  console.log(mode);
   $("#admin__monitor").empty();
   var titleString = `
-    <div class="admin__monitor__title">查看訂單</div>
-    `;
+      <div class="admin__monitor__title">修改訂單：</div>
+      `;
   $("#admin__monitor").append(titleString);
   db.collection("order")
     .get()
@@ -29,18 +30,21 @@ function showReadOrderItem() {
         querySnapshot.forEach(function (ordersh) {
           var orderInfo = ordersh.data();
           var orderTitleString = `
-          <div class="admin__monitor__chooseItem ${
-            orderInfo.isCancel === "true"
-              ? "admin__monitor__chooseItem-gray"
-              : orderInfo.isPaid === "true"
-              ? orderInfo.isShip === "true"
-                ? orderInfo.isFinish === "true"
-                  ? "admin__monitor__chooseItem-green"
-                  : "admin__monitor__chooseItem-yellow"
-                : "admin__monitor__chooseItem-orange"
-              : "admin__monitor__chooseItem-red"
-          }" onclick="showReadOrderInfo(${ordersh.id})">
-          ${ordersh.id}　收件人：${orderInfo.customerName}　${
+            <div class="admin__monitor__chooseItem ${
+              orderInfo.isCancel === "true"
+                ? "admin__monitor__chooseItem-gray"
+                : orderInfo.isPaid === "true"
+                ? orderInfo.isShip === "true"
+                  ? orderInfo.isFinish === "true"
+                    ? "admin__monitor__chooseItem-green"
+                    : "admin__monitor__chooseItem-yellow"
+                  : "admin__monitor__chooseItem-orange"
+                : "admin__monitor__chooseItem-red"
+            }" onclick="${
+            mode == 1
+              ? "showEditOrderForm(" + ordersh.id + ")"
+              : "showReadOrderInfo(" + ordersh.id + ")"
+          }">${ordersh.id}　收件人：${orderInfo.customerName}　${
             orderInfo.isCancel === "true"
               ? "已取消"
               : orderInfo.isPaid === "true"
@@ -50,8 +54,13 @@ function showReadOrderItem() {
                   : "出咗貨"
                 : "備緊貨"
               : "要收數"
-          }</div></div>
-          `;
+          }</br>
+          總入貨價(NTD)：${orderInfo.orderTotalPriceNTD}　總入定價(HKD)：${
+            orderInfo.orderTotalPriceHKD
+          }　毛利(HKD)：${orderInfo.profitHKD}
+          </div>
+          </div>
+            `;
           $("#admin__monitor").append(orderTitleString);
         });
       },
@@ -60,6 +69,7 @@ function showReadOrderItem() {
       }
     );
 }
+
 async function showReadOrderInfo(orderID) {
   $("#admin__monitor").empty();
   var orderInfo = "";
@@ -124,9 +134,11 @@ async function showReadOrderInfo(orderID) {
   var titleString = `
     <div class="admin__monitor__block" style="background-color: #f3c6c686;">
       <div class="admin__monitor__title">全單總價格：</div>
-        <div class="admin__monitor__item" id="orderTotalPriceNTD">入貨總價格(NTD)：
+        <div class="admin__monitor__item" id="orderTotalPriceNTD">入貨總價格(NTD)：${orderInfo.orderTotalPriceNTD}
         </div>
-        <div class="admin__monitor__item" id="orderTotalPriceHKD">定價總價格(HKD)：
+        <div class="admin__monitor__item" id="orderTotalPriceHKD">定價總價格(HKD)：${orderInfo.orderTotalPriceHKD}
+        </div>
+        <div class="admin__monitor__item" id="profitHKD">毛利(HKD)：${orderInfo.profitHKD}
         </div>
     </div>
   `;
@@ -166,7 +178,7 @@ async function showReadOrderInfo(orderID) {
             <th class="admin__monitor__goodsTable__itemTH">
               ${goodsValue.price}(NTD)
               <br>
-              ${Math.ceil(goodsValue.price / twdToHKD)}(HKD)
+              ${Math.round((goodsValue.price / twdToHKD) * 10) / 10}(HKD)
             </th>
             <th class="admin__monitor__goodsTable__itemTH">
               ${goodsValue.priceHKD}
@@ -174,16 +186,16 @@ async function showReadOrderInfo(orderID) {
             <th class="admin__monitor__goodsTable__itemTH">${
               goodsValue.count
             }</th>
-            <th class="admin__monitor__goodsTable__itemTH admin__monitor__goodsTable__itemTH-important">${
+            <th class="admin__monitor__goodsTable__itemTH admin__monitor__goodsTable__itemTH-important totalPrice">${
               goodsValue.price * goodsValue.count
             }</th>
-            <th class="admin__monitor__goodsTable__itemTH admin__monitor__goodsTable__itemTH-important">${
+            <th class="admin__monitor__goodsTable__itemTH admin__monitor__goodsTable__itemTH-important totalPriceHKD">${
               goodsValue.goodsTotalPriceHKD
             }</th>
           </tr>
           `;
         });
-        countAllTotalPrice(orderID);
+        //countAllTotalPrice(orderID);
         goodsValueString += `</table>
         <div class="admin__monitor__subtitle" style="margin:20px 0;">最後更新係於 ${orderInfo.leastUpdateTime}由${orderInfo.updateUser}</div>
         `;
@@ -364,52 +376,6 @@ async function setItemOrderInfo(orderID) {
 
 // edit order info
 
-function showOrderItem() {
-  $("#admin__monitor").empty();
-  var titleString = `
-    <div class="admin__monitor__title">修改訂單：</div>
-    `;
-  $("#admin__monitor").append(titleString);
-  db.collection("order")
-    .get()
-    .then(
-      function (querySnapshot) {
-        querySnapshot.forEach(function (ordersh) {
-          var orderInfo = ordersh.data();
-          var orderTitleString = `
-          <div class="admin__monitor__chooseItem ${
-            orderInfo.isCancel === "true"
-              ? "admin__monitor__chooseItem-gray"
-              : orderInfo.isPaid === "true"
-              ? orderInfo.isShip === "true"
-                ? orderInfo.isFinish === "true"
-                  ? "admin__monitor__chooseItem-green"
-                  : "admin__monitor__chooseItem-yellow"
-                : "admin__monitor__chooseItem-orange"
-              : "admin__monitor__chooseItem-red"
-          }" onclick="showEditOrderForm(${ordersh.id})">${
-            ordersh.id
-          }　收件人：${orderInfo.customerName}　${
-            orderInfo.isCancel === "true"
-              ? "已取消"
-              : orderInfo.isPaid === "true"
-              ? orderInfo.isShip === "true"
-                ? orderInfo.isFinish === "true"
-                  ? "搞掂曬"
-                  : "出咗貨"
-                : "備緊貨"
-              : "要收數"
-          }</div></div>
-          `;
-          $("#admin__monitor").append(orderTitleString);
-        });
-      },
-      (rej) => {
-        console.log(rej);
-      }
-    );
-}
-
 function showEditOrderForm(orderID) {
   $("#admin__monitor").empty();
   var orderTitleString = `
@@ -560,6 +526,8 @@ async function showEditGoodsForm(orderID) {
         </div>
         <div class="admin__monitor__item" id="orderTotalPriceHKD">定價總價格(HKD)：
         </div>
+        <div class="admin__monitor__item" id="profitHKD">毛利(HKD)：
+        </div>
     </div>
   `;
   $("#admin__monitor").append(titleString);
@@ -611,7 +579,9 @@ async function showEditGoodsForm(orderID) {
           </div>
           <div class="admin__monitor__item" id="priceHKD${
             ordersh.id
-          }">入貨單價(HKD)：${Math.ceil(goodsValue.price / twdToHKD)}
+          }">入貨單價(HKD)：${
+            Math.round((goodsValue.price / twdToHKD) * 10) / 10
+          }
           </div>
           <div class="admin__monitor__item">售價單價(HKD)：
           <input
@@ -635,11 +605,11 @@ async function showEditGoodsForm(orderID) {
           })" required
             />
           </div>
-          <div class="admin__monitor__item" id="totalPrice${
+          <div class="admin__monitor__item totalPrice" id="totalPrice${
             ordersh.id
           }">入貨總值(NTD)：${goodsValue.price * goodsValue.count}
           </div>
-          <div class="admin__monitor__item" id="totalPriceHKD${
+          <div class="admin__monitor__item totalPriceHKD" id="totalPriceHKD${
             ordersh.id
           }">售價總值(HKD)：${goodsValue.priceHKD * goodsValue.count}
           </div>
@@ -713,9 +683,9 @@ async function showEditGoodsForm(orderID) {
         class="count${lastGoodsID}" oninput="updateTotalPrice(${orderID},${lastGoodsID})" required
         />
       </div>
-      <div class="admin__monitor__item" id="totalPrice${lastGoodsID}">入貨總值(NTD)：0
+      <div class="admin__monitor__item totalPrice" id="totalPrice${lastGoodsID}">入貨總值(NTD)：0
       </div>
-      <div class="admin__monitor__item" id="totalPriceHKD${lastGoodsID}">售價總值(HKD)：0
+      <div class="admin__monitor__item totalPriceHKD" id="totalPriceHKD${lastGoodsID}">售價總值(HKD)：0
       </div>
       </form>
       <input
@@ -804,30 +774,29 @@ async function removeItemOrderInfo(orderID) {
 }
 
 async function countAllTotalPrice(orderID) {
+  console.log("in countAllTotalPrice");
   var orderTotalPrice = 0;
   var orderTotalPriceHKD = 0;
-  await db
-    .collection("order")
-    .doc(orderID.toString())
-    .collection("goods")
-    .get()
-    .then(
-      function (querySnapshot) {
-        querySnapshot.forEach(function (orderSh) {
-          var orderInfo = orderSh.data();
-          orderTotalPrice += orderInfo.goodsTotalPrice;
-          orderTotalPriceHKD += orderInfo.goodsTotalPriceHKD;
-        });
-      },
-      (rej) => {
-        console.log(rej);
-      }
+  var profitHKD = 0;
+  for (
+    var i = 0;
+    i < document.getElementsByClassName("totalPrice").length;
+    i++
+  ) {
+    orderTotalPrice += Number(
+      document.getElementsByClassName("totalPrice")[i].innerHTML.slice(10)
     );
+    orderTotalPriceHKD += Number(
+      document.getElementsByClassName("totalPriceHKD")[i].innerHTML.slice(10)
+    );
+  }
   document.getElementById("orderTotalPriceNTD").innerHTML =
     "入貨總價格(NTD)：" + orderTotalPrice;
   document.getElementById("orderTotalPriceHKD").innerHTML =
     "定價總價格(HKD)：" + orderTotalPriceHKD;
-  return orderTotalPrice;
+  profitHKD =
+    Math.round((orderTotalPriceHKD - orderTotalPrice / twdToHKD) * 10) / 10;
+  document.getElementById("profitHKD").innerHTML = "毛利(HKD)：" + profitHKD;
 }
 
 function updateTotalPrice(orderID, goodsID) {
@@ -838,9 +807,11 @@ function updateTotalPrice(orderID, goodsID) {
 
   document.getElementById("priceHKD" + goodsID).innerHTML =
     "入貨單價(HKD)：" +
-    Math.ceil(
-      document.getElementsByClassName("price" + goodsID)[0].value / twdToHKD
-    );
+    Math.round(
+      (document.getElementsByClassName("price" + goodsID)[0].value / twdToHKD) *
+        10
+    ) /
+      10;
   document.getElementById("totalPriceHKD" + goodsID).innerHTML =
     "售價總值(HKD)：" +
     document.getElementsByClassName("priceHKD" + goodsID)[0].value *
@@ -904,7 +875,43 @@ async function updateItemGoodsInfo(orderID, goodsID, mode) {
   } else {
     alert("建立失敗！！！未有填寫全部資料");
   }
-  countAllTotalPrice(orderID);
+  //countAllTotalPrice(orderID);
+  var orderTotalPrice = 0;
+  var _orderTotalPriceHKD = 0;
+  var _profitHKD = 0;
+  await db
+    .collection("order")
+    .doc(orderID.toString())
+    .collection("goods")
+    .get()
+    .then(
+      function (querySnapshot) {
+        querySnapshot.forEach(function (orderSh) {
+          var orderInfo = orderSh.data();
+          orderTotalPrice += orderInfo.goodsTotalPrice;
+          _orderTotalPriceHKD += orderInfo.goodsTotalPriceHKD;
+        });
+      },
+      (rej) => {
+        console.log(rej);
+      }
+    );
+  _profitHKD =
+    Math.round((_orderTotalPriceHKD - orderTotalPrice / twdToHKD) * 10) / 10;
+  await db
+    .collection("order")
+    .doc(orderID.toString())
+    .update({
+      orderTotalPriceNTD: orderTotalPrice,
+      orderTotalPriceHKD: _orderTotalPriceHKD,
+      profitHKD: _profitHKD,
+    })
+    .then(function () {
+      return true;
+    })
+    .catch(function () {
+      return false;
+    });
   if (mode === 1) {
     showEditOrderForm(orderID);
   }

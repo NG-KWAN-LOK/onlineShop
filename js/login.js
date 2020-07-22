@@ -123,6 +123,12 @@ firebase.auth().onAuthStateChanged(async function (user) {
       <div class="admin__content__chooseItem" onclick="showOrderItem(0)">
           查看及管理訂單
       </div>
+      <div class="admin__content__text">
+          貨品管理
+      </div>
+      <div class="admin__content__chooseItem" onclick="showGoodsListItem()">
+          查看及管理貨品目錄
+      </div>
       `;
       $("#phoneTopOrderMenu").append(divContent);
       $("#admin__content").append(divContent);

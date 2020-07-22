@@ -91,6 +91,7 @@ async function showReadOrderInfo(orderID) {
   $("#admin__monitor").empty();
   var orderInfo = "";
   var titleString = `
+    <div class="admin__monitor__title">修改貨品${orderID}資料</div>
     <div class="function__bar">
       <div class="function__bar__btn" onclick="showOrderItem(0)">
         返回查看所有訂單
@@ -448,6 +449,7 @@ async function setItemOrderInfo(orderID) {
 function showEditOrderForm(orderID) {
   $("#admin__monitor").empty();
   var orderTitleString = `
+    <div class="admin__monitor__title">查看訂單${orderID}資料</div>
     <div class="function__bar">
       <div class="function__bar__btn" onclick="showReadOrderInfo(${orderID})">
         返回查看本訂單資料

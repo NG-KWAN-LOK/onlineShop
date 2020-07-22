@@ -56,11 +56,30 @@ function editHomeNote() {
     });
 }
 function updateHomeNote() {
-  console.log(document.getElementById("homeNote").value);
+  var currentdate = new Date();
+  var datetime =
+    currentdate.getFullYear() +
+    "/" +
+    (currentdate.getMonth() + 1 < 10 ? "0" : "") +
+    (currentdate.getMonth() + 1) +
+    "/" +
+    (currentdate.getDate() < 10 ? "0" : "") +
+    currentdate.getDate() +
+    " " +
+    (currentdate.getHours() < 10 ? "0" : "") +
+    currentdate.getHours() +
+    ":" +
+    (currentdate.getMinutes() < 10 ? "0" : "") +
+    currentdate.getMinutes() +
+    ":" +
+    (currentdate.getSeconds() < 10 ? "0" : "") +
+    currentdate.getSeconds();
   db.collection("note")
     .doc("home")
     .set({
       content: document.getElementById("homeNote").value,
+      leastUpdateTime: datetime,
+      updateUser: tempUser.displayName,
     })
     .then(function () {
       alert("更改公告內容");

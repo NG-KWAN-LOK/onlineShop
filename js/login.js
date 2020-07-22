@@ -121,13 +121,7 @@ firebase.auth().onAuthStateChanged(async function (user) {
           訂單管理
       </div>
       <div class="admin__content__chooseItem" onclick="showOrderItem(0)">
-          查看訂單
-      </div>
-      <div class="admin__content__chooseItem" onclick="showAddOrderForm()">
-          加入新訂單
-      </div>
-      <div class="admin__content__chooseItem" onclick="showOrderItem(1)">
-          修改訂單
+          查看及管理訂單
       </div>
       `;
       $("#phoneTopOrderMenu").append(divContent);

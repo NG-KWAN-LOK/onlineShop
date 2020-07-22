@@ -20,7 +20,12 @@ function showOrderItem(mode) {
   console.log(mode);
   $("#admin__monitor").empty();
   var titleString = `
-      <div class="admin__monitor__title">修改訂單：</div>
+      <div class="admin__monitor__title">查看及管理訂單：</div>
+      <div class="function__bar">
+        <div class="function__bar__btn" onclick="showAddOrderForm()">
+          新增訂單
+        </div>
+      </div>
       `;
   $("#admin__monitor").append(titleString);
   db.collection("order")
@@ -74,6 +79,14 @@ async function showReadOrderInfo(orderID) {
   $("#admin__monitor").empty();
   var orderInfo = "";
   var titleString = `
+    <div class="function__bar">
+      <div class="function__bar__btn" onclick="showOrderItem()">
+        返回查看所有訂單
+      </div>
+      <div class="function__bar__btn" onclick="showEditOrderForm(${orderID})">
+        修改訂單
+      </div>
+    </div>
     <div class="admin__monitor__block">
     <div class="admin__monitor__title">客戶資料</div>
     `;
@@ -134,11 +147,19 @@ async function showReadOrderInfo(orderID) {
   var titleString = `
     <div class="admin__monitor__block" style="background-color: #f3c6c686;">
       <div class="admin__monitor__title">全單總價格：</div>
-        <div class="admin__monitor__item" id="orderTotalPriceNTD">入貨總價格(NTD)：${orderInfo.orderTotalPriceNTD}
+        <div class="admin__monitor__item" id="orderTotalPriceNTD">入貨總價格(NTD)：${
+          orderInfo.orderTotalPriceNTD
+        }　(HKD：${
+    Math.round((orderInfo.orderTotalPriceNTD / twdToHKD) * 10) / 10
+  })
         </div>
-        <div class="admin__monitor__item" id="orderTotalPriceHKD">定價總價格(HKD)：${orderInfo.orderTotalPriceHKD}
+        <div class="admin__monitor__item" id="orderTotalPriceHKD">定價總價格(HKD)：${
+          orderInfo.orderTotalPriceHKD
+        }
         </div>
-        <div class="admin__monitor__item" id="profitHKD">毛利(HKD)：${orderInfo.profitHKD}
+        <div class="admin__monitor__item" id="profitHKD">毛利(HKD)：${
+          orderInfo.profitHKD
+        }
         </div>
     </div>
   `;
@@ -379,6 +400,11 @@ async function setItemOrderInfo(orderID) {
 function showEditOrderForm(orderID) {
   $("#admin__monitor").empty();
   var orderTitleString = `
+    <div class="function__bar">
+      <div class="function__bar__btn" onclick="showReadOrderInfo(${orderID})">
+        返回查看本訂單資料
+      </div>
+    </div>
     <div class="admin__monitor__block">
     <div class="admin__monitor__title">客戶資料</div>
     `;
@@ -791,7 +817,11 @@ async function countAllTotalPrice(orderID) {
     );
   }
   document.getElementById("orderTotalPriceNTD").innerHTML =
-    "入貨總價格(NTD)：" + orderTotalPrice;
+    "入貨總價格(NTD)：" +
+    orderTotalPrice +
+    "　(HKD：" +
+    Math.round((orderTotalPrice / twdToHKD) * 10) / 10 +
+    ")";
   document.getElementById("orderTotalPriceHKD").innerHTML =
     "定價總價格(HKD)：" + orderTotalPriceHKD;
   profitHKD =

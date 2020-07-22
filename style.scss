@@ -494,11 +494,13 @@ a {
   font-variant: normal;
   font-size: 20px;
 }
-.Top__nav_container__language__topLogOutbtn__logout {
+.Top__nav_container__language__topLogOutbtn__logout,
+.function__bar {
   display: flex;
   max-height: 45px;
   margin-left: 20px;
-  .Top__nav_container__language__topLogOutbtn__logout__btn {
+  .Top__nav_container__language__topLogOutbtn__logout__btn,
+  .function__bar__btn {
     cursor: pointer;
     display: flex;
     border: 3px solid var(--main-between-line-color);

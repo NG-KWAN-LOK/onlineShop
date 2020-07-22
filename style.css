@@ -739,7 +739,8 @@ a {
   font-size: 20px;
 }
 
-.Top__nav_container__language__topLogOutbtn__logout {
+.Top__nav_container__language__topLogOutbtn__logout,
+.function__bar {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -747,7 +748,10 @@ a {
   margin-left: 20px;
 }
 
-.Top__nav_container__language__topLogOutbtn__logout .Top__nav_container__language__topLogOutbtn__logout__btn {
+.Top__nav_container__language__topLogOutbtn__logout .Top__nav_container__language__topLogOutbtn__logout__btn,
+.Top__nav_container__language__topLogOutbtn__logout .function__bar__btn,
+.function__bar .Top__nav_container__language__topLogOutbtn__logout__btn,
+.function__bar .function__bar__btn {
   cursor: pointer;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -764,7 +768,10 @@ a {
   padding: 0px 10px;
 }
 
-.Top__nav_container__language__topLogOutbtn__logout .Top__nav_container__language__topLogOutbtn__logout__btn:hover {
+.Top__nav_container__language__topLogOutbtn__logout .Top__nav_container__language__topLogOutbtn__logout__btn:hover,
+.Top__nav_container__language__topLogOutbtn__logout .function__bar__btn:hover,
+.function__bar .Top__nav_container__language__topLogOutbtn__logout__btn:hover,
+.function__bar .function__bar__btn:hover {
   background-color: var(--primary-button-hover-bg-color);
 }
 

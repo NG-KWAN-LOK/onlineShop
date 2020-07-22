@@ -132,6 +132,7 @@ firebase.auth().onAuthStateChanged(async function (user) {
       `;
       $("#phoneTopOrderMenu").append(divContent);
       $("#admin__content").append(divContent);
+      showHomeNote();
       await firebase
         .database()
         .ref("/user/" + user.uid)

@@ -60,9 +60,21 @@ function showOrderItem(mode) {
                 : "備緊貨"
               : "要收數"
           }</br>
-          總入貨價(NTD)：${orderInfo.orderTotalPriceNTD}　總入定價(HKD)：${
-            orderInfo.orderTotalPriceHKD
-          }　毛利(HKD)：${orderInfo.profitHKD}
+          總入貨價(NTD)：${orderInfo.orderTotalPriceNTD}(HKD：${
+            Math.round((orderInfo.orderTotalPriceNTD / twdToHKD) * 10) / 10
+          })　總定價(HKD)：${orderInfo.orderTotalPriceHKD}　毛利(HKD)：${
+            orderInfo.profitHKD
+          }(${
+            Math.round(
+              ((orderInfo.orderTotalPriceHKD -
+                Math.round((orderInfo.orderTotalPriceNTD / twdToHKD) * 10) /
+                  10) /
+                Math.round((orderInfo.orderTotalPriceNTD / twdToHKD) * 10) /
+                10) *
+                10000 *
+                10
+            ) / 10
+          }%)
           </div>
           </div>
             `;
@@ -80,7 +92,7 @@ async function showReadOrderInfo(orderID) {
   var orderInfo = "";
   var titleString = `
     <div class="function__bar">
-      <div class="function__bar__btn" onclick="showOrderItem()">
+      <div class="function__bar__btn" onclick="showOrderItem(0)">
         返回查看所有訂單
       </div>
       <div class="function__bar__btn" onclick="showEditOrderForm(${orderID})">
@@ -159,7 +171,16 @@ async function showReadOrderInfo(orderID) {
         </div>
         <div class="admin__monitor__item" id="profitHKD">毛利(HKD)：${
           orderInfo.profitHKD
-        }
+        }(${
+    Math.round(
+      ((orderInfo.orderTotalPriceHKD -
+        Math.round((orderInfo.orderTotalPriceNTD / twdToHKD) * 10) / 10) /
+        Math.round((orderInfo.orderTotalPriceNTD / twdToHKD) * 10) /
+        10) *
+        10000 *
+        10
+    ) / 10
+  }%)
         </div>
     </div>
   `;
@@ -173,8 +194,9 @@ async function showReadOrderInfo(orderID) {
       <th class="admin__monitor__goodsTable__titleTH">入貨單價</th>
       <th class="admin__monitor__goodsTable__titleTH">售價單價(HKD)</th>
       <th class="admin__monitor__goodsTable__titleTH">數量</th>
-      <th class="admin__monitor__goodsTable__titleTH admin__monitor__goodsTable__titleTH-important">入貨總價(NTD)</th>
+      <th class="admin__monitor__goodsTable__titleTH admin__monitor__goodsTable__titleTH-important">入貨總價</th>
       <th class="admin__monitor__goodsTable__titleTH admin__monitor__goodsTable__titleTH-important">售價總價(HKD)</th>
+      <th class="admin__monitor__goodsTable__titleTH admin__monitor__goodsTable__titleTH-important">毛利</th>
     </tr>
   `;
   await db
@@ -208,11 +230,37 @@ async function showReadOrderInfo(orderID) {
               goodsValue.count
             }</th>
             <th class="admin__monitor__goodsTable__itemTH admin__monitor__goodsTable__itemTH-important totalPrice">${
-              goodsValue.price * goodsValue.count
-            }</th>
+              goodsValue.goodsTotalPrice
+            }(TWD)
+            </br>
+            ${
+              Math.round((goodsValue.goodsTotalPrice / twdToHKD) * 10) / 10
+            }(HKD)
+            </th>
             <th class="admin__monitor__goodsTable__itemTH admin__monitor__goodsTable__itemTH-important totalPriceHKD">${
               goodsValue.goodsTotalPriceHKD
             }</th>
+            <th class="admin__monitor__goodsTable__itemTH admin__monitor__goodsTable__itemTH-important totalPriceHKD">${
+              Math.round(
+                (goodsValue.goodsTotalPriceHKD -
+                  Math.round((goodsValue.goodsTotalPrice / twdToHKD) * 10) /
+                    10) *
+                  10
+              ) / 10
+            }
+            </br>
+            (${
+              Math.round(
+                ((goodsValue.goodsTotalPriceHKD -
+                  Math.round((goodsValue.goodsTotalPrice / twdToHKD) * 10) /
+                    10) /
+                  Math.round((goodsValue.goodsTotalPrice / twdToHKD) * 10) /
+                  10) *
+                  10000 *
+                  10
+              ) / 10
+            }%)
+            </th>
           </tr>
           `;
         });
@@ -633,11 +681,25 @@ async function showEditGoodsForm(orderID) {
           </div>
           <div class="admin__monitor__item totalPrice" id="totalPrice${
             ordersh.id
-          }">入貨總值(NTD)：${goodsValue.price * goodsValue.count}
+          }">入貨總值(NTD)：${goodsValue.goodsTotalPrice}
           </div>
           <div class="admin__monitor__item totalPriceHKD" id="totalPriceHKD${
             ordersh.id
-          }">售價總值(HKD)：${goodsValue.priceHKD * goodsValue.count}
+          }">售價總值(HKD)：${goodsValue.goodsTotalPriceHKD}
+          </div>
+          <div class="admin__monitor__item profitHKD" id="profitHKD${
+            ordersh.id
+          }">毛利百份比：
+          ${
+            Math.round(
+              ((goodsValue.goodsTotalPriceHKD -
+                Math.round((goodsValue.goodsTotalPrice / twdToHKD) * 10) / 10) /
+                Math.round((goodsValue.goodsTotalPrice / twdToHKD) * 10) /
+                10) *
+                10000 *
+                10
+            ) / 10
+          }%
           </div>
           </form>
           <input
@@ -816,6 +878,7 @@ async function countAllTotalPrice(orderID) {
       document.getElementsByClassName("totalPriceHKD")[i].innerHTML.slice(10)
     );
   }
+
   document.getElementById("orderTotalPriceNTD").innerHTML =
     "入貨總價格(NTD)：" +
     orderTotalPrice +
@@ -826,26 +889,54 @@ async function countAllTotalPrice(orderID) {
     "定價總價格(HKD)：" + orderTotalPriceHKD;
   profitHKD =
     Math.round((orderTotalPriceHKD - orderTotalPrice / twdToHKD) * 10) / 10;
-  document.getElementById("profitHKD").innerHTML = "毛利(HKD)：" + profitHKD;
+
+  document.getElementById("profitHKD").innerHTML =
+    "毛利(HKD)：" +
+    profitHKD +
+    "(" +
+    Math.round(
+      ((orderTotalPriceHKD -
+        Math.round((orderTotalPrice / twdToHKD) * 10) / 10) /
+        Math.round((orderTotalPrice / twdToHKD) * 10) /
+        10) *
+        10000 *
+        10
+    ) /
+      10 +
+    "%)";
 }
 
 function updateTotalPrice(orderID, goodsID) {
+  var count = document.getElementsByClassName("count" + goodsID)[0].value;
+  var goodsInTotalPriceTWD =
+    document.getElementsByClassName("price" + goodsID)[0].value * count;
   document.getElementById("totalPrice" + goodsID).innerHTML =
-    "入貨總值(NTD)：" +
-    document.getElementsByClassName("price" + goodsID)[0].value *
-      document.getElementsByClassName("count" + goodsID)[0].value;
-
-  document.getElementById("priceHKD" + goodsID).innerHTML =
-    "入貨單價(HKD)：" +
+    "入貨總值(NTD)：" + goodsInTotalPriceTWD;
+  var goodsInPriceHKD =
     Math.round(
       (document.getElementsByClassName("price" + goodsID)[0].value / twdToHKD) *
         10
-    ) /
-      10;
+    ) / 10;
+  document.getElementById("priceHKD" + goodsID).innerHTML =
+    "入貨單價(HKD)：" + goodsInPriceHKD;
+  var goodsTotalPriceHKD =
+    document.getElementsByClassName("priceHKD" + goodsID)[0].value * count;
+
   document.getElementById("totalPriceHKD" + goodsID).innerHTML =
-    "售價總值(HKD)：" +
-    document.getElementsByClassName("priceHKD" + goodsID)[0].value *
-      document.getElementsByClassName("count" + goodsID)[0].value;
+    "售價總值(HKD)：" + goodsTotalPriceHKD;
+
+  document.getElementById("profitHKD" + goodsID).innerHTML =
+    "毛利(HKD)：" +
+    Math.round(
+      ((document.getElementsByClassName("priceHKD" + goodsID)[0].value -
+        Math.round(goodsInPriceHKD * 10) / 10) /
+        Math.round(goodsInPriceHKD * 10) /
+        10) *
+        10000 *
+        10
+    ) /
+      10 +
+    "%";
   countAllTotalPrice(orderID);
 }
 

@@ -407,6 +407,9 @@ function showEditGoodsListForm(goodsID) {
           onclick="removeGoodsListInfo(${goodsID});"
               />
         </div>
+        <div class="admin__monitor__subtitle" style="margin:20px 0;">最後更新係於 ${
+          goodsInfo.leastUpdateTime
+        }由${goodsInfo.updateUser}</div>
         `;
         $("#admin__monitor").append(titleString);
         return true;

@@ -1,8 +1,29 @@
 function showGoodsListItem() {
   $("#admin__monitor").empty();
+  var sortName = localStorage.getItem("goodsListSort");
+  var orderRef = localStorage.getItem("goodsListOrder");
+  var goodCount = 0;
+  console.log(orderRef);
   var titleString = `
       <div class="admin__monitor__title">查看及管理貨品目錄</div>
       <div class="function__bar">
+      <select name="goodsListSort" id="goodsListSort" class="selection" onchange="setGoodsLocalStorage()">
+      　<option value="category" ${
+        sortName === "category" ? "SELECTED" : ""
+      }>依類別</option>
+      　<option value="name" ${
+        sortName === "name" ? "SELECTED" : ""
+      }>依名稱</option>
+        <option value="leastUpdateTime" ${
+          sortName === "leastUpdateTime" ? "SELECTED" : ""
+        }>依最後更新日期</option>
+      </select>
+      <div class="function__bar__text">
+          倒序：
+          <input type="checkbox" id="goodsListOrder" name="goodsListOrder" ${
+            orderRef === "true" ? "checked" : ""
+          } onclick="setGoodsLocalStorage()">
+      </div>
         <div class="function__bar__btn" onclick="showAddGoodsListForm()">
           新增貨品
         </div>
@@ -10,14 +31,17 @@ function showGoodsListItem() {
     `;
   $("#admin__monitor").append(titleString);
   db.collection("goods")
+    .orderBy(sortName, orderRef === "true" ? "desc" : "asc")
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (goodsh) {
         var goodInfo = goodsh.data();
         var orderTitleString = `
-            <div class="admin__monitor__chooseItem admin__monitor__chooseItem-gray" onclick="${
-              "showReadgoodInfo(" + goodsh.id + ")"
-            }">${goodsh.id}　${
+            <div class="admin__monitor__chooseItem ${
+              goodCount % 2 == 0
+                ? "admin__monitor__chooseItem-yellow"
+                : "admin__monitor__chooseItem-lightYellow"
+            }" onclick="showEditGoodsListForm(${goodsh.id})">${goodsh.id}　${
           goodInfo.category === "0"
             ? goodInfo.category === "1"
               ? goodInfo.category === "2"
@@ -47,6 +71,7 @@ function showGoodsListItem() {
           </div>
           </div>
             `;
+        goodCount += 1;
         $("#admin__monitor").append(orderTitleString);
       });
     })
@@ -54,6 +79,7 @@ function showGoodsListItem() {
       console.log("Error getting documents: ", error);
     });
 }
+function showGoodsListItemByOrder(sortName) {}
 
 async function showReadgoodInfo(goodsID) {
   $("#admin__monitor").empty();
@@ -248,8 +274,8 @@ function showEditGoodsListForm(goodsID) {
   var titleString = `
     <div class="admin__monitor__title">修改貨品${goodsID}資料</div>
       <div class="function__bar">
-        <div class="function__bar__btn" onclick="showReadgoodInfo(${goodsID})">
-          返回查看本訂單資料
+        <div class="function__bar__btn" onclick="showGoodsListItem()">
+          返回查看所有
         </div>
       </div>
     `;
@@ -548,3 +574,31 @@ async function GoodsUpdateUpdateDateTime(goodsID) {
       return false;
     });
 }
+
+function setGoodsLocalStorage() {
+  localStorage.setItem(
+    "goodsListSort",
+    document.getElementById("goodsListSort").value
+  );
+  localStorage.setItem(
+    "goodsListOrder",
+    document.getElementById("goodsListOrder").checked
+  );
+  showGoodsListItem();
+}
+
+$(document).ready(function () {
+  console.log("check localstorage");
+  if (localStorage.getItem("goodsListSort") === null) {
+    console.log("goodsListSort null");
+    localStorage.setItem("goodsListSort", "category");
+  } else {
+    console.log("goodsListSort exist");
+  }
+  if (localStorage.getItem("goodsListOrder") === null) {
+    console.log("goodsListOrder null");
+    localStorage.setItem("goodsListOrder", false);
+  } else {
+    console.log("goodsListOrder exist");
+  }
+});

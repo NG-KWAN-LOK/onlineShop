@@ -518,6 +518,20 @@ a {
     }
   }
 }
+.function__bar__text {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  line-height: 35px;
+  font-style: normal;
+  font-weight: 300;
+  color: var(--title-color);
+  text-decoration: none;
+  font-variant: normal;
+  font-size: 16px;
+  padding: 0px 10px;
+}
 
 body {
   overflow-x: hidden;
@@ -748,6 +762,9 @@ body {
       }
       &-yellow {
         background-color: #effa8fa4;
+      }
+      &-lightYellow {
+        background-color: #eff5bea4;
       }
       &-gray {
         background-color: #c2c2c2a4;

@@ -775,6 +775,27 @@ a {
   background-color: var(--primary-button-hover-bg-color);
 }
 
+.function__bar__text {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  line-height: 35px;
+  font-style: normal;
+  font-weight: 300;
+  color: var(--title-color);
+  text-decoration: none;
+  font-variant: normal;
+  font-size: 16px;
+  padding: 0px 10px;
+}
+
 body {
   overflow-x: hidden;
   background-color: var(--second-bg-color);
@@ -1027,6 +1048,10 @@ body {
 
 .main__content .admin__monitor .admin__monitor__chooseItem-yellow {
   background-color: #effa8fa4;
+}
+
+.main__content .admin__monitor .admin__monitor__chooseItem-lightYellow {
+  background-color: #eff5bea4;
 }
 
 .main__content .admin__monitor .admin__monitor__chooseItem-gray {

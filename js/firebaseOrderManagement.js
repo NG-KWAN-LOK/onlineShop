@@ -18,10 +18,29 @@ var twdToHKD = 3.7;
 //show order item list
 function showOrderItem(mode) {
   console.log(mode);
+  var orderByRef = localStorage.getItem("orderOrderBy");
+  var orderRef = localStorage.getItem("orderOrder");
   $("#admin__monitor").empty();
   var titleString = `
       <div class="admin__monitor__title">查看及管理訂單：</div>
       <div class="function__bar">
+      <select name="orderOrderBy" id="orderOrderBy" class="selection" onchange="setOrderLocalStorage()">
+      　<option value="orderTime" ${
+        orderByRef === "orderTime" ? "SELECTED" : ""
+      }>依訂單日期</option>
+      　<option value="leastUpdateTime" ${
+        orderByRef === "leastUpdateTime" ? "SELECTED" : ""
+      }>依最後更新日期</option>
+        <option value="customerName" ${
+          orderByRef === "customerName" ? "SELECTED" : ""
+        }>依收件人名稱</option>
+      </select>
+      <div class="function__bar__text">
+          倒序：
+          <input type="checkbox" id="orderOrder" name="orderOrder" ${
+            orderRef === "true" ? "checked" : ""
+          } onclick="setOrderLocalStorage()">
+      </div>
         <div class="function__bar__btn" onclick="showAddOrderForm()">
           新增訂單
         </div>
@@ -29,6 +48,7 @@ function showOrderItem(mode) {
       `;
   $("#admin__monitor").append(titleString);
   db.collection("order")
+    .orderBy(orderByRef, orderRef === "true" ? "desc" : "asc")
     .get()
     .then(
       function (querySnapshot) {
@@ -1158,3 +1178,31 @@ function getCurrentDateTime() {
     currentdate.getSeconds();
   return currentDateTime;
 }
+
+function setOrderLocalStorage() {
+  localStorage.setItem(
+    "orderOrderBy",
+    document.getElementById("orderOrderBy").value
+  );
+  localStorage.setItem(
+    "orderOrder",
+    document.getElementById("orderOrder").checked
+  );
+  showOrderItem(0);
+}
+
+$(document).ready(function () {
+  console.log("check localstorage");
+  if (localStorage.getItem("orderOrderBy") === null) {
+    console.log("orderOrderBy null");
+    localStorage.setItem("orderOrderBy", "orderTime");
+  } else {
+    console.log("orderOrderBy exist");
+  }
+  if (localStorage.getItem("orderOrder") === null) {
+    console.log("orderOrder null");
+    localStorage.setItem("orderOrder", true);
+  } else {
+    console.log("orderOrder exist");
+  }
+});

@@ -1,21 +1,21 @@
 function showGoodsListItem() {
   $("#admin__monitor").empty();
-  var sortName = localStorage.getItem("goodsListSort");
+  var orderByRef = localStorage.getItem("goodsListOrderBy");
   var orderRef = localStorage.getItem("goodsListOrder");
   var goodCount = 0;
   console.log(orderRef);
   var titleString = `
       <div class="admin__monitor__title">查看及管理貨品目錄</div>
       <div class="function__bar">
-      <select name="goodsListSort" id="goodsListSort" class="selection" onchange="setGoodsLocalStorage()">
+      <select name="goodsListOrderBy" id="goodsListOrderBy" class="selection" onchange="setGoodsLocalStorage()">
       　<option value="category" ${
-        sortName === "category" ? "SELECTED" : ""
+        orderByRef === "category" ? "SELECTED" : ""
       }>依類別</option>
       　<option value="name" ${
-        sortName === "name" ? "SELECTED" : ""
+        orderByRef === "name" ? "SELECTED" : ""
       }>依名稱</option>
         <option value="leastUpdateTime" ${
-          sortName === "leastUpdateTime" ? "SELECTED" : ""
+          orderByRef === "leastUpdateTime" ? "SELECTED" : ""
         }>依最後更新日期</option>
       </select>
       <div class="function__bar__text">
@@ -31,7 +31,7 @@ function showGoodsListItem() {
     `;
   $("#admin__monitor").append(titleString);
   db.collection("goods")
-    .orderBy(sortName, orderRef === "true" ? "desc" : "asc")
+    .orderBy(orderByRef, orderRef === "true" ? "desc" : "asc")
     .get()
     .then(function (querySnapshot) {
       querySnapshot.forEach(function (goodsh) {
@@ -577,8 +577,8 @@ async function GoodsUpdateUpdateDateTime(goodsID) {
 
 function setGoodsLocalStorage() {
   localStorage.setItem(
-    "goodsListSort",
-    document.getElementById("goodsListSort").value
+    "goodsListOrderBy",
+    document.getElementById("goodsListOrderBy").value
   );
   localStorage.setItem(
     "goodsListOrder",
@@ -589,11 +589,11 @@ function setGoodsLocalStorage() {
 
 $(document).ready(function () {
   console.log("check localstorage");
-  if (localStorage.getItem("goodsListSort") === null) {
-    console.log("goodsListSort null");
-    localStorage.setItem("goodsListSort", "category");
+  if (localStorage.getItem("goodsListOrderBy") === null) {
+    console.log("goodsListOrderBy null");
+    localStorage.setItem("goodsListOrderBy", "category");
   } else {
-    console.log("goodsListSort exist");
+    console.log("goodsListOrderBy exist");
   }
   if (localStorage.getItem("goodsListOrder") === null) {
     console.log("goodsListOrder null");

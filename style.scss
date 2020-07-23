@@ -36,7 +36,7 @@ a {
   border: none;
   text-indent: 100%;
   z-index: 999;
-  background: #282a2b url(../image/totop.png) no-repeat left top;
+  background: #282a2b url(image/totop.png) no-repeat left top;
   background-size: contain;
   -webkit-border-radius: 0px;
   -moz-border-radius: 0px;
@@ -660,7 +660,8 @@ body {
       }
     }
   }
-  .admin__monitor {
+  .admin__monitor,
+  .admin__note {
     .admin__monitor__goodsTable {
       .admin__monitor__goodsTable__titleTR {
         .admin__monitor__goodsTable__titleTH {
@@ -740,7 +741,7 @@ body {
     }
     .admin__monitor__chooseItem {
       cursor: pointer;
-      display: flex;
+      display: block;
       font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
       text-align: left;
       line-height: 35px;
@@ -773,6 +774,10 @@ body {
         color: var(--subject-blue);
         background-color: var(--second-bottom-hover-color);
         transition: 0.5s;
+      }
+      .spanText {
+        color: #0000ff;
+        font-weight: 400;
       }
     }
     .admin__monitor__goods {

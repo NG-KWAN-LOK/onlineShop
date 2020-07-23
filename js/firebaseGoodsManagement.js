@@ -6,24 +6,24 @@ function showGoodsListItem() {
   console.log(orderRef);
   var titleString = `
       <div class="admin__monitor__title">查看及管理貨品目錄</div>
-      <div class="function__bar">
-      <select name="goodsListOrderBy" id="goodsListOrderBy" class="selection" onchange="setGoodsLocalStorage()">
-      　<option value="category" ${
-        orderByRef === "category" ? "SELECTED" : ""
-      }>依類別</option>
-      　<option value="name" ${
-        orderByRef === "name" ? "SELECTED" : ""
-      }>依名稱</option>
-        <option value="leastUpdateTime" ${
-          orderByRef === "leastUpdateTime" ? "SELECTED" : ""
-        }>依最後更新日期</option>
-      </select>
-      <div class="function__bar__text">
-          倒序：
-          <input type="checkbox" id="goodsListOrder" name="goodsListOrder" ${
-            orderRef === "true" ? "checked" : ""
-          } onclick="setGoodsLocalStorage()">
-      </div>
+        <div class="function__bar">
+        <select name="goodsListOrderBy" id="goodsListOrderBy" class="selection" onchange="setGoodsLocalStorage()">
+        　<option value="category" ${
+          orderByRef === "category" ? "SELECTED" : ""
+        }>依類別</option>
+        　<option value="name" ${
+          orderByRef === "name" ? "SELECTED" : ""
+        }>依名稱</option>
+          <option value="leastUpdateTime" ${
+            orderByRef === "leastUpdateTime" ? "SELECTED" : ""
+          }>依最後更新日期</option>
+        </select>
+        <div class="function__bar__text">
+            倒序：
+            <input type="checkbox" id="goodsListOrder" name="goodsListOrder" ${
+              orderRef === "true" ? "checked" : ""
+            } onclick="setGoodsLocalStorage()">
+        </div>
         <div class="function__bar__btn" onclick="showAddGoodsListForm()">
           新增貨品
         </div>
@@ -41,7 +41,7 @@ function showGoodsListItem() {
               goodCount % 2 == 0
                 ? "admin__monitor__chooseItem-yellow"
                 : "admin__monitor__chooseItem-lightYellow"
-            }" onclick="showEditGoodsListForm(${goodsh.id})">${goodsh.id}　${
+            }" onclick="showEditGoodsListForm(${goodsh.id})"><p>${goodsh.id}　${
           goodInfo.category === "0"
             ? goodInfo.category === "1"
               ? goodInfo.category === "2"
@@ -49,7 +49,7 @@ function showGoodsListItem() {
                 : "Po文特別商品"
               : "Po文普通商品"
             : ""
-        }　名稱：${goodInfo.name}</br>
+        }　<span class="spanText">名稱：${goodInfo.name}</span></p><p>
           入貨價(NTD)：${goodInfo.inPriceNTD}(HKD：${
           Math.round((goodInfo.inPriceNTD / twdToHKD) * 10) / 10
         })　定價(HKD)：${goodInfo.priceHKD}　毛利(HKD)：${
@@ -67,8 +67,7 @@ function showGoodsListItem() {
               10000 *
               10
           ) / 10
-        }%)
-          </div>
+        }%)</p>
           </div>
             `;
         goodCount += 1;

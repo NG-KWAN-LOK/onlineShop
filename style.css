@@ -122,7 +122,7 @@ a {
   border: none;
   text-indent: 100%;
   z-index: 999;
-  background: #282a2b url(../image/totop.png) no-repeat left top;
+  background: #282a2b url(image/totop.png) no-repeat left top;
   background-size: contain;
   border-radius: 0px;
 }
@@ -936,7 +936,8 @@ body {
   transition: 0.5s;
 }
 
-.main__content .admin__monitor .admin__monitor__goodsTable .admin__monitor__goodsTable__titleTR .admin__monitor__goodsTable__titleTH {
+.main__content .admin__monitor .admin__monitor__goodsTable .admin__monitor__goodsTable__titleTR .admin__monitor__goodsTable__titleTH,
+.main__content .admin__note .admin__monitor__goodsTable .admin__monitor__goodsTable__titleTR .admin__monitor__goodsTable__titleTH {
   font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
   text-align: center;
   line-height: 20px;
@@ -948,15 +949,18 @@ body {
   font-size: 18px;
 }
 
-.main__content .admin__monitor .admin__monitor__goodsTable .admin__monitor__goodsTable__titleTR .admin__monitor__goodsTable__titleTH-important {
+.main__content .admin__monitor .admin__monitor__goodsTable .admin__monitor__goodsTable__titleTR .admin__monitor__goodsTable__titleTH-important,
+.main__content .admin__note .admin__monitor__goodsTable .admin__monitor__goodsTable__titleTR .admin__monitor__goodsTable__titleTH-important {
   background-color: #faf88fa4;
 }
 
-.main__content .admin__monitor .admin__monitor__goodsTable .admin__monitor__goodsTable__itemTR {
+.main__content .admin__monitor .admin__monitor__goodsTable .admin__monitor__goodsTable__itemTR,
+.main__content .admin__note .admin__monitor__goodsTable .admin__monitor__goodsTable__itemTR {
   height: 40px;
 }
 
-.main__content .admin__monitor .admin__monitor__goodsTable .admin__monitor__goodsTable__itemTR .admin__monitor__goodsTable__itemTH {
+.main__content .admin__monitor .admin__monitor__goodsTable .admin__monitor__goodsTable__itemTR .admin__monitor__goodsTable__itemTH,
+.main__content .admin__note .admin__monitor__goodsTable .admin__monitor__goodsTable__itemTR .admin__monitor__goodsTable__itemTH {
   font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
   text-align: center;
   line-height: 20px;
@@ -969,11 +973,13 @@ body {
   border-bottom: 1px solid var(--main-between-line-color);
 }
 
-.main__content .admin__monitor .admin__monitor__goodsTable .admin__monitor__goodsTable__itemTR .admin__monitor__goodsTable__itemTH-important {
+.main__content .admin__monitor .admin__monitor__goodsTable .admin__monitor__goodsTable__itemTR .admin__monitor__goodsTable__itemTH-important,
+.main__content .admin__note .admin__monitor__goodsTable .admin__monitor__goodsTable__itemTR .admin__monitor__goodsTable__itemTH-important {
   background-color: #faf88fa4;
 }
 
-.main__content .admin__monitor .admin__monitor__title {
+.main__content .admin__monitor .admin__monitor__title,
+.main__content .admin__note .admin__monitor__title {
   display: block;
   font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
   text-align: left;
@@ -989,7 +995,8 @@ body {
   margin-bottom: 15px;
 }
 
-.main__content .admin__monitor .admin__monitor__subtitle {
+.main__content .admin__monitor .admin__monitor__subtitle,
+.main__content .admin__note .admin__monitor__subtitle {
   display: block;
   font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
   text-align: left;
@@ -1003,7 +1010,8 @@ body {
   padding-bottom: 36px;
 }
 
-.main__content .admin__monitor .admin__monitor__item {
+.main__content .admin__monitor .admin__monitor__item,
+.main__content .admin__note .admin__monitor__item {
   display: block;
   font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
   text-align: left;
@@ -1017,11 +1025,10 @@ body {
   border-bottom: 1px solid var(--main-between-line-color);
 }
 
-.main__content .admin__monitor .admin__monitor__chooseItem {
+.main__content .admin__monitor .admin__monitor__chooseItem,
+.main__content .admin__note .admin__monitor__chooseItem {
   cursor: pointer;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  display: block;
   font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
   text-align: left;
   line-height: 35px;
@@ -1034,43 +1041,58 @@ body {
   border-bottom: 1px solid var(--main-between-line-color);
 }
 
-.main__content .admin__monitor .admin__monitor__chooseItem-red {
+.main__content .admin__monitor .admin__monitor__chooseItem-red,
+.main__content .admin__note .admin__monitor__chooseItem-red {
   background-color: #fa8f8fa4;
 }
 
-.main__content .admin__monitor .admin__monitor__chooseItem-green {
+.main__content .admin__monitor .admin__monitor__chooseItem-green,
+.main__content .admin__note .admin__monitor__chooseItem-green {
   background-color: #8ffa8fa4;
 }
 
-.main__content .admin__monitor .admin__monitor__chooseItem-orange {
+.main__content .admin__monitor .admin__monitor__chooseItem-orange,
+.main__content .admin__note .admin__monitor__chooseItem-orange {
   background-color: #fab68fa4;
 }
 
-.main__content .admin__monitor .admin__monitor__chooseItem-yellow {
+.main__content .admin__monitor .admin__monitor__chooseItem-yellow,
+.main__content .admin__note .admin__monitor__chooseItem-yellow {
   background-color: #effa8fa4;
 }
 
-.main__content .admin__monitor .admin__monitor__chooseItem-lightYellow {
+.main__content .admin__monitor .admin__monitor__chooseItem-lightYellow,
+.main__content .admin__note .admin__monitor__chooseItem-lightYellow {
   background-color: #eff5bea4;
 }
 
-.main__content .admin__monitor .admin__monitor__chooseItem-gray {
+.main__content .admin__monitor .admin__monitor__chooseItem-gray,
+.main__content .admin__note .admin__monitor__chooseItem-gray {
   background-color: #c2c2c2a4;
 }
 
-.main__content .admin__monitor .admin__monitor__chooseItem:hover {
+.main__content .admin__monitor .admin__monitor__chooseItem:hover,
+.main__content .admin__note .admin__monitor__chooseItem:hover {
   color: var(--subject-blue);
   background-color: var(--second-bottom-hover-color);
   -webkit-transition: 0.5s;
   transition: 0.5s;
 }
 
-.main__content .admin__monitor .admin__monitor__goods {
+.main__content .admin__monitor .admin__monitor__chooseItem .spanText,
+.main__content .admin__note .admin__monitor__chooseItem .spanText {
+  color: #0000ff;
+  font-weight: 400;
+}
+
+.main__content .admin__monitor .admin__monitor__goods,
+.main__content .admin__note .admin__monitor__goods {
   background-color: #97c9e286;
   margin: 20px 0;
 }
 
-.main__content .admin__monitor .admin__monitor__block {
+.main__content .admin__monitor .admin__monitor__block,
+.main__content .admin__note .admin__monitor__block {
   background-color: #e2d79786;
   margin: 5px 0;
 }

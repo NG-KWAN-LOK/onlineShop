@@ -50,6 +50,7 @@ async function logout(eventCode = 0) {
     );
 }
 firebase.auth().onAuthStateChanged(async function (user) {
+  $("#admin__note").empty();
   $("#admin__content").empty();
   $("#admin__choosePage").empty();
   $("#admin__monitor").empty();

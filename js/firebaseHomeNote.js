@@ -1,10 +1,10 @@
 function showHomeNote() {
   console.log("showHomeNote");
-  $("#admin__monitor").empty();
+  $("#admin__note").empty();
   var titleString = `
       <div class="admin__monitor__title">公告：</div>
       `;
-  $("#admin__monitor").append(titleString);
+  $("#admin__note").append(titleString);
   db.collection("note")
     .doc("home")
     .get()
@@ -19,7 +19,7 @@ function showHomeNote() {
         </div>
       </div>
         `;
-      $("#admin__monitor").append(orderTitleString);
+      $("#admin__note").append(orderTitleString);
     })
     .catch(function (error) {
       console.log("Error getting documents: ", error);
@@ -43,8 +43,7 @@ function editHomeNote() {
     .then(function (notesh) {
       var noteInfo = notesh.data();
       var orderTitleString = `
-      <textarea id="homeNote" name="homeNote" rows="10" cols="50">
-      ${noteInfo.content}
+      <textarea id="homeNote" name="homeNote" rows="10" cols="50">${noteInfo.content}
       </textarea>
       </br>
       <input type="button" value="提交" onclick="updateHomeNote()">
@@ -82,7 +81,8 @@ function updateHomeNote() {
       updateUser: tempUser.displayName,
     })
     .then(function () {
-      alert("更改公告內容");
+      alert("更改公告內容成功");
+      $("#admin__monitor").empty();
       showHomeNote();
     })
     .catch(function () {

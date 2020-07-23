@@ -20,6 +20,9 @@
     <!--メインビジュアルのスライド-->
   </head>
   <body data-theme="">
+    <a href="#" id="toTop" style="display: none;">
+      <span id="toTopHover"></span>To Top</a
+    >
     <!--main-->
     <!--ウェブのトップ web top-->
     <!-- prettier-ignore-->
@@ -92,6 +95,7 @@
           </div>
         </div>
         <div class="admin__loginblock" id="admin__login"></div>
+        <div class="admin__note" id="admin__note"></div>
         <div class="admin__content" id="admin__content"></div>
         <div class="admin__choosePage" id="admin__choosePage"></div>
         <div class="admin__monitor" id="admin__monitor"></div>
@@ -110,13 +114,16 @@
             class="footer__content__box__copyright"
             id="topFooterLang_fotterCopyright"
           >
-            V0.29 2020-7-24 17:03
+            V0.30 2020-7-24 18:30
           </div>
         </div>
       </div>
     </div>
   </body>
   <script type="text/javascript" src="js/jquery.js"></script>
+  <!--ゆっくり上げる-->
+  <!--トップ上げる-->
+  <script type="text/javascript" src="js/totop.min.js"></script>
   <!--ゆっくり上げる-->
   <script type="text/javascript" src="js/jquery.easing.1.3.js"></script>
   <!--ビジュアルのバーガーメニュー-->
@@ -129,6 +136,7 @@
   <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-analytics.js"></script>
+
   <script type="text/javascript" src="js/menu_burger.js"></script>
   <!-- <script type="text/javascript" src="js/firebase.js"></script> -->
   <script type="text/javascript" src="js/firebaseOrderManagement.js"></script>

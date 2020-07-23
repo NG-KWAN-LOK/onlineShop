@@ -421,6 +421,11 @@ async function setItemOrderInfo(orderID) {
         isFinish: this.isFinish,
         isPaid: this.isPaid,
         isCancel: this.isCancel,
+        otherContacts: form.elements.otherContacts.value,
+        contactsName:
+          form.elements.contactsName.value != ""
+            ? form.elements.contactsName.value
+            : "none",
       })
       .then(function () {
         alert("新增訂單成功");

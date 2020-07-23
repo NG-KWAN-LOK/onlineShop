@@ -280,7 +280,7 @@ async function showReadOrderInfo(orderID) {
 // add new order
 async function showAddOrderForm() {
   $("#admin__monitor").empty();
-  var lastOrderID = 0;
+  var lastOrderID = getCurrentDateTime();
   var currentdate = new Date();
   var datetime =
     currentdate.getFullYear() +
@@ -300,17 +300,6 @@ async function showAddOrderForm() {
     (currentdate.getSeconds() < 10 ? "0" : "") +
     currentdate.getSeconds();
 
-  await db
-    .collection("order")
-    .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        lastOrderID = Number(doc.id) + 1;
-      });
-    })
-    .catch(function (error) {
-      console.log("Error getting documents: ", error);
-    });
   var titleString = `
     <div class="admin__monitor__title">新增訂單編號為${lastOrderID}之客戶資料</div>
     `;
@@ -594,7 +583,7 @@ function showEditOrderForm(orderID) {
 
 //edit good
 async function showEditGoodsForm(orderID) {
-  var lastGoodsID = 0;
+  var lastGoodsID = getCurrentDateTime();
   var titleString = `
     <div class="admin__monitor__block" style="background-color: #f3c6c686;">
       <div class="admin__monitor__title">全單總價格：</div>
@@ -719,7 +708,6 @@ async function showEditGoodsForm(orderID) {
           `;
           goodsValueString += `</div>`;
           $("#admin__monitor").append(goodsValueString);
-          lastGoodsID = Number(ordersh.id) + 1;
         });
       },
       (rej) => {
@@ -927,7 +915,7 @@ function updateTotalPrice(orderID, goodsID) {
   document.getElementById("totalPriceHKD" + goodsID).innerHTML =
     "售價總值(HKD)：" + goodsTotalPriceHKD;
 
-  document.getElementById("profitHKD" + goodsID).innerHTML =
+  document.getElementById("profitHKD").innerHTML =
     "毛利(HKD)：" +
     Math.round(
       ((document.getElementsByClassName("priceHKD" + goodsID)[0].value -
@@ -1152,4 +1140,21 @@ async function updateUpdateDateTime(orderID) {
     .catch(function () {
       return false;
     });
+}
+
+function getCurrentDateTime() {
+  var currentdate = new Date();
+  var currentDateTime =
+    currentdate.getFullYear() +
+    (currentdate.getMonth() + 1 < 10 ? "0" : "") +
+    (currentdate.getMonth() + 1) +
+    (currentdate.getDate() < 10 ? "0" : "") +
+    currentdate.getDate() +
+    (currentdate.getHours() < 10 ? "0" : "") +
+    currentdate.getHours() +
+    (currentdate.getMinutes() < 10 ? "0" : "") +
+    currentdate.getMinutes() +
+    (currentdate.getSeconds() < 10 ? "0" : "") +
+    currentdate.getSeconds();
+  return currentDateTime;
 }

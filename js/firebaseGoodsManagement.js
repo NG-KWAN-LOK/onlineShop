@@ -154,18 +154,8 @@ async function showReadgoodInfo(goodsID) {
 }
 async function showAddGoodsListForm() {
   $("#admin__monitor").empty();
-  var lastGoodsID = 0;
-  await db
-    .collection("goods")
-    .get()
-    .then(function (querySnapshot) {
-      querySnapshot.forEach(function (doc) {
-        lastGoodsID = Number(doc.id) + 1;
-      });
-    })
-    .catch(function (error) {
-      console.log("Error getting documents: ", error);
-    });
+  var lastGoodsID = getCurrentDateTime();
+  console.log(lastGoodsID);
   var titleString = `
     <div class="admin__monitor__title">新增貨品編號為${lastGoodsID}之貨品資料</div>
     `;

@@ -1,0 +1,101 @@
+@import "../color/color";
+* {
+  margin: 0;
+  padding: 0;
+}
+@page {
+  size: A4;
+  margin: 0;
+}
+html {
+  min-height: 100vh;
+}
+
+@media print {
+  table,
+  caption,
+  tbody,
+  tfoot,
+  thead,
+  tr,
+  th,
+  td {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    font-weight: 100;
+    font-size: 100%;
+    vertical-align: baseline;
+    background: transparent;
+  }
+  .printPage {
+    width: 21cm;
+    height: 29.7cm;
+    padding: 1cm 3.17cm;
+    position: relative;
+    border: 1px solid var(--border-bottom-color);
+    .printPage__page__header {
+    }
+  }
+  .printPage__page__content__basicInfo {
+    display: flex;
+    .printPage__page__content__basicInfo__customerInfo {
+      display: flex;
+      width: 65%;
+      .customerInfo__table {
+        display: flex;
+        .customerInfo__table__tr {
+          .customerInfo__table__th {
+            text-align: left;
+            font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體",
+              sans-serif;
+            text-align: center;
+            line-height: 20pt;
+            font-style: normal;
+            font-weight: 300;
+            color: var(--title-color);
+            text-decoration: none;
+            font-variant: normal;
+            font-size: 11pt;
+            text-align: left;
+            &-content {
+              @extend .customerInfo__table__th;
+              padding: 0 11pt;
+            }
+          }
+        }
+      }
+    }
+    .printPage__page__content__basicInfo__orderInfo {
+      width: 35%;
+      .orderInfo__table {
+        justify-content: flex-end;
+        border-collapse: collapse;
+        display: flex;
+        .orderInfo__table__tr {
+          border: 1px solid black;
+          .orderInfo__table__th {
+            border: 1px solid black;
+            text-align: left;
+            font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體",
+              sans-serif;
+            text-align: center;
+            line-height: 20pt;
+            font-style: normal;
+            font-weight: 300;
+            color: var(--title-color);
+            text-decoration: none;
+            font-variant: normal;
+            font-size: 11pt;
+            text-align: left;
+            padding: 0 11pt;
+            &-content {
+              @extend .orderInfo__table__th;
+            }
+          }
+        }
+      }
+    }
+  }
+}

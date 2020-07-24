@@ -47,7 +47,7 @@ function showGoodsListItem() {
               ? goodInfo.category === "2"
                 ? "出售過之代購商品"
                 : "Po文特別商品"
-              : "Po文普通商品"
+              : "Po文展示商品"
             : ""
         }　<span class="spanText">名稱：${goodInfo.name}</span></p><p>
           入貨價(NTD)：${goodInfo.inPriceNTD}(HKD：${
@@ -114,7 +114,7 @@ async function showReadgoodInfo(goodsID) {
                   ? goodsInfo.category === "2"
                     ? "出售過之代購商品"
                     : "Po文特別商品"
-                  : "Po文普通商品"
+                  : "Po文展示商品"
                 : ""
             }
             </div>
@@ -193,7 +193,7 @@ async function showAddGoodsListForm() {
         <div class="admin__monitor__item">
         貨品類別：
         <select name="category" id="category" class="selection">
-        　<option value="0">Po文普通商品</option>
+        　<option value="0">Po文展示商品</option>
         　<option value="1">Po文特別商品</option>
         <option value="2">出售過之代購商品</option>
         </select>
@@ -297,7 +297,7 @@ function showEditGoodsListForm(goodsID) {
                 <select name="category" id="category" class="selection">
                 　<option value="0" ${
                   goodsInfo.category === "0" ? "SELECTED" : ""
-                }>Po文普通商品</option>
+                }>Po文展示商品</option>
                 　<option value="1" ${
                   goodsInfo.category === "1" ? "SELECTED" : ""
                 }>Po文特別商品</option>

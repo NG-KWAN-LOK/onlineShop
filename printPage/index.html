@@ -21,54 +21,7 @@
   </head>
   <body data-theme="">
     <!--main-->
-    <div class="printPage">
-      <div class="printPage__page" id="printPage__page">
-        <div class="printPage__page__header" id="printPage__page__header"></div>
-        <div class="printPage__page__content__basicInfo">
-          <div class="printPage__page__content__basicInfo__customerInfo">
-            <table class="customerInfo__table">
-              <tr class="customerInfo__table__tr">
-                <th class="customerInfo__table__th">收件人名稱</th>
-                <th class="customerInfo__table__th-content">吳＊＊</th>
-              </tr>
-              <tr class="customerInfo__table__tr">
-                <th class="customerInfo__table__th">收件人電話</th>
-                <th class="customerInfo__table__th-content">12＊＊＊＊＊＊</th>
-              </tr>
-              <tr class="customerInfo__table__tr">
-                <th class="customerInfo__table__th">收件地址</th>
-                <th class="customerInfo__table__th-content">
-                  香港新界青衣＊＊＊＊＊＊＊＊＊＊＊＊＊＊＊
-                </th>
-              </tr>
-              <tr></tr>
-            </table>
-          </div>
-          <div class="printPage__page__content__basicInfo__orderInfo">
-            <table class="orderInfo__table">
-              <tr class="orderInfo__table__tr">
-                <th class="orderInfo__table__th">訂單日期</th>
-                <th class="orderInfo__table__th-content">2020/07/23 19:01</th>
-              </tr>
-              <tr class="orderInfo__table__tr">
-                <th class="orderInfo__table__th">印單日期</th>
-                <th class="orderInfo__table__th-content">2020/07/24 19:01</th>
-              </tr>
-              <tr class="orderInfo__table__tr">
-                <th class="orderInfo__table__th">訂單編號</th>
-                <th class="orderInfo__table__th-content">202007231901</th>
-              </tr>
-              <tr></tr>
-            </table>
-          </div>
-        </div>
-        <div
-          class="printPage__page__content"
-          id="printPage__page__content"
-        ></div>
-        <div class="printPage__page__footer" id="printPage__page__footer"></div>
-      </div>
-    </div>
+    <div class="printPage" id="printPage"></div>
   </body>
   <script type="text/javascript" src="../js/jquery.js"></script>
   <!--ゆっくり上げる-->
@@ -85,6 +38,6 @@
   <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-analytics.js"></script>
-
+  <script src="js/renderInvoice.js"></script>
   <!-- <script type="text/javascript" src="js/firebase.js"></script> -->
 </html>

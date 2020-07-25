@@ -109,15 +109,47 @@ html {
   }
   .printPage {
     width: 21cm;
-    height: 29.7cm;
+    height: 36.5cm;
     padding: 1cm 3.17cm;
     position: relative;
     border: 1px solid var(--border-bottom-color);
+  }
+  .printPage .printPage__page__header {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  .printPage .printPage__page__header .printPage__page__header__logo {
+    width: 50%;
+  }
+  .printPage .printPage__page__header .printPage__page__header__title {
+    width: 50%;
+    height: 100%;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+    text-align: right;
+    line-height: 30pt;
+    font-style: normal;
+    font-weight: 900;
+    color: #002060;
+    text-decoration: none;
+    font-variant: normal;
+    font-size: 28pt;
+    text-align: left;
   }
   .printPage__page__content__basicInfo {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
+    margin: 20pt 0;
   }
   .printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo {
     display: -webkit-box;
@@ -130,7 +162,7 @@ html {
     display: -ms-flexbox;
     display: flex;
   }
-  .printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th, .printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th-content {
+  .printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th, .printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th-content, .printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th-title {
     text-align: left;
     font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
     text-align: center;
@@ -142,17 +174,25 @@ html {
     font-variant: normal;
     font-size: 11pt;
     text-align: left;
-  }
-  .printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th-content {
     padding: 0 11pt;
+  }
+  .printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th-title {
+    color: #fff;
+    background-color: #002060;
   }
   .printPage__page__content__basicInfo .printPage__page__content__basicInfo__orderInfo {
     width: 35%;
-  }
-  .printPage__page__content__basicInfo .printPage__page__content__basicInfo__orderInfo .orderInfo__table {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
     -webkit-box-pack: end;
         -ms-flex-pack: end;
             justify-content: flex-end;
+    -webkit-box-align: end;
+        -ms-flex-align: end;
+            align-items: flex-end;
+  }
+  .printPage__page__content__basicInfo .printPage__page__content__basicInfo__orderInfo .orderInfo__table {
     border-collapse: collapse;
     display: -webkit-box;
     display: -ms-flexbox;
@@ -176,5 +216,463 @@ html {
     text-align: left;
     padding: 0 11pt;
   }
+  .printPage__page__content {
+    height: 73%;
+  }
+  .printPage__page__content .printPage__page__content__orderTabel {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTR {
+    border: 1px solid black;
+    background-color: #5b9bd5;
+  }
+  .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTH, .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTH-name, .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTH-price, .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTH-count {
+    border: 1px solid black;
+    text-align: left;
+    font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+    text-align: center;
+    line-height: 25pt;
+    font-style: normal;
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+    font-variant: normal;
+    font-size: 12pt;
+  }
+  .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTH-name {
+    width: 60%;
+  }
+  .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTH-price {
+    width: 12%;
+  }
+  .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTH-count {
+    border-left: 3px solid black;
+  }
+  .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__TR {
+    border-left: 1px solid black;
+  }
+  .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__TR-gray {
+    background-color: #f1f1f1;
+  }
+  .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__TH, .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__TH-count {
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    text-align: left;
+    font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+    text-align: center;
+    line-height: 20pt;
+    font-style: normal;
+    font-weight: 300;
+    color: #000;
+    text-decoration: none;
+    font-variant: normal;
+    font-size: 12pt;
+  }
+  .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__TH-count {
+    border-left: 3px solid black;
+  }
+  .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__FooterTR {
+    border-top: 1px solid black;
+  }
+  .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__FooterTH-totalPrice {
+    border-bottom: 1px double black;
+    font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+    text-align: center;
+    line-height: 30pt;
+    font-style: normal;
+    font-weight: 300;
+    color: #000;
+    text-decoration: none;
+    font-variant: normal;
+    font-size: 13pt;
+  }
+  .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__EndTH {
+    font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+    text-align: center;
+    line-height: 30pt;
+    font-style: normal;
+    font-weight: 300;
+    color: #000;
+    text-decoration: none;
+    font-variant: normal;
+    font-size: 13pt;
+  }
+  .printPage__page__footer {
+    -webkit-box-align: end;
+        -ms-flex-align: end;
+            align-items: flex-end;
+  }
+  .printPage__page__footer .printPage__page__footer__note {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    text-align: left;
+    font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+    text-align: center;
+    line-height: 20pt;
+    font-style: normal;
+    font-weight: 300;
+    color: var(--title-color);
+    text-decoration: none;
+    font-variant: normal;
+    font-size: 10pt;
+    text-align: left;
+  }
+  .printPage__page__footer .printPage__page__footer__note-title {
+    width: 65pt;
+  }
+  .printPage__page__footer .printPage__page__footer__socialMedia {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    text-align: left;
+    font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+    text-align: center;
+    line-height: 20pt;
+    font-style: normal;
+    font-weight: 300;
+    color: var(--title-color);
+    text-decoration: none;
+    font-variant: normal;
+    font-size: 12pt;
+    text-align: left;
+    padding: 10pt 0;
+  }
+  .printPage__page__footer .printPage__page__footer__endding {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+    line-height: 20pt;
+    font-style: normal;
+    font-weight: 500;
+    color: var(--title-color);
+    text-decoration: none;
+    font-variant: normal;
+    font-size: 12pt;
+    text-align: left;
+  }
+  .printPage__page__footer .printPage__page__footer__endding-text {
+    text-align: center;
+    font-style: italic;
+  }
+}
+
+.printPage__page {
+  height: 100%;
+}
+
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-weight: 100;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+.printPage {
+  width: 21cm;
+  height: 36.5cm;
+  padding: 1cm 3.17cm;
+  position: relative;
+  border: 1px solid var(--border-bottom-color);
+}
+
+.printPage .printPage__page__header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.printPage .printPage__page__header .printPage__page__header__logo {
+  width: 50%;
+}
+
+.printPage .printPage__page__header .printPage__page__header__title {
+  width: 50%;
+  height: 100%;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  text-align: right;
+  line-height: 30pt;
+  font-style: normal;
+  font-weight: 900;
+  color: #002060;
+  text-decoration: none;
+  font-variant: normal;
+  font-size: 28pt;
+  text-align: left;
+}
+
+.printPage__page__content__basicInfo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 20pt 0;
+}
+
+.printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  width: 65%;
+}
+
+.printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th, .printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th-content, .printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th-title {
+  text-align: left;
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  text-align: center;
+  line-height: 20pt;
+  font-style: normal;
+  font-weight: 300;
+  color: var(--title-color);
+  text-decoration: none;
+  font-variant: normal;
+  font-size: 11pt;
+  text-align: left;
+  padding: 0 11pt;
+}
+
+.printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th-title {
+  color: #fff;
+  background-color: #002060;
+}
+
+.printPage__page__content__basicInfo .printPage__page__content__basicInfo__orderInfo {
+  width: 35%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.printPage__page__content__basicInfo .printPage__page__content__basicInfo__orderInfo .orderInfo__table {
+  border-collapse: collapse;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.printPage__page__content__basicInfo .printPage__page__content__basicInfo__orderInfo .orderInfo__table .orderInfo__table__tr {
+  border: 1px solid black;
+}
+
+.printPage__page__content__basicInfo .printPage__page__content__basicInfo__orderInfo .orderInfo__table .orderInfo__table__tr .orderInfo__table__th, .printPage__page__content__basicInfo .printPage__page__content__basicInfo__orderInfo .orderInfo__table .orderInfo__table__tr .orderInfo__table__th-content {
+  border: 1px solid black;
+  text-align: left;
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  text-align: center;
+  line-height: 20pt;
+  font-style: normal;
+  font-weight: 300;
+  color: var(--title-color);
+  text-decoration: none;
+  font-variant: normal;
+  font-size: 11pt;
+  text-align: left;
+  padding: 0 11pt;
+}
+
+.printPage__page__content {
+  height: 73%;
+}
+
+.printPage__page__content .printPage__page__content__orderTabel {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTR {
+  border: 1px solid black;
+  background-color: #5b9bd5;
+}
+
+.printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTH, .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTH-name, .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTH-price, .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTH-count {
+  border: 1px solid black;
+  text-align: left;
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  text-align: center;
+  line-height: 25pt;
+  font-style: normal;
+  font-weight: 500;
+  color: #fff;
+  text-decoration: none;
+  font-variant: normal;
+  font-size: 12pt;
+}
+
+.printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTH-name {
+  width: 60%;
+}
+
+.printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTH-price {
+  width: 12%;
+}
+
+.printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__titleTH-count {
+  border-left: 3px solid black;
+}
+
+.printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__TR {
+  border-left: 1px solid black;
+}
+
+.printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__TR-gray {
+  background-color: #f1f1f1;
+}
+
+.printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__TH, .printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__TH-count {
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  text-align: left;
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  text-align: center;
+  line-height: 20pt;
+  font-style: normal;
+  font-weight: 300;
+  color: #000;
+  text-decoration: none;
+  font-variant: normal;
+  font-size: 12pt;
+}
+
+.printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__TH-count {
+  border-left: 3px solid black;
+}
+
+.printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__FooterTR {
+  border-top: 1px solid black;
+}
+
+.printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__FooterTH-totalPrice {
+  border-bottom: 1px double black;
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  text-align: center;
+  line-height: 30pt;
+  font-style: normal;
+  font-weight: 300;
+  color: #000;
+  text-decoration: none;
+  font-variant: normal;
+  font-size: 13pt;
+}
+
+.printPage__page__content .printPage__page__content__orderTabel .printPage__page__content__orderTabel__EndTH {
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  text-align: center;
+  line-height: 30pt;
+  font-style: normal;
+  font-weight: 300;
+  color: #000;
+  text-decoration: none;
+  font-variant: normal;
+  font-size: 13pt;
+}
+
+.printPage__page__footer {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end;
+}
+
+.printPage__page__footer .printPage__page__footer__note {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  text-align: left;
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  text-align: center;
+  line-height: 20pt;
+  font-style: normal;
+  font-weight: 300;
+  color: var(--title-color);
+  text-decoration: none;
+  font-variant: normal;
+  font-size: 10pt;
+  text-align: left;
+}
+
+.printPage__page__footer .printPage__page__footer__note-title {
+  width: 65pt;
+}
+
+.printPage__page__footer .printPage__page__footer__socialMedia {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  text-align: left;
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  text-align: center;
+  line-height: 20pt;
+  font-style: normal;
+  font-weight: 300;
+  color: var(--title-color);
+  text-decoration: none;
+  font-variant: normal;
+  font-size: 12pt;
+  text-align: left;
+  padding: 10pt 0;
+}
+
+.printPage__page__footer .printPage__page__footer__endding {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+  line-height: 20pt;
+  font-style: normal;
+  font-weight: 500;
+  color: var(--title-color);
+  text-decoration: none;
+  font-variant: normal;
+  font-size: 12pt;
+  text-align: left;
+}
+
+.printPage__page__footer .printPage__page__footer__endding-text {
+  text-align: center;
+  font-style: italic;
 }
 /*# sourceMappingURL=style.css.map */

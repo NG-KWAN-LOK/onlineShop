@@ -100,6 +100,31 @@
         <div class="admin__choosePage" id="admin__choosePage"></div>
         <div class="admin__monitor" id="admin__monitor"></div>
       </div>
+      <div id="buildingPopUpLayer">
+        <div class="buildingPopUpLayer__container">
+          <div class="buildingPopUpLayer__container__main">
+            <div
+              class="buildingPopUpLayer_closeLayer"
+              onclick="closeLayer(this)"
+            ></div>
+            <div
+              class="buildingPopUpLayer__container__main__title"
+              id="alertTitle"
+            >
+              提示訊息：
+            </div>
+            <div
+              id="alertContent"
+              class="buildingPopUpLayer__container__main__content"
+            ></div>
+            <div class="function__bar__alert">
+              <div class="function__bar__btn__alert" onclick="closeLayer(this)">
+                知道了！
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="footer">
       <div class="footer__content">
@@ -114,7 +139,7 @@
             class="footer__content__box__copyright"
             id="topFooterLang_fotterCopyright"
           >
-            內測版V1.2 2020-7-25 23:37
+            內測版V1.3 2020-7-26 0:50
           </div>
         </div>
       </div>
@@ -143,4 +168,5 @@
   <script type="text/javascript" src="js/firebaseGoodsManagement.js"></script>
   <script type="text/javascript" src="js/firebaseHomeNote.js"></script>
   <script type="text/javascript" src="js/login.js"></script>
+  <script type="text/javascript" src="js/popupLayer.js"></script>
 </html>

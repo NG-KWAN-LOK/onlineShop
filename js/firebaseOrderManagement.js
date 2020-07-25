@@ -442,13 +442,13 @@ async function setItemOrderInfo(orderID) {
             : "none",
       })
       .then(function () {
-        alert("新增訂單成功");
+        openAlertLayer("新增訂單成功");
         updateUpdateDateTime(orderID);
         showEditOrderForm(orderID);
         return;
       })
       .catch(function () {
-        alert(
+        openAlertLayer(
           "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
         );
         if (user === "") {
@@ -468,7 +468,7 @@ async function setItemOrderInfo(orderID) {
         return;
       });
   } else {
-    alert("新增失敗！！！未有填寫全部資料");
+    openAlertLayer("新增失敗！！！未有填寫全部資料");
   }
 }
 
@@ -828,12 +828,12 @@ async function removeItemGoodsInfo(orderID, goodsID) {
       .doc(goodsID.toString())
       .delete()
       .then(function () {
-        alert("刪除貨品成功");
+        openAlertLayer("刪除貨品成功");
         updateUpdateDateTime(orderID);
         showEditOrderForm(orderID);
       })
       .catch(function () {
-        alert(
+        openAlertLayer(
           "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
         );
         if (user === "") {
@@ -864,11 +864,11 @@ async function removeItemOrderInfo(orderID) {
       .doc(orderID.toString())
       .delete()
       .then(function () {
-        alert("刪除訂單成功");
+        openAlertLayer("刪除貨品成功");
         $("#admin__monitor").empty();
       })
       .catch(function () {
-        alert(
+        openAlertLayer(
           "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
         );
         if (user === "") {
@@ -999,11 +999,11 @@ async function updateItemGoodsInfo(orderID, goodsID, mode) {
           form.elements.priceHKD.value * form.elements.count.value,
       })
       .then(function () {
-        alert("更新貨品資料成功");
+        openAlertLayer("更新貨品資料成功");
         updateUpdateDateTime(orderID);
       })
       .catch(function () {
-        alert(
+        openAlertLayer(
           "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
         );
         if (user === "") {
@@ -1023,7 +1023,7 @@ async function updateItemGoodsInfo(orderID, goodsID, mode) {
         $("#admin__monitor").empty();
       });
   } else {
-    alert("建立失敗！！！未有填寫全部資料");
+    openAlertLayer("建立失敗！！！未有填寫全部資料");
   }
   //countAllTotalPrice(orderID);
   var orderTotalPrice = 0;
@@ -1120,11 +1120,11 @@ async function updateItemOrderInfo(orderID) {
         isCancel: form.elements.isCancel.value,
       })
       .then(function () {
-        alert("更新訂單成功");
+        openAlertLayer("更新訂單成功");
         updateUpdateDateTime(orderID);
       })
       .catch(function () {
-        alert(
+        openAlertLayer(
           "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
         );
         if (user === "") {
@@ -1143,7 +1143,7 @@ async function updateItemOrderInfo(orderID) {
         $("#admin__monitor").empty();
       });
   } else {
-    alert("建立失敗！！！未有填寫全部資料");
+    openAlertLayer("建立失敗！！！未有填寫全部資料");
   }
 }
 

@@ -32,10 +32,10 @@ async function logout(eventCode = 0) {
     .then(
       function () {
         if (eventCode === 0) {
-          alert("登出成功");
+          openAlertLayer("登出成功");
           clearInterval(oCountdownID);
         } else if (eventCode === 1) {
-          alert("您已閒置超過7分鐘，系統自動登出");
+          openAlertLayer("您已閒置超過7分鐘，系統自動登出");
           clearInterval(oCountdownID);
         } else {
           console.log("Login Inited");
@@ -45,7 +45,7 @@ async function logout(eventCode = 0) {
         token = "";
       },
       function (error) {
-        alert("登出失敗");
+        openAlertLayer("登出失敗");
       }
     );
 }
@@ -103,7 +103,7 @@ firebase.auth().onAuthStateChanged(async function (user) {
         ":" +
         (currentdate.getSeconds() < 10 ? "0" : "") +
         currentdate.getSeconds();
-      alert("歡迎管理員" + userName + "大大");
+      openAlertLayer("歡迎管理員" + userName + "大大");
       console.log("Login success");
       var divContent = `
       <div class="admin__content__title">歡迎管理員 ${userName}大大</div>
@@ -148,7 +148,7 @@ firebase.auth().onAuthStateChanged(async function (user) {
         });
       //autoLogout();
     } else {
-      alert("很抱歉，您不是管理員，請您找管理員尋求協助");
+      openAlertLayer("很抱歉，您不是管理員，請您找管理員尋求協助");
       logout(999);
     }
   } else {

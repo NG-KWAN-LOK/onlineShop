@@ -518,6 +518,14 @@ a {
     }
   }
 }
+.function__bar__alert {
+  @extend .function__bar;
+  justify-content: center;
+  margin: 0;
+  .function__bar__btn__alert {
+    @extend .function__bar__btn;
+  }
+}
 .function__bar__text {
   display: flex;
   justify-content: center;
@@ -991,4 +999,82 @@ input:invalid {
   text-decoration: none;
   font-variant: normal;
   font-size: 16px;
+}
+
+#buildingPopUpLayer {
+  display: none;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #000000d8;
+  .buildingPopUpLayer__container {
+    display: block;
+    width: 375px;
+    height: 200px;
+    overflow-y: auto;
+    background-color: var(--popup-bg-color);
+    padding: 20px 0;
+    .buildingPopUpLayer__container__main {
+      height: 86.5%;
+      .buildingPopUpLayer__container__main__title {
+        text-align: center;
+        font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+        font-style: normal;
+        font-weight: 400;
+        color: var(--title-color);
+        background-color: transparent;
+        text-decoration: none;
+        font-variant: normal;
+        font-size: 25px;
+        vertical-align: 0;
+        padding: 20px 0;
+      }
+      .buildingPopUpLayer__container__main__content {
+        height: 75px;
+        text-align: center;
+        font-family: "Noto Sans TC", "Noto Sans JP", "微軟正黑體", sans-serif;
+        font-style: normal;
+        font-weight: 300;
+        color: var(--title-color);
+        background-color: transparent;
+        text-decoration: none;
+        font-variant: normal;
+        font-size: 20px;
+        vertical-align: 0;
+        padding-bottom: 20px;
+      }
+    }
+    .buildingPopUpLayer_closeLayer {
+      position: absolute;
+      cursor: pointer;
+      right: 30px;
+      top: 30px;
+      width: 32px;
+      height: 32px;
+      opacity: 0.3;
+      &:hover {
+        opacity: 1;
+      }
+      &:before,
+      &:after {
+        position: absolute;
+        left: 15px;
+        content: " ";
+        height: 33px;
+        width: 2px;
+        background-color: #fff;
+      }
+      &:before {
+        transform: rotate(45deg);
+      }
+      &:after {
+        transform: rotate(-45deg);
+      }
+    }
+  }
 }

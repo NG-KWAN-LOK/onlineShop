@@ -296,7 +296,8 @@ async function showReadOrderInfo(orderID) {
           `;
           goodsCopyText += `${goodsValue.goodsName}　${goodsValue.count}件\n`;
         });
-        goodsCopyText += `共HKD ${orderTotalPrice}（未包含順豐郵費）`;
+        goodsCopyText += `共HKD ${orderTotalPrice}（未包含順豐郵費）\n麻煩確認一下商品名稱、數量、係咪正確，總共金額有冇問題，之後話俾我知，唔該曬～
+        `;
         //countAllTotalPrice(orderID);
         goodsValueString += `</table>
         <div class="admin__monitor__subtitle" style="margin:20px 0;">最後更新係於 ${orderInfo.leastUpdateTime}由${orderInfo.updateUser}</div>

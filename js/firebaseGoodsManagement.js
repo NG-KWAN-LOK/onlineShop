@@ -17,6 +17,9 @@ function showGoodsListItem() {
           <option value="leastUpdateTime" ${
             orderByRef === "leastUpdateTime" ? "SELECTED" : ""
           }>依最後更新日期</option>
+          <option value="isPo" ${
+            orderByRef === "isPo" ? "SELECTED" : ""
+          }>依出Po狀態</option>
         </select>
         <div class="function__bar__text">
             倒序：
@@ -49,7 +52,9 @@ function showGoodsListItem() {
                 : "Po文特別商品"
               : "Po文展示商品"
             : ""
-        }　<span class="spanText">名稱：${goodInfo.name}</span></p><p>
+        }　<span class="spanText">名稱：${goodInfo.name}</span>　${
+          goodInfo.isPo === "true" ? "已出Po" : "未出Po"
+        }</p><p>
           入貨價(NTD)：${goodInfo.inPriceNTD}(HKD：${
           Math.round((goodInfo.inPriceNTD / twdToHKD) * 10) / 10
         })　定價(HKD)：${goodInfo.priceHKD}　毛利(HKD)：${
@@ -78,7 +83,6 @@ function showGoodsListItem() {
       console.log("Error getting documents: ", error);
     });
 }
-function showGoodsListItemByOrder(sortName) {}
 
 async function showReadgoodInfo(goodsID) {
   $("#admin__monitor").empty();
@@ -213,6 +217,21 @@ async function showAddGoodsListForm() {
             name="website"
             id="website" required
         />
+        <input
+            type="text"
+            name="website1"
+            id="website"
+        />
+        <input
+            type="text"
+            name="website2"
+            id="website"
+        />
+        <input
+            type="text"
+            name="website3"
+            id="website"
+        />
         </div>
         <div class="admin__monitor__item">
         貨品所在FB：
@@ -229,6 +248,10 @@ async function showAddGoodsListForm() {
             name="urlOnIG"
             id="urlOnIG"
         />
+        </div>
+        <div class="admin__monitor__item">
+          已出Po：
+          <input type="checkbox" id="isPo" name="isPo">
         </div>
         <div class="admin__monitor__title">
             貨品價格：
@@ -285,6 +308,7 @@ function showEditGoodsListForm(goodsID) {
     .then(
       function (goodssh) {
         var goodsInfo = goodssh.data();
+        console.log(goodsInfo.isPo);
         titleString = `
             <div class="admin__monitor__block">
                 <div class="admin__monitor__title">貨品資料</div>
@@ -323,6 +347,24 @@ function showEditGoodsListForm(goodsID) {
                     id="website"
                     value="${goodsInfo.website}" required
                 />
+                <input
+                    type="text"
+                    name="website1"
+                    id="website1"
+                    value="${goodsInfo.website1}"
+                />
+                <input
+                    type="text"
+                    name="website2"
+                    id="website2"
+                    value="${goodsInfo.website2}"
+                />
+                <input
+                    type="text"
+                    name="website3"
+                    id="website3"
+                    value="${goodsInfo.website3}"
+                />
                 </div>
                 <div class="admin__monitor__item">
                 貨品所在FB：
@@ -341,6 +383,12 @@ function showEditGoodsListForm(goodsID) {
                     id="urlOnIG"
                     value="${goodsInfo.urlOnIG}"
                 />
+                </div>
+                <div class="admin__monitor__item">
+                已出Po：
+                <input type="checkbox" id="isPo" name="isPo" ${
+                  goodsInfo.isPo === "true" ? "checked" : ""
+                }>
                 </div>
                 <div class="admin__monitor__title">
                     貨品價格：
@@ -441,10 +489,14 @@ async function updateGoodsListInfo(goodsID, mode) {
         category: form.elements.category.value,
         name: form.elements.name.value,
         website: form.elements.website.value,
+        website1: form.elements.website1.value,
+        website2: form.elements.website2.value,
+        website3: form.elements.website3.value,
         inPriceNTD: form.elements.inPriceNTD.value,
         priceHKD: form.elements.priceHKD.value,
         urlOnFacebook: form.elements.urlOnFacebook.value,
         urlOnIG: form.elements.urlOnIG.value,
+        isPo: form.elements.isPo.checked.toString(),
       })
       .then(function () {
         alert("更新貨品資料成功");

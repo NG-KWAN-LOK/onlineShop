@@ -81,12 +81,12 @@ function updateHomeNote() {
       updateUser: tempUser.displayName,
     })
     .then(function () {
-      alert("更改公告內容成功");
+      openAlertLayer("更改公告內容成功");
       $("#admin__monitor").empty();
       showHomeNote();
     })
     .catch(function () {
-      alert(
+      openAlertLayer(
         "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
       );
       if (user === "") {

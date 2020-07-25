@@ -55,19 +55,19 @@ function showGoodsListItem() {
         }　<span class="spanText">名稱：${goodInfo.name}</span>　${
           goodInfo.isPo === "true" ? "已出Po" : "未出Po"
         }</p><p>
-          入貨價(NTD)：${goodInfo.inPriceNTD}(HKD：${
-          Math.round((goodInfo.inPriceNTD / twdToHKD) * 10) / 10
-        })　定價(HKD)：${goodInfo.priceHKD}　毛利(HKD)：${
+          入貨價(NTD)：${goodInfo.displayInPriceNTD}(HKD：${
+          Math.round((goodInfo.displayInPriceNTD / twdToHKD) * 10) / 10
+        })　定價(HKD)：${goodInfo.displayPriceHKD}　毛利(HKD)：${
           Math.round(
-            (goodInfo.priceHKD -
-              Math.round((goodInfo.inPriceNTD / twdToHKD) * 10) / 10) *
+            (goodInfo.displayPriceHKD -
+              Math.round((goodInfo.displayInPriceNTD / twdToHKD) * 10) / 10) *
               10
           ) / 10
         }(${
           Math.round(
-            ((goodInfo.priceHKD -
-              Math.round((goodInfo.inPriceNTD / twdToHKD) * 10) / 10) /
-              Math.round((goodInfo.inPriceNTD / twdToHKD) * 10) /
+            ((goodInfo.displayPriceHKD -
+              Math.round((goodInfo.displayInPriceNTD / twdToHKD) * 10) / 10) /
+              Math.round((goodInfo.displayInPriceNTD / twdToHKD) * 10) /
               10) *
               10000 *
               10
@@ -84,103 +84,6 @@ function showGoodsListItem() {
     });
 }
 
-async function showReadgoodInfo(goodsID) {
-  $("#admin__monitor").empty();
-  var goodsInfo = "";
-  var titleString = `
-    <div class="admin__monitor__title">查看貨品${goodsID}資料</div>
-      <div class="function__bar">
-        <div class="function__bar__btn" onclick="showGoodsListItem()">
-          返回查看所有貨品
-        </div>
-        <div class="function__bar__btn" onclick="showEditGoodsListForm(${goodsID})">
-          修改資料
-        </div>
-      </div>
-      `;
-  $("#admin__monitor").append(titleString);
-  await db
-    .collection("goods")
-    .doc(goodsID.toString())
-    .get()
-    .then(function (goodssh) {
-      goodsInfo = goodssh.data();
-      titleString = `
-        <div class="admin__monitor__block">
-            <div class="admin__monitor__title">貨品資料</div>
-            <div class="admin__monitor__item">
-            貨品編號：${goodssh.id}
-            </div>
-            <div class="admin__monitor__item">
-            貨品類別：${
-              goodsInfo.category === "0"
-                ? goodsInfo.category === "1"
-                  ? goodsInfo.category === "2"
-                    ? "出售過之代購商品"
-                    : "Po文特別商品"
-                  : "Po文展示商品"
-                : ""
-            }
-            </div>
-            <div class="admin__monitor__item">
-            貨品名稱：${goodsInfo.name}
-            </div>
-            <div class="admin__monitor__item">
-            貨品網址：${goodsInfo.website}
-            </div>
-            <div class="admin__monitor__item">
-            貨品所在FB：${goodsInfo.urlOnFacebook}
-            </div>
-            <div class="admin__monitor__item">
-            貨品所在IG：${goodsInfo.urlOnIG}
-            </div>
-        </div>`;
-      $("#admin__monitor").append(titleString);
-      var titleString = `
-        <div class="admin__monitor__goods">
-            <div class="admin__monitor__title">
-                貨品價格：
-            </div>
-            <div class="admin__monitor__item" id="inPriceNTD">
-                入貨單價(NTD)：${goodsInfo.inPriceNTD}
-            </div>
-            <div class="admin__monitor__item" id="inPriceHKD">
-                入貨單價(HKD)：${
-                  Math.round((goodsInfo.inPriceNTD / twdToHKD) * 10) / 10
-                }
-            </div>
-            <div class="admin__monitor__item" id="priceHKD">
-                售價(HKD)：${goodsInfo.priceHKD}
-            </div>
-            <div class="admin__monitor__item" id="profitHKD">
-                毛利(HKD)：${
-                  Math.round(
-                    (goodsInfo.priceHKD -
-                      Math.round((goodsInfo.inPriceNTD / twdToHKD) * 10) / 10) *
-                      10
-                  ) / 10
-                }(${
-        Math.round(
-          ((goodsInfo.priceHKD -
-            Math.round((goodsInfo.inPriceNTD / twdToHKD) * 10) / 10) /
-            Math.round((goodsInfo.inPriceNTD / twdToHKD) * 10) /
-            10) *
-            10000 *
-            10
-        ) / 10
-      }%)
-            </div>
-        </div>
-        <div class="admin__monitor__subtitle" style="margin:20px 0;">最後更新係於 ${
-          goodsInfo.leastUpdateTime
-        }由${goodsInfo.updateUser}</div>
-        `;
-      $("#admin__monitor").append(titleString);
-    })
-    .catch(function (error) {
-      console.log("Error getting documents: ", error);
-    });
-}
 async function showAddGoodsListForm() {
   $("#admin__monitor").empty();
   var lastGoodsID = getCurrentDateTime();
@@ -211,29 +114,6 @@ async function showAddGoodsListForm() {
         />
         </div>
         <div class="admin__monitor__item">
-        貨品網址：
-        <input
-            type="text"
-            name="website"
-            id="website" required
-        />
-        <input
-            type="text"
-            name="website1"
-            id="website"
-        />
-        <input
-            type="text"
-            name="website2"
-            id="website"
-        />
-        <input
-            type="text"
-            name="website3"
-            id="website"
-        />
-        </div>
-        <div class="admin__monitor__item">
         貨品所在FB：
         <input
             type="text"
@@ -253,38 +133,11 @@ async function showAddGoodsListForm() {
           已出Po：
           <input type="checkbox" id="isPo" name="isPo">
         </div>
-        <div class="admin__monitor__title">
-            貨品價格：
-        </div>
-        <div class="admin__monitor__item" id="inPriceNTD">
-            入貨單價(NTD)：
-            <input
-                type="number"
-                name="inPriceNTD"
-                id="inPriceNTD"
-                class="inPriceNTD${lastGoodsID}" oninput="updateGoodsPrice(${lastGoodsID})" required
-            />
-        </div>
-        <div class="admin__monitor__item" id="inPriceHKD">
-            入貨單價(HKD)：
-        </div>
-        <div class="admin__monitor__item" id="priceHKD">
-            售價(HKD)：
-            <input
-                type="number"
-                name="priceHKD"
-                id="priceHKD"
-                class="priceHKD${lastGoodsID}" oninput="updateGoodsPrice(${lastGoodsID})" required
-            />
-        </div>
-        <div class="admin__monitor__item" id="profitHKD">
-            毛利(HKD)：
-        </div>
             <input
           type="button"
           name="submit"
-          value="新增訂單客戶資料"
-          onclick="updateGoodsListInfo(${lastGoodsID}, 1);"
+          value="新增貨品資料"
+          onclick="setGoodsListInfo(${lastGoodsID});"
               />
         </form>
           `;
@@ -340,33 +193,6 @@ function showEditGoodsListForm(goodsID) {
                 />
                 </div>
                 <div class="admin__monitor__item">
-                貨品網址：
-                <input
-                    type="text"
-                    name="website"
-                    id="website"
-                    value="${goodsInfo.website}" required
-                />
-                <input
-                    type="text"
-                    name="website1"
-                    id="website1"
-                    value="${goodsInfo.website1}"
-                />
-                <input
-                    type="text"
-                    name="website2"
-                    id="website2"
-                    value="${goodsInfo.website2}"
-                />
-                <input
-                    type="text"
-                    name="website3"
-                    id="website3"
-                    value="${goodsInfo.website3}"
-                />
-                </div>
-                <div class="admin__monitor__item">
                 貨品所在FB：
                 <input
                     type="text"
@@ -384,69 +210,20 @@ function showEditGoodsListForm(goodsID) {
                     value="${goodsInfo.urlOnIG}"
                 />
                 </div>
+                <div class="admin__monitor__item" id="displayIDClass">
+                </div>
                 <div class="admin__monitor__item">
                 已出Po：
                 <input type="checkbox" id="isPo" name="isPo" ${
                   goodsInfo.isPo === "true" ? "checked" : ""
                 }>
                 </div>
-                <div class="admin__monitor__title">
-                    貨品價格：
-                </div>
-                <div class="admin__monitor__item" id="inPriceNTD">
-                    入貨單價(NTD)：
-                    <input
-                        type="number"
-                        name="inPriceNTD"
-                        id="inPriceNTD"
-                        class="inPriceNTD${goodssh.id}"
-                        value="${
-                          goodsInfo.inPriceNTD
-                        }" oninput="updateGoodsPrice(${goodssh.id})" required
-                    />
-                </div>
-                <div class="admin__monitor__item" id="inPriceHKD">
-                    入貨單價(HKD)：${
-                      Math.round((goodsInfo.inPriceNTD / twdToHKD) * 10) / 10
-                    }
-                </div>
-                <div class="admin__monitor__item" id="priceHKD">
-                    售價(HKD)：
-                    <input
-                        type="number"
-                        name="priceHKD"
-                        id="priceHKD"
-                        class="priceHKD${goodssh.id}"
-                        value="${
-                          goodsInfo.priceHKD
-                        }" oninput="updateGoodsPrice(${goodssh.id})" required
-                    />
-                </div>
-                <div class="admin__monitor__item" id="profitHKD">
-                    毛利(HKD)：${
-                      Math.round(
-                        (goodsInfo.priceHKD -
-                          Math.round((goodsInfo.inPriceNTD / twdToHKD) * 10) /
-                            10) *
-                          10
-                      ) / 10
-                    }(${
-          Math.round(
-            ((goodsInfo.priceHKD -
-              Math.round((goodsInfo.inPriceNTD / twdToHKD) * 10) / 10) /
-              Math.round((goodsInfo.inPriceNTD / twdToHKD) * 10) /
-              10) *
-              10000 *
-              10
-          ) / 10
-        }%)
-        </div>
           </form>
           <input
           type="button"
           name="submit"
           value="更新貨品資料"
-          onclick="updateGoodsListInfo(${goodsID}, 0);"
+          onclick="updateGoodsListInfo(${goodsID});"
               />
               <input
           type="button"
@@ -460,6 +237,7 @@ function showEditGoodsListForm(goodsID) {
         }由${goodsInfo.updateUser}</div>
         `;
         $("#admin__monitor").append(titleString);
+        showEditWebsiteForm(goodsID, goodsInfo.displayID);
         return true;
       },
       (rej) => {
@@ -468,42 +246,202 @@ function showEditGoodsListForm(goodsID) {
     );
 }
 
-async function updateGoodsListInfo(goodsID, mode) {
-  const form = document.forms["form" + goodsID];
-  var category = form.elements.category.value;
-  var name = form.elements.name.value;
+async function showEditWebsiteForm(goodsID, displayID) {
+  var lastWebsiteID = 0;
+  var displayIDClassString = `
+  展示價錢資料編號：
+  <select name="displayID" id="displayID" class="selection">
+  `;
+  var titleString = `
+  <div class="admin__monitor__title">貨品網路通路資料</div>
+  `;
+  $("#admin__monitor").append(titleString);
+  await db
+    .collection("goods")
+    .doc(goodsID.toString())
+    .collection("website")
+    .get()
+    .then(
+      function (querySnapshot) {
+        querySnapshot.forEach(function (goodssh) {
+          var goodsValueString = `<div class="admin__monitor__goods">`;
+          var goodsValue = goodssh.data();
+          goodsValueString += `
+          <form name="form" id="form${goodssh.id}">
+          <div class="admin__monitor__item">編號：
+          ${goodssh.id}
+          </div>
+          <div class="admin__monitor__item">網路通路：
+            <input
+            type="text"
+            name="shopName"
+            id="shopName"
+            value="${goodsValue.shopName}" required
+            />
+          </div>
+          <div class="admin__monitor__item">網路通路網址：
+            <input
+            type="text"
+            name="website"
+            id="website"
+            value="${goodsValue.website}" required
+            />
+          </div>
+          <div class="admin__monitor__item" id="inPriceNTD">
+            入貨單價(NTD)：
+            <input
+                type="number"
+                name="inPriceNTD"
+                id="inPriceNTD"
+                class="inPriceNTD${goodssh.id}"
+                value="${goodsValue.inPriceNTD}" oninput="updateGoodsPrice(${
+            goodssh.id
+          })" required
+            />
+          </div>
+          <div class="admin__monitor__item" id="inPriceHKD${goodssh.id}">
+              入貨單價(HKD)：${
+                Math.round((goodsValue.inPriceNTD / twdToHKD) * 10) / 10
+              }
+          </div>
+          <div class="admin__monitor__item" id="priceHKD">
+              售價(HKD)：
+              <input
+                  type="number"
+                  name="priceHKD"
+                  id="priceHKD"
+                  class="priceHKD${goodssh.id}"
+                  value="${goodsValue.priceHKD}" oninput="updateGoodsPrice(${
+            goodssh.id
+          })" required
+              />
+          </div>
+          <div class="admin__monitor__item" id="profitHKD${goodssh.id}">
+              毛利(HKD)：${
+                Math.round(
+                  (goodsValue.priceHKD -
+                    Math.round((goodsValue.inPriceNTD / twdToHKD) * 10) / 10) *
+                    10
+                ) / 10
+              }(${
+            Math.round(
+              ((goodsValue.priceHKD -
+                Math.round((goodsValue.inPriceNTD / twdToHKD) * 10) / 10) /
+                Math.round((goodsValue.inPriceNTD / twdToHKD) * 10) /
+                10) *
+                10000 *
+                10
+            ) / 10
+          }%)
+        </div>
+          </form>
+          <input
+          type="button"
+          name="submit"
+          value="更改貨品網路資料"
+          onclick="updateItemWebsiteInfo(${goodsID},${goodssh.id}, 0);"
+              />
+              <input
+          type="button"
+          name="submit"
+          value="刪除資料"
+          onclick="removeItemWebsiteInfo(${goodsID},${goodssh.id});"
+              />
+          `;
+          goodsValueString += `</div>`;
+          $("#admin__monitor").append(goodsValueString);
+          lastWebsiteID = Number(goodssh.id);
+          displayIDClassString += `
+        <option value="${goodssh.id}" ${
+            displayID === goodssh.id ? "SELECTED" : ""
+          }>${goodssh.id}</option>`;
+        });
+      },
+      (rej) => {
+        console.log(rej);
+      }
+    );
+  displayIDClassString += `</select>`;
+  $("#displayIDClass").append(displayIDClassString);
+  lastWebsiteID += 1;
+  var goodsValueString = `<div class="admin__monitor__goods" style = "background-color: #e2de9786;">`;
+  goodsValueString += `
+      <form name="form${lastWebsiteID}" id="form${lastWebsiteID}">
+      <div class="admin__monitor__item">新增貨物網路資料：${lastWebsiteID}</div>
+      <div class="admin__monitor__item">網路通路：
+        <input
+        type="text"
+        name="shopName"
+        id="shopName" required
+        />
+      </div>
+      <div class="admin__monitor__item">網路通路網址：
+        <input
+        type="text"
+        name="website"
+        id="website" required
+        />
+      </div>
+      <div class="admin__monitor__item" id="inPriceNTD">
+        入貨單價(NTD)：
+        <input
+            type="number"
+            name="inPriceNTD"
+            id="inPriceNTD${lastWebsiteID}"
+            class="inPriceNTD${lastWebsiteID}" oninput="updateGoodsPrice(${lastWebsiteID})" required
+        />
+      </div>
+      <div class="admin__monitor__item" id="inPriceHKD${lastWebsiteID}">
+          入貨單價(HKD)：
+      </div>
+      <div class="admin__monitor__item" id="priceHKD">
+          售價(HKD)：
+          <input
+              type="number"
+              name="priceHKD"
+              id="priceHKD"
+              class="priceHKD${lastWebsiteID}" oninput="updateGoodsPrice(${lastWebsiteID})" required
+          />
+      </div>
+      <div class="admin__monitor__item" id="profitHKD${lastWebsiteID}">
+          毛利(HKD)：
+        </div>
+      </form>
+      <input
+      type="button"
+      name="submit"
+      value="新增貨品網頁資料"
+      onclick="updateItemWebsiteInfo(${goodsID}, ${lastWebsiteID}, 1);"
+          />
+      `;
+  goodsValueString += `</div>`;
+  $("#admin__monitor").append(goodsValueString);
+}
+
+async function updateItemWebsiteInfo(goodsID, websiteID, mode) {
+  const form = document.forms["form" + websiteID];
+  var shopName = form.elements.shopName.value;
   var website = form.elements.website.value;
   var inPriceNTD = form.elements.inPriceNTD.value;
   var priceHKD = form.elements.priceHKD.value;
-  if (
-    category != "" &&
-    name != "" &&
-    website != "" &&
-    inPriceNTD != "" &&
-    priceHKD != ""
-  ) {
+  if (shopName != "" && website != "" && inPriceNTD != "" && priceHKD != "") {
     await db
       .collection("goods")
       .doc(goodsID.toString())
+      .collection("website")
+      .doc(websiteID.toString())
       .set({
-        category: form.elements.category.value,
-        name: form.elements.name.value,
+        shopName: form.elements.shopName.value,
         website: form.elements.website.value,
-        website1: form.elements.website1.value,
-        website2: form.elements.website2.value,
-        website3: form.elements.website3.value,
         inPriceNTD: form.elements.inPriceNTD.value,
         priceHKD: form.elements.priceHKD.value,
-        urlOnFacebook: form.elements.urlOnFacebook.value,
-        urlOnIG: form.elements.urlOnIG.value,
-        isPo: form.elements.isPo.checked.toString(),
       })
       .then(function () {
-        alert("更新貨品資料成功");
+        openAlertLayer("更新貨品網路資料成功");
         GoodsUpdateUpdateDateTime(goodsID);
       })
       .catch(function () {
-        alert(
+        openAlertLayer(
           "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
         );
         if (user === "") {
@@ -523,10 +461,168 @@ async function updateGoodsListInfo(goodsID, mode) {
         $("#admin__monitor").empty();
       });
   } else {
-    alert("建立失敗！！！未有填寫全部資料");
+    openAlertLayer("建立失敗！！！未有填寫全部資料");
   }
-  if (mode === 1) {
+  if (mode == 1) {
     showEditGoodsListForm(goodsID);
+  }
+}
+
+async function removeItemWebsiteInfo(goodsID, websiteID) {
+  if (
+    confirm("請再次確定是不真的要刪除此貨品？ 一旦確定將無法取消。") == true
+  ) {
+    await db
+      .collection("goods")
+      .doc(goodsID.toString())
+      .collection("website")
+      .doc(websiteID.toString())
+      .delete()
+      .then(function () {
+        openAlertLayer("刪除貨品網路資料成功");
+        GoodsUpdateUpdateDateTime(goodsID);
+        showEditGoodsListForm(goodsID);
+      })
+      .catch(function () {
+        openAlertLayer(
+          "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
+        );
+        if (user === "") {
+          logout(999);
+          $("#admin__content").empty();
+          $("#admin__choosePage").empty();
+          $("#admin__monitor").empty();
+          var divContent = `
+      <div class="admin__login">
+          <div class="admin__login__title">請先登入</div>
+          <div id="singUpRedirect" onclick="googleLoginRedirect()">
+              使用google帳號登入
+          </div>
+      </div>`;
+          $("#admin__content").append(divContent);
+        }
+        $("#admin__monitor").empty();
+      });
+  }
+}
+
+async function updateGoodsListInfo(goodsID) {
+  const form = document.forms["form" + goodsID];
+  var category = form.elements.category.value;
+  var name = form.elements.name.value;
+  var displayID = form.elements.displayID.value;
+  if (category != "" && name != "") {
+    await db
+      .collection("goods")
+      .doc(goodsID.toString())
+      .update({
+        category: form.elements.category.value,
+        name: form.elements.name.value,
+        urlOnFacebook: form.elements.urlOnFacebook.value,
+        urlOnIG: form.elements.urlOnIG.value,
+        isPo: form.elements.isPo.checked.toString(),
+        displayID: form.elements.displayID.value,
+      })
+      .then(function () {
+        openAlertLayer("更新貨品資料成功");
+        GoodsUpdateUpdateDateTime(goodsID);
+        updateDisplayPrice(goodsID, displayID);
+      })
+      .catch(function () {
+        openAlertLayer(
+          "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
+        );
+        if (user === "") {
+          logout(999);
+          $("#admin__content").empty();
+          $("#admin__choosePage").empty();
+          $("#admin__monitor").empty();
+          var divContent = `
+        <div class="admin__login">
+            <div class="admin__login__title">請先登入</div>
+            <div id="singUpRedirect" onclick="googleLoginRedirect()">
+                使用google帳號登入
+            </div>
+        </div>`;
+          $("#admin__content").append(divContent);
+        }
+        $("#admin__monitor").empty();
+        return false;
+      });
+  } else {
+    openAlertLayer("建立失敗！！！未有填寫全部資料");
+  }
+}
+async function updateDisplayPrice(goodsID, displayID) {
+  var inPriceNTD = 0;
+  var priceHKD = 0;
+  await db
+    .collection("goods")
+    .doc(goodsID.toString())
+    .collection("website")
+    .doc(displayID.toString())
+    .get()
+    .then(
+      function (goodssh) {
+        var goodsValue = goodssh.data();
+        inPriceNTD = goodsValue.inPriceNTD;
+        priceHKD = goodsValue.priceHKD;
+      },
+      (rej) => {
+        console.log(rej);
+      }
+    );
+  await db.collection("goods").doc(goodsID.toString()).update({
+    displayInPriceNTD: inPriceNTD,
+    displayPriceHKD: priceHKD,
+  });
+}
+
+async function setGoodsListInfo(goodsID) {
+  const form = document.forms["form" + goodsID];
+  var category = form.elements.category.value;
+  var name = form.elements.name.value;
+  if (category != "" && name != "") {
+    await db
+      .collection("goods")
+      .doc(goodsID.toString())
+      .set({
+        category: form.elements.category.value,
+        name: form.elements.name.value,
+        urlOnFacebook: form.elements.urlOnFacebook.value,
+        urlOnIG: form.elements.urlOnIG.value,
+        isPo: form.elements.isPo.checked.toString(),
+        displayInPriceNTD: 0,
+        displayPriceHKD: 0,
+        displayID: 1,
+      })
+      .then(function () {
+        openAlertLayer("新增貨品資料成功");
+        GoodsUpdateUpdateDateTime(goodsID);
+        showEditGoodsListForm(goodsID);
+      })
+      .catch(function () {
+        openAlertLayer(
+          "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
+        );
+        if (user === "") {
+          logout(999);
+          $("#admin__content").empty();
+          $("#admin__choosePage").empty();
+          $("#admin__monitor").empty();
+          var divContent = `
+        <div class="admin__login">
+            <div class="admin__login__title">請先登入</div>
+            <div id="singUpRedirect" onclick="googleLoginRedirect()">
+                使用google帳號登入
+            </div>
+        </div>`;
+          $("#admin__content").append(divContent);
+        }
+        $("#admin__monitor").empty();
+      });
+  } else {
+    openAlertLayer("建立失敗！！！未有填寫全部資料");
   }
 }
 
@@ -537,10 +633,10 @@ function updateGoodsPrice(goodsID) {
         twdToHKD) *
         10
     ) / 10;
-  document.getElementById("inPriceHKD").innerHTML =
+  document.getElementById("inPriceHKD" + goodsID).innerHTML =
     "入貨單價(HKD)：" + goodsInPriceHKD;
 
-  document.getElementById("profitHKD").innerHTML =
+  document.getElementById("profitHKD" + goodsID).innerHTML =
     "毛利(HKD)：" +
     Math.round(
       (document.getElementsByClassName("priceHKD" + goodsID)[0].value -
@@ -569,11 +665,12 @@ async function removeGoodsListInfo(goodsID) {
       .doc(goodsID.toString())
       .delete()
       .then(function () {
-        alert("刪除貨品成功");
+        openAlertLayer("刪除貨品成功");
         $("#admin__monitor").empty();
+        showGoodsListItem();
       })
       .catch(function () {
-        alert(
+        openAlertLayer(
           "伺服器發生錯誤。如果您是管理員，請尋找真·管理員協助。 或者 你是駭客 ㄇㄌㄈㄎ！！"
         );
         if (user === "") {

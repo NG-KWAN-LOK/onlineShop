@@ -14,7 +14,6 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 var db = firebase.firestore();
 var twdToHKD = 3.7;
-
 //show order item list
 function showOrderItem(mode) {
   console.log(mode);
@@ -109,6 +108,7 @@ function showOrderItem(mode) {
 
 async function showReadOrderInfo(orderID) {
   $("#admin__monitor").empty();
+  var orderTotalPrice = 0;
   var orderInfo = "";
   var titleString = `
     <div class="admin__monitor__title">修改貨品${orderID}資料</div>
@@ -208,9 +208,16 @@ async function showReadOrderInfo(orderID) {
         </div>
     </div>
   `;
+  orderTotalPrice = orderInfo.orderTotalPriceHKD;
   $("#admin__monitor").append(titleString);
+  var goodsCopyText = "";
   var goodsValueString = `
   <div class="admin__monitor__title">貨品清單</div>
+  <div class="function__bar">
+    <div class="function__bar__btn" onclick="copyToClipboard()">
+      複製到剪貼板
+    </div>
+  </div>
   <table class="admin__monitor__goodsTable">
     <tr class="admin__monitor__goodsTable__titleTR">
       <th class="admin__monitor__goodsTable__titleTH">ID</th>
@@ -287,10 +294,13 @@ async function showReadOrderInfo(orderID) {
             </th>
           </tr>
           `;
+          goodsCopyText += `${goodsValue.goodsName}　${goodsValue.count}件\n`;
         });
+        goodsCopyText += `共HKD ${orderTotalPrice}（未包含順豐郵費）`;
         //countAllTotalPrice(orderID);
         goodsValueString += `</table>
         <div class="admin__monitor__subtitle" style="margin:20px 0;">最後更新係於 ${orderInfo.leastUpdateTime}由${orderInfo.updateUser}</div>
+        <textarea name="message" rows="10" cols="30" id="copyToClipboard">${goodsCopyText}</textarea>
         `;
         $("#admin__monitor").append(goodsValueString);
       },
@@ -1197,6 +1207,14 @@ function setOrderLocalStorage() {
     document.getElementById("orderOrder").checked
   );
   showOrderItem(0);
+}
+
+function copyToClipboard() {
+  var copyText = document.getElementById("copyToClipboard");
+  copyText.select();
+  copyText.setSelectionRange(0, 99999);
+  document.execCommand("copy");
+  console.log(copyText.value);
 }
 
 $(document).ready(function () {

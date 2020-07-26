@@ -35,7 +35,7 @@ async function logout(eventCode = 0) {
           openAlertLayer("登出成功");
           clearInterval(oCountdownID);
         } else if (eventCode === 1) {
-          openAlertLayer("您已閒置超過7分鐘，系統自動登出");
+          openAlertLayer("您已閒置超過20分鐘，系統自動登出");
           clearInterval(oCountdownID);
         } else {
           console.log("Login Inited");

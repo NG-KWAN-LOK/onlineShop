@@ -119,6 +119,9 @@ async function showReadOrderInfo(orderID) {
       <div class="function__bar__btn" onclick="showEditOrderForm(${orderID})">
         修改訂單
       </div>
+      <div class="function__bar__btn" onclick="window.open('orderTrack/index.html?orderID=${orderID}')">
+        訂單查詢
+      </div>
       <div class="function__bar__btn" onclick="window.open('printPage/index.html?orderID=${orderID}')">
         製作收據
       </div>

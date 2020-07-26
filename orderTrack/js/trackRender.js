@@ -37,6 +37,7 @@ async function renderPageMain(orderID) {
     orderData = JSON.parse(localStorage.getItem("orderData", orderData));
   }
   //console.log(orderData);
+  $("#admin__monitor").empty();
   var orderTitleString = `
   <div class="admin__monitor__title">以下為閣下之訂單資料</div>
     <div class="admin__monitor__block">
@@ -62,14 +63,14 @@ async function renderPageMain(orderID) {
         <div class="admin__monitor__item">
         訂單現況：${
           orderData.isCancel === "true"
-            ? "已取消"
+            ? "訂單已取消"
             : orderData.isPaid === "true"
             ? orderData.isShip === "true"
               ? orderData.isFinish === "true"
                 ? "搞掂曬"
                 : "出咗貨"
               : "備緊貨"
-            : "要收數"
+            : "待付款"
         }
         </div>
         <div class="admin__monitor__item" style="display: flex;">
@@ -85,6 +86,8 @@ async function renderPageMain(orderID) {
     </div>`;
   $("#admin__monitor").append(orderTitleString);
 }
+
+function checkIsNewPage(savedOrderID) {}
 
 function getCurrentDateTime() {
   var currentdate = new Date();

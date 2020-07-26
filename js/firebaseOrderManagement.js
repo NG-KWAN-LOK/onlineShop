@@ -162,8 +162,15 @@ async function showReadOrderInfo(orderID) {
           <div class="admin__monitor__item">
           訂單是否已出貨：${orderInfo.isShip === "true" ? "已出貨" : "未出貨"}
           </div>
-          <div class="admin__monitor__item">
+          <div class="admin__monitor__item" style="display: flex;">
           順豐單號：${orderInfo.shipNumber}
+          <div class="function__bar">
+            <div class="function__bar__btn" onclick="window.open('https://www.sf-express.com/tw/tc/dynamic_function/waybill/#search/bill-number/${
+              orderInfo.shipNumber
+            }')">
+              運單追蹤
+            </div>
+          </div>
           </div>
           <div class="admin__monitor__item">
           訂單是否已完成：${orderInfo.isFinish === "true" ? "已完成" : "未完成"}

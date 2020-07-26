@@ -45,10 +45,9 @@ async function renderPageMain(orderID) {
                   </tr>
                   <tr class="customerInfo__table__tr">
                       <th class="customerInfo__table__th">收件人名稱</th>
-                      <th class="customerInfo__table__th-content">${orderInfo.customerName.substring(
-                        0,
-                        1
-                      )}${stringStar(orderInfo.customerName.length, 1)}</th>
+                      <th class="customerInfo__table__th-content">${nameStar(
+                        orderInfo.customerName
+                      )}</th>
                   </tr>
                   <tr class="customerInfo__table__tr">
                       <th class="customerInfo__table__th">收件人電話</th>
@@ -195,13 +194,31 @@ function renderFooter() {
 }
 function stringStar(length, minus) {
   var stringStar = "";
-  for (var i = 0; i < length - minus; i++) {
-    console.log(length);
-    stringStar += "＊";
-  }
-  console.log(stringStar);
+  stringStar += "＊".repeat(length - minus);
   return stringStar;
 }
+
+function nameStar(name) {
+  var checkEnglish = /^[A-Za-z0-9]*$/;
+  if (checkEnglish.test(name.charAt(0))) {
+    console.log("eng");
+    var englishName = name.split(" ");
+    console.log(englishName.length);
+    var displayName = englishName[0] + " ";
+    for (var i = 1; i < englishName.length; i++) {
+      displayName += englishName[i][0];
+      displayName += "*".repeat(englishName[i].length - 1);
+      displayName += " ";
+    }
+    return displayName;
+  } else {
+    console.log("chi");
+    var displayName = name.charAt(0);
+    displayName += "＊".repeat(name.length - 1);
+    return displayName;
+  }
+}
+
 function getCurrentDateTime() {
   var currentdate = new Date();
   var currentDateTime =

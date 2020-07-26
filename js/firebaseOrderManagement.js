@@ -977,7 +977,7 @@ function updateTotalPrice(orderID, goodsID) {
   document.getElementById("totalPriceHKD" + goodsID).innerHTML =
     "售價總值(HKD)：" + goodsTotalPriceHKD;
 
-  document.getElementById("profitHKD").innerHTML =
+  document.getElementById("profitHKD" + goodsID).innerHTML =
     "毛利(HKD)：" +
     Math.round(
       ((document.getElementsByClassName("priceHKD" + goodsID)[0].value -

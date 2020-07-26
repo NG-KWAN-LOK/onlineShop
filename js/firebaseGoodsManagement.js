@@ -49,11 +49,11 @@ function showGoodsListItem() {
                 : "admin__monitor__chooseItem-lightYellow"
             }" onclick="showEditGoodsListForm(${goodsh.id})"><p>${goodsh.id}　${
           goodInfo.category === "0"
-            ? goodInfo.category === "1"
-              ? goodInfo.category === "2"
-                ? "出售過之代購商品"
-                : "特別商品"
-              : "展示商品"
+            ? "展示商品"
+            : goodInfo.category === "1"
+            ? "特別商品"
+            : goodInfo.category === "2"
+            ? "出售過之代購商品"
             : ""
         }　<span class="spanText">名稱：${goodInfo.name}</span>　${
           goodInfo.isPo === "true" ? "已出Po" : "未出Po"

@@ -172,7 +172,7 @@ function Timeout() {
   logout(1);
 }
 function ReCalculate() {
-  var timer = 7 * 60;
+  var timer = 20 * 60;
   clearInterval(oCountdownID);
   if (
     user != "" ||

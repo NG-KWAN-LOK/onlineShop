@@ -767,6 +767,7 @@ a {
   line-height: 35px;
   font-style: normal;
   font-weight: 300;
+  background-color: #fff;
   color: var(--title-color);
   text-decoration: none;
   font-variant: normal;

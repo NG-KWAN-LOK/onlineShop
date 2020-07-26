@@ -20,6 +20,9 @@ function showGoodsListItem() {
           <option value="isPo" ${
             orderByRef === "isPo" ? "SELECTED" : ""
           }>依出Po狀態</option>
+          <option value="displayShopName" ${
+            orderByRef === "displayShopName" ? "SELECTED" : ""
+          }>依出示之網路通路</option>
         </select>
         <div class="function__bar__text">
             倒序：
@@ -49,12 +52,13 @@ function showGoodsListItem() {
             ? goodInfo.category === "1"
               ? goodInfo.category === "2"
                 ? "出售過之代購商品"
-                : "Po文特別商品"
-              : "Po文展示商品"
+                : "特別商品"
+              : "展示商品"
             : ""
         }　<span class="spanText">名稱：${goodInfo.name}</span>　${
           goodInfo.isPo === "true" ? "已出Po" : "未出Po"
         }</p><p>
+        <span class="spanText">${goodInfo.displayShopName}</span>
           入貨價(NTD)：${goodInfo.displayInPriceNTD}(HKD：${
           Math.round((goodInfo.displayInPriceNTD / twdToHKD) * 10) / 10
         })　定價(HKD)：${goodInfo.displayPriceHKD}　毛利(HKD)：${
@@ -100,8 +104,8 @@ async function showAddGoodsListForm() {
         <div class="admin__monitor__item">
         貨品類別：
         <select name="category" id="category" class="selection">
-        　<option value="0">Po文展示商品</option>
-        　<option value="1">Po文特別商品</option>
+        　<option value="0">展示商品</option>
+        　<option value="1">特別商品</option>
         <option value="2">出售過之代購商品</option>
         </select>
         </div>
@@ -132,6 +136,47 @@ async function showAddGoodsListForm() {
         <div class="admin__monitor__item">
           已出Po：
           <input type="checkbox" id="isPo" name="isPo">
+        </div>
+        <div class="admin__monitor__title">貨品網路通路資料</div>
+        <div class="admin__monitor__item">編號：0
+          </div>
+          <div class="admin__monitor__item">網路通路：
+            <input
+            type="text"
+            name="shopName"
+            id="shopName" required
+            />
+          </div>
+          <div class="admin__monitor__item">網路通路網址：
+            <input
+            type="text"
+            name="website"
+            id="website" required
+            />
+          </div>
+          <div class="admin__monitor__item" id="inPriceNTD">
+            入貨單價(NTD)：
+            <input
+                type="number"
+                name="inPriceNTD"
+                id="inPriceNTD"
+                class="inPriceNTD0" oninput="updateGoodsPrice(0)" required
+            />
+          </div>
+          <div class="admin__monitor__item" id="inPriceHKD0">
+              入貨單價(HKD)：
+          </div>
+          <div class="admin__monitor__item" id="priceHKD">
+              售價(HKD)：
+              <input
+                  type="number"
+                  name="priceHKD"
+                  id="priceHKD"
+                  class="priceHKD0" oninput="updateGoodsPrice(0)" required
+              />
+          </div>
+          <div class="admin__monitor__item" id="profitHKD0">
+              毛利(HKD)：
         </div>
             <input
           type="button"
@@ -174,10 +219,10 @@ function showEditGoodsListForm(goodsID) {
                 <select name="category" id="category" class="selection">
                 　<option value="0" ${
                   goodsInfo.category === "0" ? "SELECTED" : ""
-                }>Po文展示商品</option>
+                }>展示商品</option>
                 　<option value="1" ${
                   goodsInfo.category === "1" ? "SELECTED" : ""
-                }>Po文特別商品</option>
+                }>特別商品</option>
                 <option value="2" ${
                   goodsInfo.category === "2" ? "SELECTED" : ""
                 }>出售過之代購商品</option>
@@ -515,14 +560,17 @@ async function updateGoodsListInfo(goodsID) {
     await db
       .collection("goods")
       .doc(goodsID.toString())
-      .update({
-        category: form.elements.category.value,
-        name: form.elements.name.value,
-        urlOnFacebook: form.elements.urlOnFacebook.value,
-        urlOnIG: form.elements.urlOnIG.value,
-        isPo: form.elements.isPo.checked.toString(),
-        displayID: form.elements.displayID.value,
-      })
+      .set(
+        {
+          category: form.elements.category.value,
+          name: form.elements.name.value,
+          urlOnFacebook: form.elements.urlOnFacebook.value,
+          urlOnIG: form.elements.urlOnIG.value,
+          isPo: form.elements.isPo.checked.toString(),
+          displayID: form.elements.displayID.value,
+        },
+        { merge: true }
+      )
       .then(function () {
         openAlertLayer("更新貨品資料成功");
         GoodsUpdateUpdateDateTime(goodsID);
@@ -554,8 +602,7 @@ async function updateGoodsListInfo(goodsID) {
   }
 }
 async function updateDisplayPrice(goodsID, displayID) {
-  var inPriceNTD = 0;
-  var priceHKD = 0;
+  var goodsValue = "";
   await db
     .collection("goods")
     .doc(goodsID.toString())
@@ -564,25 +611,38 @@ async function updateDisplayPrice(goodsID, displayID) {
     .get()
     .then(
       function (goodssh) {
-        var goodsValue = goodssh.data();
-        inPriceNTD = goodsValue.inPriceNTD;
-        priceHKD = goodsValue.priceHKD;
+        goodsValue = goodssh.data();
       },
       (rej) => {
         console.log(rej);
       }
     );
-  await db.collection("goods").doc(goodsID.toString()).update({
-    displayInPriceNTD: inPriceNTD,
-    displayPriceHKD: priceHKD,
-  });
+  await db.collection("goods").doc(goodsID.toString()).set(
+    {
+      displayInPriceNTD: goodsValue.inPriceNTD,
+      displayPriceHKD: goodsValue.priceHKD,
+      displayShopName: goodsValue.shopName,
+    },
+    { merge: true }
+  );
 }
 
 async function setGoodsListInfo(goodsID) {
   const form = document.forms["form" + goodsID];
   var category = form.elements.category.value;
   var name = form.elements.name.value;
-  if (category != "" && name != "") {
+  var shopName = form.elements.shopName.value;
+  var website = form.elements.website.value;
+  var inPriceNTD = form.elements.inPriceNTD.value;
+  var priceHKD = form.elements.priceHKD.value;
+  if (
+    category != "" &&
+    name != "" &&
+    shopName != "" &&
+    website != "" &&
+    inPriceNTD != "" &&
+    priceHKD != ""
+  ) {
     await db
       .collection("goods")
       .doc(goodsID.toString())
@@ -592,9 +652,7 @@ async function setGoodsListInfo(goodsID) {
         urlOnFacebook: form.elements.urlOnFacebook.value,
         urlOnIG: form.elements.urlOnIG.value,
         isPo: form.elements.isPo.checked.toString(),
-        displayInPriceNTD: 0,
-        displayPriceHKD: 0,
-        displayID: 1,
+        displayID: 0,
       })
       .then(function () {
         openAlertLayer("新增貨品資料成功");
@@ -620,6 +678,21 @@ async function setGoodsListInfo(goodsID) {
           $("#admin__content").append(divContent);
         }
         $("#admin__monitor").empty();
+        return false;
+      });
+    await db
+      .collection("goods")
+      .doc(goodsID.toString())
+      .collection("website")
+      .doc("0")
+      .set({
+        shopName: form.elements.shopName.value,
+        website: form.elements.website.value,
+        inPriceNTD: form.elements.inPriceNTD.value,
+        priceHKD: form.elements.priceHKD.value,
+      })
+      .then(function () {
+        updateDisplayPrice(goodsID, 0);
       });
   } else {
     openAlertLayer("建立失敗！！！未有填寫全部資料");

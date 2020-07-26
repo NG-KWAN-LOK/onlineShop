@@ -887,8 +887,9 @@ async function removeItemOrderInfo(orderID) {
       .doc(orderID.toString())
       .delete()
       .then(function () {
-        openAlertLayer("刪除貨品成功");
+        openAlertLayer("刪除訂單成功");
         $("#admin__monitor").empty();
+        showOrderItem(0);
       })
       .catch(function () {
         openAlertLayer(
@@ -978,7 +979,7 @@ function updateTotalPrice(orderID, goodsID) {
     "售價總值(HKD)：" + goodsTotalPriceHKD;
 
   document.getElementById("profitHKD" + goodsID).innerHTML =
-    "毛利(HKD)：" +
+    "毛利百份比：" +
     Math.round(
       ((document.getElementsByClassName("priceHKD" + goodsID)[0].value -
         Math.round(goodsInPriceHKD * 10) / 10) /

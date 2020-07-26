@@ -59,7 +59,7 @@ async function renderPageMain(orderID) {
         </div>
     </div>
     <div class="admin__monitor__goods">
-        <div class="admin__monitor__title">處理流程</div>
+        <div class="admin__monitor__title">訂單狀態</div>
         <div class="admin__monitor__item">
         訂單現況：${
           orderData.isCancel === "true"

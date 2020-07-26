@@ -72,12 +72,14 @@ function showOrderItem(mode) {
             orderInfo.isCancel === "true"
               ? "已取消"
               : orderInfo.isPaid === "true"
-              ? orderInfo.isShip === "true"
-                ? orderInfo.isFinish === "true"
-                  ? "搞掂曬"
-                  : "出咗貨"
+              ? orderInfo.isBook === "true"
+                ? orderInfo.isShip === "true"
+                  ? orderInfo.isFinish === "true"
+                    ? "搞掂曬"
+                    : "出咗貨"
+                  : "待出貨"
                 : "備緊貨"
-              : "要收數"
+              : "待收數"
           }</br>
           總入貨價(NTD)：${orderInfo.orderTotalPriceNTD}(HKD：${
             Math.round((orderInfo.orderTotalPriceNTD / twdToHKD) * 10) / 10
@@ -161,6 +163,9 @@ async function showReadOrderInfo(orderID) {
           <div class="admin__monitor__title">運送資料</div>
           <div class="admin__monitor__item">
           訂單是否已收款：${orderInfo.isPaid === "true" ? "已收款" : "未收款"}
+          </div>
+          <div class="admin__monitor__item">
+          訂單是否已訂貨：${orderInfo.isBook === "true" ? "已訂貨" : "未訂貨"}
           </div>
           <div class="admin__monitor__item">
           訂單是否已出貨：${orderInfo.isShip === "true" ? "已出貨" : "未出貨"}
@@ -426,6 +431,7 @@ async function setItemOrderInfo(orderID) {
   this.isFinish = "false";
   this.isPaid = "false";
   this.isCancel = "false";
+  this.isBook = "false";
   if (
     orderTime != "" &&
     customerName != "" &&
@@ -445,6 +451,7 @@ async function setItemOrderInfo(orderID) {
         isFinish: this.isFinish,
         isPaid: this.isPaid,
         isCancel: this.isCancel,
+        isBook: this.isBook,
         otherContacts: form.elements.otherContacts.value,
         contactsName:
           form.elements.contactsName.value != ""
@@ -573,6 +580,12 @@ function showEditOrderForm(orderID) {
             <input type="checkbox" id="isPaid" name="isPaid" ${
               orderInfo.isPaid === "true" ? "checked" : ""
             }>
+          </div>
+          <div class="admin__monitor__item">
+            是否已訂貨：
+          <input type="checkbox" id="isBook" name="isBook" ${
+            orderInfo.isBook === "true" ? "checked" : ""
+          }>
           </div>
           <div class="admin__monitor__item">
           是否已出貨：
@@ -1088,6 +1101,7 @@ async function updateItemOrderInfo(orderID) {
   var isFinish = form.elements.isFinish.checked.toString();
   var isPaid = form.elements.isPaid.checked.toString();
   var isCancel = form.elements.isCancel.value;
+  var isBook = form.elements.isBook.checked.toString();
   var otherContacts = form.elements.isPaid.value;
   if (isPaid === "false" && isShip === "false" && isFinish === "true") {
     //F F T
@@ -1123,6 +1137,7 @@ async function updateItemOrderInfo(orderID) {
         isFinish: form.elements.isFinish.checked.toString(),
         isPaid: form.elements.isPaid.checked.toString(),
         otherContacts: form.elements.otherContacts.value,
+        isBook: form.elements.isBook.checked.toString(),
         contactsName:
           form.elements.contactsName.value != ""
             ? form.elements.contactsName.value

@@ -263,6 +263,12 @@ function showEditGoodsListForm(goodsID) {
                   goodsInfo.isPo === "true" ? "checked" : ""
                 }>
                 </div>
+                <div class="admin__monitor__item">
+                備注：
+                <textarea name="note" rows="10" cols="30" id="note">${
+                  goodsInfo.note
+                }</textarea>
+                </div>
           </form>
           <input
           type="button"
@@ -568,6 +574,7 @@ async function updateGoodsListInfo(goodsID) {
           urlOnIG: form.elements.urlOnIG.value,
           isPo: form.elements.isPo.checked.toString(),
           displayID: form.elements.displayID.value,
+          note: form.elements.note.value,
         },
         { merge: true }
       )

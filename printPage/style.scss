@@ -9,6 +9,7 @@
 }
 html {
   min-height: 100vh;
+  -webkit-print-color-adjust: exact !important;
 }
 
 @media print {
@@ -82,8 +83,10 @@ html {
             font-size: 11pt;
             text-align: left;
             padding: 0 11pt;
+            width: 60pt;
             &-content {
               @extend .customerInfo__table__th;
+              width: 270pt;
             }
             &-title {
               @extend .customerInfo__table__th;
@@ -346,8 +349,10 @@ td {
           font-size: 11pt;
           text-align: left;
           padding: 0 11pt;
+          width: 60pt;
           &-content {
             @extend .customerInfo__table__th;
+            width: 270pt;
           }
           &-title {
             @extend .customerInfo__table__th;

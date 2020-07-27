@@ -87,6 +87,7 @@
 
 html {
   min-height: 100vh;
+  -webkit-print-color-adjust: exact !important;
 }
 
 @media print {
@@ -175,6 +176,10 @@ html {
     font-size: 11pt;
     text-align: left;
     padding: 0 11pt;
+    width: 60pt;
+  }
+  .printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th-content {
+    width: 270pt;
   }
   .printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th-title {
     color: #fff;
@@ -462,6 +467,11 @@ td {
   font-size: 11pt;
   text-align: left;
   padding: 0 11pt;
+  width: 60pt;
+}
+
+.printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th-content {
+  width: 270pt;
 }
 
 .printPage__page__content__basicInfo .printPage__page__content__basicInfo__customerInfo .customerInfo__table .customerInfo__table__tr .customerInfo__table__th-title {

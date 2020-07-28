@@ -40,6 +40,34 @@ async function renderPageMain(orderID) {
   $("#admin__monitor").empty();
   var orderTitleString = `
   <div class="admin__monitor__title">以下為閣下之訂單資料</div>
+  <div class="admin__monitor__goods">
+      <div class="admin__monitor__title">訂單狀態</div>
+      <div class="admin__monitor__item">
+      訂單現況：${
+        orderData.isCancel === "true"
+          ? "訂單已取消"
+          : orderData.isPaid === "true"
+          ? orderData.isBook === "true"
+            ? orderData.isShip === "true"
+              ? orderData.isFinish === "true"
+                ? "搞掂曬"
+                : "出咗貨"
+              : "待出貨"
+            : "備緊貨"
+          : "待付款"
+      }
+      </div>
+      <div class="admin__monitor__item" style="display: flex;">
+      順豐單號：${orderData.shipNumber}
+        <div class="function__bar">
+          <div class="function__bar__btn" onclick="window.open('https://www.sf-express.com/tw/tc/dynamic_function/waybill/#search/bill-number/${
+            orderData.shipNumber
+          }')">
+          運單追蹤
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="admin__monitor__block">
         <div class="admin__monitor__title">客戶資料</div>
         <div class="admin__monitor__item">
@@ -56,34 +84,6 @@ async function renderPageMain(orderID) {
         </div>
         <div class="admin__monitor__item">
         收件人地址：${orderData.address}
-        </div>
-    </div>
-    <div class="admin__monitor__goods">
-        <div class="admin__monitor__title">訂單狀態</div>
-        <div class="admin__monitor__item">
-        訂單現況：${
-          orderData.isCancel === "true"
-            ? "訂單已取消"
-            : orderData.isPaid === "true"
-            ? orderData.isBook === "true"
-              ? orderData.isShip === "true"
-                ? orderData.isFinish === "true"
-                  ? "搞掂曬"
-                  : "出咗貨"
-                : "待出貨"
-              : "備緊貨"
-            : "待付款"
-        }
-        </div>
-        <div class="admin__monitor__item" style="display: flex;">
-        順豐單號：${orderData.shipNumber}
-            <div class="function__bar">
-                <div class="function__bar__btn" onclick="window.open('https://www.sf-express.com/tw/tc/dynamic_function/waybill/#search/bill-number/${
-                  orderData.shipNumber
-                }')">
-                運單追蹤
-                </div>
-            </div>
         </div>
     </div>`;
   $("#admin__monitor").append(orderTitleString);

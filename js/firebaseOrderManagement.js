@@ -145,7 +145,7 @@ async function showReadOrderInfo(orderID) {
           <div class="admin__monitor__item">
           訂單日期：${orderInfo.orderTime}
           </div>
-          <div class="admin__monitor__item">
+          <div class="admin__monitor__item" style="display:flex;">
           收件人名稱：${orderInfo.customerName}
           <div class="function__bar">
             <div class="function__bar__btn" onclick="addressInfoCopyToClipboard()">

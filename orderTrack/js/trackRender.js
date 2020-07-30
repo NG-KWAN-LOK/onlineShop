@@ -50,11 +50,11 @@ async function renderPageMain(orderID) {
           ? orderData.isBook === "true"
             ? orderData.isShip === "true"
               ? orderData.isFinish === "true"
-                ? "搞掂曬"
-                : "出咗貨"
-              : "待出貨"
-            : "備緊貨"
-          : "待付款"
+                ? "搞掂曬，希望您滿意我哋既服務，歡迎下次再搵我哋！"
+                : "出咗貨，請時刻留意寄運公司，追蹤貨物既去向，準備收取您期待已久嘅台灣風味！"
+              : "待出貨，我哋既駐台北店主正聯絡寄運公司，送出您嘅貨品～"
+            : "備緊貨，我哋既駐台北店主正為您備貨～"
+          : "待付款，我哋會在收到付款後為您備貨～"
       }
       </div>
       <div class="admin__monitor__item" style="display: flex;">

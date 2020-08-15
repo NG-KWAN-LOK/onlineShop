@@ -715,16 +715,23 @@ async function showEditGoodsForm(orderID) {
             Math.round((goodsValue.price / twdToHKD) * 10) / 10
           }
           </div>
-          <div class="admin__monitor__item">售價單價(HKD)：
-          <input
-            type="number"
-            name="priceHKD"
-            id="priceHKD"
-            class="priceHKD${ordersh.id}"
-            value="${
-              goodsValue.priceHKD
-            }" oninput="updateTotalPrice(${orderID},${ordersh.id})" required
-            />
+          <div class="admin__monitor__item" style="display: flex;">售價單價(HKD)：
+            <input
+              type="number"
+              name="priceHKD"
+              id="priceHKD"
+              class="priceHKD${ordersh.id}"
+              value="${
+                goodsValue.priceHKD
+              }" oninput="updateTotalPrice(${orderID},${ordersh.id})" required
+              />
+            <div class="function__bar">
+              <div id="TWDPriceAutoDiv${
+                ordersh.id
+              }" class="function__bar__btn" onclick="TWDPriceAutoDiv(${orderID},${
+            ordersh.id
+          })">自動除3</div>
+            </div>
           </div>
           <div class="admin__monitor__item">數量：
             <input
@@ -812,13 +819,16 @@ async function showEditGoodsForm(orderID) {
       </div>
       <div class="admin__monitor__item" id="priceHKD${lastGoodsID}">入貨單價(HKD)：0
       </div>
-      <div class="admin__monitor__item">售價單價(HKD)：
+      <div class="admin__monitor__item" style="display: flex;">售價單價(HKD)：
       <input
         type="number"
         name="priceHKD"
         id="priceHKD"
         class="priceHKD${lastGoodsID}" oninput="updateTotalPrice(${orderID},${lastGoodsID})" required
         />
+        <div class="function__bar">
+              <div id="TWDPriceAutoDiv${lastGoodsID}" class="function__bar__btn" onclick="TWDPriceAutoDiv(${orderID},${lastGoodsID})">自動除3</div>
+            </div>
       </div>
       <div class="admin__monitor__item">數量：
         <input
@@ -962,6 +972,15 @@ async function countAllTotalPrice(orderID) {
     ) /
       10 +
     "%)";
+}
+
+function TWDPriceAutoDiv(orderID, goodsID) {
+  goodsInpriceTWD = document.getElementsByClassName("price" + goodsID)[0].value;
+  console.log(goodsInpriceTWD);
+  document.getElementsByClassName("priceHKD" + goodsID)[0].value = Math.round(
+    goodsInpriceTWD / 3
+  );
+  updateTotalPrice(orderID, goodsID);
 }
 
 function updateTotalPrice(orderID, goodsID) {

@@ -8,10 +8,11 @@ function getURL() {
 }
 
 async function renderPageMain(orderID) {
-  var orderData = "";
+  var orderData = JSON.parse(localStorage.getItem("orderData", orderData));
   if (
     localStorage.getItem("orderData", orderData) === null ||
-    countDateTime(localStorage.getItem("lastUpdataTime")) > 30 * 60
+    countDateTime(localStorage.getItem("lastUpdataTime")) > 30 * 60 ||
+    orderID != orderData.orderID
   ) {
     console.log("updateData");
     await fetch(
@@ -34,12 +35,13 @@ async function renderPageMain(orderID) {
         console.log("Fetch Error :-S", err);
       });
   } else {
-    orderData = JSON.parse(localStorage.getItem("orderData", orderData));
+    //orderData = JSON.parse(localStorage.getItem("orderData", orderData));
   }
   //console.log(orderData);
   $("#admin__monitor").empty();
   var orderTitleString = `
   <div class="admin__monitor__title">以下為閣下之訂單資料</div>
+  <div class="admin__monitor__subtitle" style="padding-bottom: 0px;">更新時間：${getWordDateTime()}</div>
   <div class="admin__monitor__goods">
       <div class="admin__monitor__title">訂單狀態</div>
       <div class="admin__monitor__item">
@@ -63,7 +65,7 @@ async function renderPageMain(orderID) {
           <div class="function__bar__btn" onclick="window.open('https://www.sf-express.com/tw/tc/dynamic_function/waybill/#search/bill-number/${
             orderData.shipNumber
           }')">
-          運單追蹤
+          順豐運單追蹤
           </div>
         </div>
       </div>
@@ -90,6 +92,17 @@ async function renderPageMain(orderID) {
 }
 
 function checkIsNewPage(savedOrderID) {}
+
+function getWordDateTime() {
+  currentdate = localStorage.getItem("lastUpdataTime");
+  wordDate = currentdate.substring(0, 4) + "/";
+  wordDate += currentdate.substring(4, 6) + "/";
+  wordDate += currentdate.substring(6, 8) + " ";
+  wordDate += currentdate.substring(8, 10) + ":";
+  wordDate += currentdate.substring(10, 12) + ":";
+  wordDate += currentdate.substring(12, 14);
+  return wordDate;
+}
 
 function getCurrentDateTime() {
   var currentdate = new Date();

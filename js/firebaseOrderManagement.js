@@ -53,6 +53,7 @@ function showOrderItem(mode) {
       function (querySnapshot) {
         querySnapshot.forEach(function (ordersh) {
           var orderInfo = ordersh.data();
+          console.log(orderInfo);
           var orderTitleString = `
             <div class="admin__monitor__chooseItem ${
               orderInfo.isCancel === "true"
@@ -144,6 +145,16 @@ async function showReadOrderInfo(orderID) {
         </div>
           <div class="admin__monitor__item">
           訂單日期：${orderInfo.orderTime}
+          </div>
+          <div class="admin__monitor__item" style="display:flex;">
+            是否已填表：${orderInfo.isForm === "true" ? "已填" : "未填"}
+            <div class="function__bar">
+              <div class="function__bar__btn" onclick="window.open('orderProcess/index.html?orderID=${
+                ordersh.id
+              }')">
+                訂單建立流程
+              </div>
+            </div>
           </div>
           <div class="admin__monitor__item" style="display:flex;">
           收件人名稱：${orderInfo.customerName}
@@ -431,6 +442,7 @@ async function setItemOrderInfo(orderID) {
   var customerName = form.elements.customerName.value;
   var phoneNumber = form.elements.phoneNumber.value;
   var address = form.elements.address.value;
+  this.isForm = "false";
   this.isShip = "false";
   this.shipNumber = "NaN";
   this.isFinish = "false";
@@ -451,6 +463,7 @@ async function setItemOrderInfo(orderID) {
         customerName: form.elements.customerName.value,
         phoneNumber: form.elements.phoneNumber.value,
         address: form.elements.address.value,
+        isForm: this.isForm,
         isShip: this.isShip,
         shipNumber: this.shipNumber,
         isFinish: this.isFinish,
@@ -527,6 +540,12 @@ function showEditOrderForm(orderID) {
               id="orderTime"
               value="${orderInfo.orderTime}" required
             />
+          </div>
+          <div class="admin__monitor__item">
+            是否已填表：
+            <input type="checkbox" id="isForm" name="isForm" ${
+              orderInfo.isForm === "true" ? "checked" : ""
+            }>
           </div>
           <div class="admin__monitor__item">
           收件人名稱：
@@ -1122,6 +1141,7 @@ async function updateItemOrderInfo(orderID) {
   var phoneNumber = form.elements.phoneNumber.value;
   var address = form.elements.address.value;
   var shipNumber = form.elements.shipNumber.value;
+  var isForm = form.elements.isForm.checked.toString();
   var isShip = form.elements.isShip.checked.toString();
   var isFinish = form.elements.isFinish.checked.toString();
   var isPaid = form.elements.isPaid.checked.toString();
@@ -1157,6 +1177,7 @@ async function updateItemOrderInfo(orderID) {
         customerName: form.elements.customerName.value,
         phoneNumber: form.elements.phoneNumber.value,
         address: form.elements.address.value,
+        isForm: form.elements.isForm.checked.toString(),
         isShip: form.elements.isShip.checked.toString(),
         shipNumber: form.elements.shipNumber.value,
         isFinish: form.elements.isFinish.checked.toString(),

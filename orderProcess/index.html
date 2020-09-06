@@ -13,7 +13,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../style.css" />
-    <title>客戶訂單追蹤及查詢丨OnlineShop</title>
+    <title>訂單建立流程丨OnlineShop</title>
     <link rel="icon" href="../image/spawn.png" />
     <!--メインビジュアルのスライド-->
   </head>
@@ -84,9 +84,9 @@
       <div class="main__content">
         <div class="admin">
           <div class="admin__title__content">
-            <div class="admin__title" id="admin_title">訂單追蹤</div>
+            <div class="admin__title" id="admin_title">訂單建立流程</div>
             <div class="admin__text" id="admin_text">
-              您可以在此追蹤您的訂單狀態及訂單資料。<br />如果對本系統有任何建議，請向我們聯絡。謝謝～
+              請依指示完成訂單建立流程。<br />如果有任何問題或對本系統有任何建議，請向我們聯絡。謝謝～
             </div>
           </div>
         </div>
@@ -149,8 +149,16 @@
   <script type="text/javascript" src="../js/totop.min.js"></script>
   <!--ゆっくり上げる-->
   <script type="text/javascript" src="../js/jquery.easing.1.3.js"></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-firestore.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.3.0/firebase-analytics.js"></script>
   <!--ビジュアルのバーガーメニュー-->
   <script type="text/javascript" src="../js/menu_burger.js"></script>
   <script type="text/javascript" src="../js/popupLayer.js"></script>
-  <script type="text/javascript" src="js/trackRender.js"></script>
+  <script type="text/javascript" src="js/orderProcess.js"></script>
 </html>

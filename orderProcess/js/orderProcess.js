@@ -269,7 +269,7 @@ function showPayment(orderID) {
     <div class="function__bar__btn" onclick="EditInfo(${orderID})">
             上一步
         </div>
-        <div class="function__bar__btn" onclick="window.location.assign('../orderTrack/index.html?orderID=${orderID}')">
+        <div class="function__bar__btn" onclick="setInfo(${orderID})">
             完成
         </div>
     </div>
@@ -287,7 +287,7 @@ function finishProcess(orderID) {
   `;
   goodsValueString += `
     <div class="function__bar">
-        <div class="function__bar__btn" onclick="setInfo(${orderID})">
+        <div class="function__bar__btn" onclick="window.location.assign('../orderTrack/index.html?orderID=${orderID}')">
         訂單追蹤頁面
         </div>
     </div>

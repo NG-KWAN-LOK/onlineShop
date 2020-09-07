@@ -124,7 +124,7 @@ function EditInfo(orderID) {
   //console.log(receiverInfo);
   var goodsValueString = `
     <div class="admin__monitor__title">輸入收件人資料　2/4</div>
-    <div class="admin__monitor__item" style="font-weight: 400;">請輸入收件人資料。請小心填寫，如資料有誤，以致貨件無法送到閣下手上，請自行承擔。</div>
+    <div class="admin__monitor__item" style="font-weight: 400;">請輸入收件人資料，然後按下一步。<br>請小心填寫資料。如資料有誤，以致貨件無法送到閣下手上，請自行承擔。</div>
     `;
   goodsValueString += `
     <form name="form" id="form">
@@ -186,8 +186,8 @@ function confirmInfo(orderID) {
     if (phoneNumber.match(phoneno)) {
       $("#admin__monitor").empty();
       var goodsValueString = `
-        <div class="admin__monitor__title">確認收件人資料　3/4</div>
-        <div class="admin__monitor__item" style="font-weight: 400;">請小心確認資料。如資料有誤，以致貨件無法送到閣下手上，請自行承擔。</div>
+        <div class="admin__monitor__title">確認收件人資料　2/4</div>
+        <div class="admin__monitor__item" style="font-weight: 400;">請小心確認資料。如資料有誤，請按重新輸入，如無誤請按下一步<br>如資料有誤，以致貨件無法送到閣下手上，請自行承擔。</div>
         `;
       goodsValueString += `
         <div class="admin__monitor__item" style="border-bottom: none;">收件人姓氏：${customerName}</div>
@@ -233,7 +233,8 @@ async function setInfo(orderID) {
         openAlertLayer("網絡錯誤！請重試！！！");
         return;
       } else {
-        window.location.assign("../orderTrack/index.html?orderID=" + orderID);
+        finishProcess(orderID);
+        //window.location.assign("../orderTrack/index.html?orderID=" + orderID);
       }
       await response.json().then(function (data) {
         goodData = data;
@@ -254,9 +255,9 @@ async function setInfo(orderID) {
 function showPayment(orderID) {
   $("#admin__monitor").empty();
   var goodsValueString = `
-  <div class="admin__monitor__title">付款　4/4</div>
-  <div class="admin__monitor__item" style="font-weight: 400;">請根據訂單既總金額，使用以下付款方式，完成付款，最後按完成！<br>付款後請將收據傳給我們，謝謝！</div>
-  <div class="admin__monitor__item" style="font-size: 22px;">應付金額：${totalPrice}</div>
+  <div class="admin__monitor__title">付款　3/4</div>
+  <div class="admin__monitor__item" style="font-weight: 400;">請根據訂單既總金額，使用以下付款方式，完成付款，最後按完成！</div>
+  <div class="admin__monitor__item" style="font-size: 22px; padding-top: 36px; font-weight: 400; color: #f00;">應付金額：HKD$${totalPrice}</div>
   <div class="admin__monitor__title">Payme</div>
   <div class="admin__monitor__item" style="border-bottom: none;"><img style="width: 100%; max-width: 400px" src="../image/payme.jpg"></div>
   <div class="admin__monitor__title">FPS轉數快</div>
@@ -271,6 +272,24 @@ function showPayment(orderID) {
         </div>
         <div class="function__bar__btn" onclick="setInfo(${orderID})">
             完成
+        </div>
+    </div>
+    `;
+  $("#admin__monitor").append(goodsValueString);
+}
+
+function finishProcess(orderID) {
+  $("#admin__monitor").empty();
+  var goodsValueString = `
+  <div class="admin__monitor__title">完成　4/4</div>
+  <div class="admin__monitor__item" style="font-weight: 400;">恭喜您已完成資料輸入！</div>
+  <div class="admin__monitor__item" style="font-size: 22px; padding-top: 36px; font-weight: 400; color: #f00;"">請將入帳收據或頁面Cap圖或影相inbox到我哋既IG或FB，謝謝！</div>
+  <div class="admin__monitor__title" style="font-weight: 400;">您可以按以下「訂單追蹤頁面」，追蹤您的訂單情況及資料。</div>
+  `;
+  goodsValueString += `
+    <div class="function__bar">
+        <div class="function__bar__btn" onclick="setInfo(${orderID})">
+        訂單追蹤頁面
         </div>
     </div>
     `;

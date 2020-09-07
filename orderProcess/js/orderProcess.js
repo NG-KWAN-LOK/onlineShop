@@ -57,7 +57,7 @@ async function showGoodList(orderID) {
     $("#admin__monitor").empty();
     var goodsValueString = `
   <div class="admin__monitor__title">確認商品清單　1/4</div>
-  <div class="admin__monitor__item" style="font-weight: 400;">麻煩確認一下商品名稱、數量、係咪正確，總共金額有冇問題，如果冇問題，請按下一步繼續！</div>
+  <div class="admin__monitor__item" style="font-weight: 400;">請確認商品名稱、數量、金額是否正確。如無誤，請按下一步繼續。</div>
   <table class="admin__monitor__goodsTable">
     <tr class="admin__monitor__goodsTable__titleTR">
       <th class="admin__monitor__goodsTable__titleTH">ID</th>
@@ -129,7 +129,7 @@ function EditInfo(orderID) {
   goodsValueString += `
     <form name="form" id="form">
         <div class="admin__monitor__item">
-        收件人姓氏：
+        收件人姓名：
         <input
             type="text"
             name="customerName"
@@ -149,7 +149,7 @@ function EditInfo(orderID) {
         />
         </div>
         <div class="admin__monitor__item">
-        收件人中文收貨地址：
+        收件人中文收貨地址：<br>（使用順豐智能櫃或便利店取件需同時提供其代碼及詳細地址) <br>
         <input
             type="text"
             name="address"
@@ -255,7 +255,7 @@ function showPayment(orderID) {
   $("#admin__monitor").empty();
   var goodsValueString = `
   <div class="admin__monitor__title">付款　3/4</div>
-  <div class="admin__monitor__item" style="font-weight: 400;">請根據訂單既總金額，使用以下付款方式，完成付款，最後按完成！</div>
+  <div class="admin__monitor__item" style="font-weight: 400;">請根據訂單之總金額，使用以下付款方式，完成付款，最後按完成！</div>
   <div class="admin__monitor__item" style="font-size: 22px; padding-top: 36px; font-weight: 400; color: #f00;">應付金額：HKD$${totalPrice}</div>
   <div class="admin__monitor__title">Payme</div>
   <div class="admin__monitor__item" style="border-bottom: none;"><img style="width: 100%; max-width: 400px" src="../image/payme.jpg"></div>

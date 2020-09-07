@@ -234,7 +234,6 @@ async function setInfo(orderID) {
         return;
       } else {
         finishProcess(orderID);
-        //window.location.assign("../orderTrack/index.html?orderID=" + orderID);
       }
       await response.json().then(function (data) {
         goodData = data;
@@ -270,7 +269,7 @@ function showPayment(orderID) {
     <div class="function__bar__btn" onclick="EditInfo(${orderID})">
             上一步
         </div>
-        <div class="function__bar__btn" onclick="setInfo(${orderID})">
+        <div class="function__bar__btn" onclick="window.location.assign('../orderTrack/index.html?orderID=${orderID}')">
             完成
         </div>
     </div>

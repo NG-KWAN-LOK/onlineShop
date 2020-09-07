@@ -9,3 +9,9 @@ function menu_burger(x) {
     PhoneTop__mainnav__container.style.transform = "translateX(0px)";
   }
 }
+
+var version = "內測版V2.1";
+var versionDate = "2020-9-7 14:23";
+
+$("#topFooterLang_versionDate").append(version + " " + versionDate);
+$("#topFooterLang_version").append(version);

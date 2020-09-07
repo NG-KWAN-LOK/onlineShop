@@ -1,25 +1,30 @@
 var totalPrice = 0;
 function setLocalStorage() {
-  receiverInfo = {
-    customerName: "",
-    phoneNumber: "",
-    address: "",
-  };
-  localStorage.setItem("receiverInfo", JSON.stringify(receiverInfo));
+  var receiverInfo = JSON.parse(
+    localStorage.getItem("receiverInfo", receiverInfo)
+  );
+  if (receiverInfo == null) {
+    receiverInfo = {
+      customerName: "",
+      phoneNumber: "",
+      address: "",
+    };
+    localStorage.setItem("receiverInfo", JSON.stringify(receiverInfo));
+  }
 }
 function getURL() {
   var searchParams = new URLSearchParams(window.location.search);
   var orderID = searchParams.get("orderID");
   if (orderID != null && orderID != null) {
     setLocalStorage();
-    showGoodList(orderID);
+    getGoodData(orderID);
   }
   console.log("URL" + orderID);
 }
 
-async function showGoodList(orderID) {
-  goodData = "";
-  totalPrice = 0;
+var goodData = "";
+
+async function getGoodData(orderID) {
   await fetch(
     `https://us-central1-onlineshop-76640.cloudfunctions.net/orderGoodList?orderID=${orderID}`
   )
@@ -29,26 +34,30 @@ async function showGoodList(orderID) {
         console.log(
           "Looks like there was a problem. Status Code: " + response.status
         );
-        var goodsValueString = `
-            <div class="admin__monitor__title">404錯誤，訂單資料錯誤！</div>
-        `;
-        $("#admin__monitor").append(goodsValueString);
+        goodData = "null";
         return;
       } else {
-        $("#admin__monitor").empty();
+        console.log("data got");
       }
       await response.json().then(function (data) {
         goodData = data;
       });
     })
     .catch(function (err) {
+      goodData = "error";
       console.log("Fetch Error :-S", err);
     });
-  console.log(goodData);
-  if (goodData != "false") {
+  showGoodList(orderID);
+}
+
+async function showGoodList(orderID) {
+  totalPrice = 0;
+  //console.log(goodData);
+  if (goodData != "false" && goodData != "null" && goodData != "error") {
+    $("#admin__monitor").empty();
     var goodsValueString = `
   <div class="admin__monitor__title">確認商品清單　1/4</div>
-  <div class="admin__monitor__item">麻煩確認一下商品名稱、數量、係咪正確，總共金額有冇問題，如果冇問題，請按下一步繼續！</div>
+  <div class="admin__monitor__item" style="font-weight: 400;">麻煩確認一下商品名稱、數量、係咪正確，總共金額有冇問題，如果冇問題，請按下一步繼續！</div>
   <table class="admin__monitor__goodsTable">
     <tr class="admin__monitor__goodsTable__titleTR">
       <th class="admin__monitor__goodsTable__titleTH">ID</th>
@@ -85,9 +94,22 @@ async function showGoodList(orderID) {
         </div>
     </div>`;
     $("#admin__monitor").append(goodsValueString);
-  } else {
+  } else if (goodData == "false") {
+    $("#admin__monitor").empty();
     var goodsValueString = `
     <div class="admin__monitor__title">此訂單不提供此服務！</div>
+`;
+    $("#admin__monitor").append(goodsValueString);
+  } else if (goodData == "error") {
+    $("#admin__monitor").empty();
+    var goodsValueString = `
+    <div class="admin__monitor__title">網絡錯誤，請刷新網頁</div>
+`;
+    $("#admin__monitor").append(goodsValueString);
+  } else {
+    $("#admin__monitor").empty();
+    var goodsValueString = `
+    <div class="admin__monitor__title">404錯誤，訂單資料錯誤！</div>
 `;
     $("#admin__monitor").append(goodsValueString);
   }
@@ -99,10 +121,10 @@ function EditInfo(orderID) {
   var receiverInfo = JSON.parse(
     localStorage.getItem("receiverInfo", receiverInfo)
   );
-  console.log(receiverInfo);
+  //console.log(receiverInfo);
   var goodsValueString = `
     <div class="admin__monitor__title">輸入收件人資料　2/4</div>
-    <div class="admin__monitor__item">請輸入收件人資料。請小心填寫，如資料有誤，以致貨件無法送到閣下手上，請自行承擔。</div>
+    <div class="admin__monitor__item" style="font-weight: 400;">請輸入收件人資料。請小心填寫，如資料有誤，以致貨件無法送到閣下手上，請自行承擔。</div>
     `;
   goodsValueString += `
     <form name="form" id="form">
@@ -165,7 +187,7 @@ function confirmInfo(orderID) {
       $("#admin__monitor").empty();
       var goodsValueString = `
         <div class="admin__monitor__title">確認收件人資料　3/4</div>
-        <div class="admin__monitor__item">請小心確認資料。如資料有誤，以致貨件無法送到閣下手上，請自行承擔。</div>
+        <div class="admin__monitor__item" style="font-weight: 400;">請小心確認資料。如資料有誤，以致貨件無法送到閣下手上，請自行承擔。</div>
         `;
       goodsValueString += `
         <div class="admin__monitor__item" style="border-bottom: none;">收件人姓氏：${customerName}</div>
@@ -208,7 +230,10 @@ async function setInfo(orderID) {
         console.log(
           "Looks like there was a problem. Status Code: " + response.status
         );
+        openAlertLayer("網絡錯誤！請重試！！！");
         return;
+      } else {
+        window.location.assign("../orderTrack/index.html?orderID=" + orderID);
       }
       await response.json().then(function (data) {
         goodData = data;
@@ -223,16 +248,14 @@ async function setInfo(orderID) {
     address: address,
   };
   localStorage.setItem("receiverInfo", JSON.stringify(receiverInfo));
-  console.log(receiverInfo);
-
-  window.location.assign("../orderTrack/index.html?orderID=" + orderID);
+  //console.log(receiverInfo);
 }
 
 function showPayment(orderID) {
   $("#admin__monitor").empty();
   var goodsValueString = `
   <div class="admin__monitor__title">付款　4/4</div>
-  <div class="admin__monitor__item">請根據訂單既總金額，使用以下付款方式，完成付款！</div>
+  <div class="admin__monitor__item" style="font-weight: 400;">請根據訂單既總金額，使用以下付款方式，完成付款，最後按完成！<br>付款後請將收據傳給我們，謝謝！</div>
   <div class="admin__monitor__item" style="font-size: 22px;">應付金額：${totalPrice}</div>
   <div class="admin__monitor__title">Payme</div>
   <div class="admin__monitor__item" style="border-bottom: none;"><img style="width: 100%; max-width: 400px" src="../image/payme.jpg"></div>

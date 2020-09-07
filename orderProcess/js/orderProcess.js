@@ -57,7 +57,7 @@ async function showGoodList(orderID) {
     $("#admin__monitor").empty();
     var goodsValueString = `
   <div class="admin__monitor__title">確認商品清單　1/4</div>
-  <div class="admin__monitor__item" style="font-weight: 400;">請確認商品名稱、數量、金額是否正確。如無誤，請按下一步繼續。</div>
+  <div class="admin__monitor__item" style="font-weight: 400;">麻煩確認商品名稱及數量是否正確，然後核對總計。如一切正確，可按下一步繼續；若有錯漏，請即與我們聯絡，謝謝。</div>
   <table class="admin__monitor__goodsTable">
     <tr class="admin__monitor__goodsTable__titleTR">
       <th class="admin__monitor__goodsTable__titleTH">ID</th>
@@ -124,7 +124,7 @@ function EditInfo(orderID) {
   //console.log(receiverInfo);
   var goodsValueString = `
     <div class="admin__monitor__title">輸入收件人資料　2/4</div>
-    <div class="admin__monitor__item" style="font-weight: 400;">請輸入收件人資料，然後按下一步。<br>請小心填寫資料。如資料有誤，以致貨件無法送到閣下手上，請自行承擔。</div>
+    <div class="admin__monitor__item" style="font-weight: 400;">請輸入收件人資料，然後按下一步。<br>請小心填寫資料。一切因資料錯誤而以引致的運送問題，客人需自行承擔責任，本店恕不負責。</div>
     `;
   goodsValueString += `
     <form name="form" id="form">
@@ -187,7 +187,7 @@ function confirmInfo(orderID) {
       $("#admin__monitor").empty();
       var goodsValueString = `
         <div class="admin__monitor__title">確認收件人資料　2/4</div>
-        <div class="admin__monitor__item" style="font-weight: 400;">請小心確認資料。如資料有誤，請按重新輸入，如無誤請按下一步<br>如資料有誤，以致貨件無法送到閣下手上，請自行承擔。</div>
+        <div class="admin__monitor__item" style="font-weight: 400;">請再次確認運送資料，若無需更改可前往下一步。如有需要，可按重新輸入鍵更改資料。<br>免責聲明：一切因資料錯誤而以引致的運送問題，客人需自行承擔責任，本店恕不負責。</div>
         `;
       goodsValueString += `
         <div class="admin__monitor__item" style="border-bottom: none;">收件人姓氏：${customerName}</div>
@@ -255,7 +255,7 @@ function showPayment(orderID) {
   $("#admin__monitor").empty();
   var goodsValueString = `
   <div class="admin__monitor__title">付款　3/4</div>
-  <div class="admin__monitor__item" style="font-weight: 400;">請根據訂單之總金額，使用以下付款方式，完成付款，最後按完成！</div>
+  <div class="admin__monitor__item" style="font-weight: 400;">請根據下方顯示的應付金額，選用其中一種付款方式，完成付款，最後按完成鍵結束是次下單程序。<br>温馨提示：完成付款後，請記得截圖或拍照傳送給我們作記錄。</div>
   <div class="admin__monitor__item" style="font-size: 22px; padding-top: 36px; font-weight: 400; color: #f00;">應付金額：HKD$${totalPrice}</div>
   <div class="admin__monitor__title">Payme</div>
   <div class="admin__monitor__item" style="border-bottom: none;"><img style="width: 100%; max-width: 400px" src="../image/payme.jpg"></div>
@@ -282,7 +282,8 @@ function finishProcess(orderID) {
   var goodsValueString = `
   <div class="admin__monitor__title">完成　4/4</div>
   <div class="admin__monitor__item" style="font-weight: 400;">恭喜您已完成資料輸入！</div>
-  <div class="admin__monitor__item" style="font-size: 22px; padding-top: 36px; font-weight: 400; color: #f00;"">請將入帳收據或頁面Cap圖或影相inbox到我哋既IG或FB，謝謝！</div>
+  <div class="admin__monitor__item" style="font-size: 22px; padding-top: 36px; font-weight: 400; color: #f00;">請把入帳記錄截圖或拍照傳送給我們，謝謝！（Facebook/ Instagram: Taiwan.mart ）</div>
+  <div class="admin__monitor__item" style="font-size: 20px; padding-top: 20px; border-bottom: 0px;">再次感謝閣下的選用本店的服務，希望在不久的將來能再次為你服務:)</div>
   <div class="admin__monitor__title" style="font-weight: 400;">您可以按以下「訂單追蹤頁面」，追蹤您的訂單情況及資料。</div>
   `;
   goodsValueString += `

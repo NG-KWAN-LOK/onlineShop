@@ -10,8 +10,8 @@ function menu_burger(x) {
   }
 }
 
-var version = "內測版V2.4";
-var versionDate = "2020-9-8 0:50";
+var version = "內測版V2.5";
+var versionDate = "2020-9-8 1:19";
 
 $("#topFooterLang_versionDate").append(version + " " + versionDate);
 $("#topFooterLang_version").append(version);

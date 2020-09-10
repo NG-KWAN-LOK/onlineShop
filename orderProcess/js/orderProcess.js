@@ -88,6 +88,7 @@ async function showGoodList(orderID) {
     <th class="admin__monitor__goodsTable__itemTH admin__monitor__goodsTable__itemTH-important">${totalPrice}</th>
   </tr>
   </table>
+  <div class="admin__monitor__item" style="font-weight: 400;">未包含順豐郵費，順豐郵費為到付。</div>
     <div class="function__bar">
         <div class="function__bar__btn" onclick="EditInfo(${orderID})">
             下一步

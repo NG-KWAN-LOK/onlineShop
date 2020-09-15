@@ -101,6 +101,7 @@ async function showGoodList(orderID) {
     <div class="admin__monitor__title">此訂單不提供此服務！</div>
 `;
     $("#admin__monitor").append(goodsValueString);
+    window.location.assign("../orderTrack/index.html?orderID=" + orderID);
   } else if (goodData == "error") {
     $("#admin__monitor").empty();
     var goodsValueString = `

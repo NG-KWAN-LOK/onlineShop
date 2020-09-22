@@ -52,22 +52,26 @@ async function renderPageMain(orderID) {
           ? orderData.isBook === "true"
             ? orderData.isShip === "true"
               ? orderData.isFinish === "true"
-                ? "搞掂曬，希望您滿意我哋既服務，歡迎下次再搵我哋！"
-                : "出咗貨，請時刻留意寄運公司，追蹤貨物既去向，準備收取您期待已久嘅台灣風味！"
+                ? "訂單完成，希望您滿意我哋既服務，歡迎下次再搵我哋！"
+                : "已出貨，請時刻留意寄運公司，追蹤貨物既去向，準備收取您期待已久嘅台灣風味！"
               : "待出貨，我哋既駐台北店主正聯絡寄運公司，送出您嘅貨品～"
-            : "備緊貨，我哋既駐台北店主正為您備貨～"
+            : "備貨中，我哋既駐台北店主正為您備貨～"
           : "待付款，我哋會在收到付款後為您備貨～"
       }
       </div>
       <div class="admin__monitor__item" style="display: flex;">
-      順豐單號：${orderData.shipNumber}
-        <div class="function__bar">
-          <div class="function__bar__btn" onclick="window.open('https://www.sf-express.com/tw/tc/dynamic_function/waybill/#search/bill-number/${
-            orderData.shipNumber
-          }')">
-          順豐運單追蹤
-          </div>
+      順豐單號：${
+        orderData.isShip === "true"
+          ? orderData.shipNumber +
+            `<div class="function__bar">
+        <div class="function__bar__btn" onclick="window.open('https://www.sf-express.com/tw/tc/dynamic_function/waybill/#search/bill-number/` +
+            orderData.shipNumber +
+            `')">
+        順豐運單追蹤
         </div>
+      </div>`
+          : "貨件尚未出貨"
+      }
       </div>
     </div>
     <div class="admin__monitor__block">

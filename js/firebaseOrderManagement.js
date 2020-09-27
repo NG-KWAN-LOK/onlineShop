@@ -706,6 +706,7 @@ async function showEditGoodsForm(orderID) {
             type="text"
             name="goodsName"
             id="goodsName"
+            class="goodsName${ordersh.id}"
             value="${goodsValue.goodsName}" required
             />
           </div>
@@ -714,8 +715,15 @@ async function showEditGoodsForm(orderID) {
             type="text"
             name="website"
             id="website"
+            class = "website${ordersh.id}"
             value="${goodsValue.website}" required
             />
+            <div class="function__bar">
+              <div id="autoGetCarrefourGoodsData${
+                ordersh.id
+              }" class="function__bar__btn" onclick="autoGetCarrefourGoodsData(${orderID},${
+            ordersh.id
+          })">自動取得家樂福資料</div>
           </div>
           <div class="admin__monitor__item">入貨單價(NTD)：
             <input
@@ -999,6 +1007,50 @@ function TWDPriceAutoDiv(orderID, goodsID) {
   document.getElementsByClassName("priceHKD" + goodsID)[0].value = Math.round(
     goodsInpriceTWD / 3
   );
+  updateTotalPrice(orderID, goodsID);
+}
+
+async function autoGetCarrefourGoodsData(orderID, goodsID) {
+  url = document.getElementsByClassName("website" + goodsID)[0].value;
+  webGoodId = url
+    .replace("https://online.carrefour.com.tw/tw/", "")
+    .substring(0, 13);
+  console.log(webGoodId);
+  var goodsInfo = {
+    name: "",
+    price: "",
+  };
+  await fetch(
+    "https://recommendation.api.useinsider.com/10001844/zh_tw/most/purchased/product?details=true&filter=[item_id][=][" +
+      webGoodId +
+      "]"
+  )
+    .then(async function (response) {
+      if (response.status !== 200) {
+        console.log(
+          "Looks like there was a problem. Status Code: " + response.status
+        );
+        openAlertLayer("無法取得資料，請查清網址或重試！！！");
+        return;
+      }
+      await response.json().then(function (data) {
+        //console.log(data);
+        data["data"].forEach(function (orderSh) {
+          goodsInfo = {
+            name: orderSh.name,
+            price: orderSh.price.TWD,
+          };
+          document.getElementsByClassName("goodsName" + goodsID)[0].value =
+            goodsInfo.name;
+          document.getElementsByClassName("price" + goodsID)[0].value =
+            goodsInfo.price;
+        });
+      });
+    })
+    .catch(function (err) {
+      console.log("Fetch Error :-S", err);
+    });
+  console.log(goodsInfo);
   updateTotalPrice(orderID, goodsID);
 }
 

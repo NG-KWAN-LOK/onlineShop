@@ -725,6 +725,7 @@ async function showEditGoodsForm(orderID) {
             ordersh.id
           })">自動取得家樂福資料</div>
           </div>
+          </div>
           <div class="admin__monitor__item">入貨單價(NTD)：
             <input
             type="number"
@@ -824,6 +825,7 @@ async function showEditGoodsForm(orderID) {
         type="text"
         name="goodsName"
         id="goodsName"
+        class="goodsName${lastGoodsID}"
         required
         />
       </div>
@@ -832,8 +834,12 @@ async function showEditGoodsForm(orderID) {
         type="text"
         name="website"
         id="website"
+        class="website${lastGoodsID}"
         required
         />
+        <div class="function__bar">
+              <div id="autoGetCarrefourGoodsData${lastGoodsID}" class="function__bar__btn" onclick="autoGetCarrefourGoodsData(${orderID},${lastGoodsID})">自動取得家樂福資料</div>
+          </div>
       </div>
       <div class="admin__monitor__item">入貨單價(NTD)：
         <input

@@ -13,7 +13,7 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 var db = firebase.firestore();
-var twdToHKD = 3.7;
+var twdToHKD = 3.6;
 //show order item list
 function showOrderItem(mode) {
   console.log(mode);

@@ -1010,7 +1010,7 @@ async function countAllTotalPrice(orderID) {
 function TWDPriceAutoDiv(orderID, goodsID) {
   goodsInpriceTWD = document.getElementsByClassName("price" + goodsID)[0].value;
   console.log(goodsInpriceTWD);
-  document.getElementsByClassName("priceHKD" + goodsID)[0].value = Math.round(
+  document.getElementsByClassName("priceHKD" + goodsID)[0].value = Math.ceil(
     goodsInpriceTWD / 3
   );
   updateTotalPrice(orderID, goodsID);

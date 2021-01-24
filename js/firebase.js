@@ -14,7 +14,7 @@ firebase.initializeApp(firebaseConfig);
 firebase.analytics();
 var db = firebase.firestore();
 //Get Data
-var twdToHKD = 3.7;
+var twdToHKD = 3.5;
 async function readDatabase(pagechoose) {
   $("#admin__monitor").empty();
   var DataRef = firebase.database().ref(pagechoose);

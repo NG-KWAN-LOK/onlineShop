@@ -8,3 +8,7 @@ function openAlertLayer(message) {
   console.log(message);
   $("#alertContent").text(message);
 }
+
+function closeAlertLayer() {
+  buildingPopUpLayer.style.display = "none";
+}

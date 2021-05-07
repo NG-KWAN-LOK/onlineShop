@@ -201,7 +201,7 @@ function confirmInfo(orderID) {
     <div class="function__bar__btn" onclick="EditInfo(${orderID})">
             重新輸入
         </div>
-        <div class="function__bar__btn" name="submit" onclick="showPayment(${orderID})">
+        <div class="function__bar__btn" name="submit" onclick="setInfo(${orderID})">
             下一步
         </div>
     </div>
@@ -235,7 +235,9 @@ async function setInfo(orderID) {
         openAlertLayer("網絡錯誤！請重試！！！");
         return;
       } else {
-        finishProcess(orderID);
+        //finishProcess(orderID);
+        closeAlertLayer();
+        showPayment(orderID);
       }
       await response.json().then(function (data) {
         goodData = data;
@@ -271,7 +273,7 @@ function showPayment(orderID) {
     <div class="function__bar__btn" onclick="EditInfo(${orderID})">
             上一步
         </div>
-        <div class="function__bar__btn" onclick="setInfo(${orderID})">
+        <div class="function__bar__btn" onclick="finishProcess(${orderID})">
             完成
         </div>
     </div>
